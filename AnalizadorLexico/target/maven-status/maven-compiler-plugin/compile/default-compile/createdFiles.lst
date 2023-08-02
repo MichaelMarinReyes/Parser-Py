@@ -1,12 +1,12 @@
 frontend/EditorPanel.class
 frontend/VentanaPrincipal$2.class
 frontend/GenerarGrafico.class
-backend/LeerArchivoTexto.class
 frontend/VentanaPrincipal$3.class
-backend/Main.class
 frontend/VentanaPrincipal.class
 frontend/EditorPanel$1.class
+backend/analizador/controlador/Main.class
 frontend/EditorPanel$2.class
 frontend/NumeroLinea.class
 frontend/VentanaPrincipal$1.class
 frontend/NumeroLinea$1.class
+backend/analizador/controlador/LeerArchivoTexto.class

@@ -1,0 +1,106 @@
+@startuml diagramadeclases
+
+class App {
+
+}
+
+package analizador {
+
+    package controladores {
+
+        class ControlAnalizador {
+            - Escaneable scanner
+            - Parseable parser
+            - ControlTablaSimbolo tablaSimbolos
+            - ControladorError error
+            + setFuente(String path): boolean
+            + hacerAnalisis(): boolean
+            + getArbolSintactico(): ArbolSintactico
+            + esError(): boolean
+            + getErrores(): Error
+             getTablaSimbolos(): TablaSimbolo
+        }
+
+        class ControlTablaSimbolo {
+            - TablaSimbolo tablaSimbolo
+        }
+
+        class ControladorError {
+            - Error error
+        }
+
+        package scanner {
+
+            class ControladorArbolSintactico {
+                - ArbolSintactico arbolSintactico
+            }
+
+            interface Escaneable{
+
+            }
+
+            class AutomataPila {
+
+            }
+
+            AutomataPila -up-|> Escaneable
+            Escaneable *-- ControladorArbolSintactico
+        }
+
+        package parser {
+            interface Parseable {
+
+            }
+
+            class AutomataFinito {
+
+            }
+
+            AutomataFinito -up-|> Parseable
+        }
+
+        ControlAnalizador *-- Parseable
+        ControlAnalizador *-- Escaneable
+        ControlAnalizador *-- ControlTablaSimbolo
+        ControlAnalizador *-- ControladorError
+
+        Escaneable -right-> Parseable
+    }
+
+    package modelos {
+
+        class Error {
+
+        }
+
+        class ArbolSintactico {
+
+        }
+
+        class TablaSimbolo {
+
+        }
+
+        class Token {
+            - TipoToken tipoToken
+        }
+
+        enum TipoToken {
+
+        }
+
+        Token *-- TipoToken
+        
+    }
+
+    ControlTablaSimbolo *-down- TablaSimbolo
+    ControladorError *-- Error
+
+    ControladorArbolSintactico *-- ArbolSintactico
+
+}
+
+App .down.> ControlAnalizador
+
+@enduml
+
