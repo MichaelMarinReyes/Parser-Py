@@ -1,6 +1,6 @@
 @startuml diagramadeclases
 
-class App {
+class Main {
 
 }
 
@@ -18,7 +18,7 @@ package analizador {
             + getArbolSintactico(): ArbolSintactico
             + esError(): boolean
             + getErrores(): Error
-             getTablaSimbolos(): TablaSimbolo
+            getTablaSimbolos(): TablaSimbolo
         }
 
         class ControlTablaSimbolo {
@@ -31,12 +31,19 @@ package analizador {
 
         package scanner {
 
+            class ScannerFactory {
+
+            }
+
             class ControladorArbolSintactico {
                 - ArbolSintactico arbolSintactico
             }
 
             interface Escaneable{
-
+                + {abstract} setParser(Parseable parser)
+                + {abstract} boolean verificarGramatica()
+                + {abstract} setTablasimbolos(ControlTablaSimbolo controlTablaSimbolo)
+                + {abstract} ArbolSintactico getArbolSintactico()
             }
 
             class AutomataPila {
@@ -45,11 +52,18 @@ package analizador {
 
             AutomataPila -up-|> Escaneable
             Escaneable *-- ControladorArbolSintactico
+            ScannerFactory .right.> ControlAnalizador
         }
 
         package parser {
-            interface Parseable {
 
+            class ParserFactory {
+
+            }
+
+            interface Parseable {
+                + {abstract} boolean setFuente(String path)
+                + {abstract} setTablasimbolos(ControlTablaSimbolo controlTablaSimbolo)
             }
 
             class AutomataFinito {
@@ -63,6 +77,8 @@ package analizador {
         ControlAnalizador *-- Escaneable
         ControlAnalizador *-- ControlTablaSimbolo
         ControlAnalizador *-- ControladorError
+        ControlAnalizador ..> ParserFactory
+        ParserFactory .left.> Parseable
 
         Escaneable -right-> Parseable
     }
@@ -90,7 +106,7 @@ package analizador {
         }
 
         Token *-- TipoToken
-        
+
     }
 
     ControlTablaSimbolo *-down- TablaSimbolo
@@ -100,7 +116,7 @@ package analizador {
 
 }
 
-App .down.> ControlAnalizador
+Main .down.> ControlAnalizador
 
 @enduml
 

@@ -50,6 +50,14 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="graficoBotonMouseClicked"/>
           </Events>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="reportesBoton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reportes"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reportesBotonMouseClicked"/>
+          </Events>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="ayudaBoton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Ayuda"/>

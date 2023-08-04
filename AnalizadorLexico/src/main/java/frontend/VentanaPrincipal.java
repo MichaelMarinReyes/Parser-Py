@@ -2,8 +2,12 @@ package frontend;
 
 import backend.analizador.controlador.LeerArchivoTexto;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -17,8 +21,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
-        initComponents();
         this.setTitle("PARSER-PY");
+        initComponents();
         this.pintarPanel(editor);
     }
 
@@ -38,12 +42,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         guardarArchivo = new javax.swing.JMenuItem();
         editorTexto = new javax.swing.JMenu();
         graficoBoton = new javax.swing.JMenu();
+        reportesBoton = new javax.swing.JMenu();
         ayudaBoton = new javax.swing.JMenu();
         acerdaDeBoton = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(900, 700));
-        setPreferredSize(new java.awt.Dimension(1000, 700));
 
         contenedorPanel.setBackground(new java.awt.Color(255, 153, 153));
         contenedorPanel.setLayout(new java.awt.BorderLayout());
@@ -83,6 +87,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         menuOpciones.add(graficoBoton);
 
+        reportesBoton.setText("Reportes");
+        reportesBoton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportesBotonMouseClicked(evt);
+            }
+        });
+        menuOpciones.add(reportesBoton);
+
         ayudaBoton.setText("Ayuda");
         menuOpciones.add(ayudaBoton);
 
@@ -120,6 +132,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.pintarPanel(editor);
     }//GEN-LAST:event_editorTextoMouseClicked
 
+    private void reportesBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportesBotonMouseClicked
+        ReportesPanel reportes = new ReportesPanel();
+        pintarPanel(reportes);
+    }//GEN-LAST:event_reportesBotonMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem abrirBoton;
@@ -131,6 +148,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem guardarArchivo;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menuOpciones;
+    private javax.swing.JMenu reportesBoton;
     // End of variables declaration//GEN-END:variables
 
     public void pintarPanel(Component panel) {
