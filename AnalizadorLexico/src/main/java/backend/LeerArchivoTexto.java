@@ -26,7 +26,6 @@ public class LeerArchivoTexto {
             }
             buffer.close();
             lector.close();
-            //System.out.println(texto);
         } catch (IOException error) {
             System.out.println(error);
         }

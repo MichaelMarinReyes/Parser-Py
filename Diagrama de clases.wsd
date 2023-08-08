@@ -21,101 +21,114 @@ package analizador {
             getTablaSimbolos(): TablaSimbolo
         }
 
-        class ControlTablaSimbolo {
-            - TablaSimbolo tablaSimbolo
-        }
-
         class ControladorError {
             - Error error
         }
 
-        package scanner {
-
-            class ScannerFactory {
-
-            }
-
-            class ControladorArbolSintactico {
-                - ArbolSintactico arbolSintactico
-            }
-
-            interface Escaneable{
-                + {abstract} setParser(Parseable parser)
-                + {abstract} boolean verificarGramatica()
-                + {abstract} setTablasimbolos(ControlTablaSimbolo controlTablaSimbolo)
-                + {abstract} ArbolSintactico getArbolSintactico()
-            }
-
-            class AutomataPila {
-
-            }
-
-            AutomataPila -up-|> Escaneable
-            Escaneable *-- ControladorArbolSintactico
-            ScannerFactory .right.> ControlAnalizador
-        }
-
         package parser {
 
-            class ParserFactory {
-
+            enum ParserFactory {
+                +getParser(): Parseable
             }
 
             interface Parseable {
-                + {abstract} boolean setFuente(String path)
-                + {abstract} setTablasimbolos(ControlTablaSimbolo controlTablaSimbolo)
+                + getToken(): Token
+                + esFinalArchivo(): boolean
+                + leerArchivo(): boolean
             }
 
-            class AutomataFinito {
+            package controladorpythonparser {
+                class PythonParser {
+                    - ControladorFuncionTrancicion ControladorFuncionTrancicion
+                    - numero linea
+                    - numero columna
+                    - String path
+                    - String contenido
+                }
 
+                class ControladorEstadoAceptacion {
+                    + getEstadoAceptacion(Estado estado): TipoToken
+
+                }
+
+                class ControladorFuncionTrancicion {
+                    - Estado[][] matrizEstados
+                    + delta(Estado estado, SimboloAlfabeto simbolo): Estado
+                }
+
+                class ControladorSimboloAlfabeto {
+                    + isCaracterTerminal(): boolean
+                    + getTipoAlfabeto(char caracter): SimboloAlfabeto
+                }
+
+                PythonParser *-- ControladorFuncionTrancicion
+                PythonParser --> ControladorEstadoAceptacion
+                PythonParser --> ControladorSimboloAlfabeto
             }
 
-            AutomataFinito -up-|> Parseable
+            PythonParser -up-|> Parseable
+            ParserFactory .left.> Parseable
+
+
         }
 
         ControlAnalizador *-- Parseable
-        ControlAnalizador *-- Escaneable
-        ControlAnalizador *-- ControlTablaSimbolo
-        ControlAnalizador *-- ControladorError
         ControlAnalizador ..> ParserFactory
-        ParserFactory .left.> Parseable
 
-        Escaneable -right-> Parseable
+        Escaneable -right-> Parseable: getToken
     }
 
     package modelos {
 
-        class Error {
-
-        }
-
-        class ArbolSintactico {
-
-        }
-
-        class TablaSimbolo {
-
-        }
-
         class Token {
             - TipoToken tipoToken
+            - int linea
+            - int columna
+            - String path
         }
 
         enum TipoToken {
 
         }
 
+        package modelospythonparser {
+            enum Estado {
+                + ESTADO1
+                + ESTADO2
+            }
+
+            class EstadoAceptacion {
+                - List<Estado> estadoAceptacion
+                + getEstadoAceptacion(): List<Estado>
+            }
+
+            enum SimboloAlfabeto {
+                + digito
+                + letras
+            }
+        }
+
         Token *-- TipoToken
 
     }
 
-    ControlTablaSimbolo *-down- TablaSimbolo
-    ControladorError *-- Error
 
-    ControladorArbolSintactico *-- ArbolSintactico
+    Parseable ..> Token
+    ControladorEstadoAceptacion --> EstadoAceptacion
+    ControladorEstadoAceptacion --> TipoToken
+    ControladorFuncionTrancicion *-- Estado
+    ControladorFuncionTrancicion ..> SimboloAlfabeto
+    ControladorSimboloAlfabeto ..> SimboloAlfabeto
 
 }
 
+package util {
+    class AdministradorArchivos {
+        + String leerArchivoTexto(String path): String
+    }
+}
+
+Parseable  ..>AdministradorArchivos
 Main .down.> ControlAnalizador
 
 @enduml
