@@ -1,5 +1,6 @@
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/analizador/controlador/scanner/Escaneable.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/analizador/controlador/parser/ParserFactory.java
+/home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/Analizador.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/analizador/controlador/parser/Parseable.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/analizador/controlador/ControlAnalizador.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/modelos/ArbolSintactico.java
@@ -7,9 +8,11 @@
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/LeerArchivoTexto.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/analizador/controlador/ControlTablaSimbolo.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/Main.java
+/home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/ReportesPanel.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/analizador/controlador/scanner/ScannerFactory.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/VentanaPrincipal.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/modelos/TablaSimbolo.java
+/home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/Token.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/NumeroLinea.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/analizador/controlador/LeerArchivoTexto.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/EditorPanel.java

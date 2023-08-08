@@ -15,7 +15,7 @@ public class Main {
         VentanaPrincipal ventana = new VentanaPrincipal();
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
-        new Main().ejecutarAnalisis();
+        //new Main().ejecutarAnalisis();
     }
 
     public void ejecutarAnalisis() {

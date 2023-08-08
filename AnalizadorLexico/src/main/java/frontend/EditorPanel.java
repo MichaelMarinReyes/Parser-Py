@@ -1,9 +1,13 @@
 package frontend;
 
+import backend.Analizador;
+import backend.Token;
 import java.awt.Component;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.text.BadLocationException;
 
 /**
  *
@@ -11,25 +15,24 @@ import javax.swing.JTextArea;
  */
 public class EditorPanel extends javax.swing.JPanel {
 
-    private JTabbedPane pestaña;
-    private JPanel ventana;
-    private JTextArea areaTexto;
-    
+    ArrayList<Token> listaToken = new ArrayList();
     NumeroLinea numerarEditor;
     NumeroLinea numerarConsola;
+
     /**
      * Creates new form EditorPanel
      */
     public EditorPanel() {
         initComponents();
+        mostrarColumnaLabel.setText("Columna: 1");
         numerarEditor = new NumeroLinea(areaEditor);
         scrollEditor.setRowHeaderView(numerarEditor);
         numerarConsola = new NumeroLinea(areaConsola);
         scrollConsola.setRowHeaderView(numerarConsola);
-        pestaña = new JTabbedPane();
+        mostrarColumna();
     }
-    
-    public void setAreaEditor(String linea){
+
+    public void setAreaEditor(String linea) {
         areaEditor.setText(linea);
     }
 
@@ -51,6 +54,7 @@ public class EditorPanel extends javax.swing.JPanel {
         areaConsola = new javax.swing.JTextArea();
         ejecutarBoton = new javax.swing.JButton();
         limpiarBoton = new javax.swing.JButton();
+        mostrarColumnaLabel = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setLayout(new java.awt.GridBagLayout());
@@ -135,10 +139,28 @@ public class EditorPanel extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(10, 496, 0, 1);
         add(limpiarBoton, gridBagConstraints);
+
+        mostrarColumnaLabel.setFont(new java.awt.Font("MesloLGL Nerd Font", 0, 13)); // NOI18N
+        mostrarColumnaLabel.setForeground(new java.awt.Color(0, 0, 0));
+        mostrarColumnaLabel.setText("jLabel1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        add(mostrarColumnaLabel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
-        areaConsola.setText("No se ha implementado lógica\n\nPrueba funcionamiento consola");
+        if (areaEditor.getText().length() == 0) {
+            JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
+        } else {
+            new Analizador(listaToken).analizar(areaEditor.getText());
+            
+            for (int i = 0; i < listaToken.size(); i++) {
+                areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
+                
+            }
+            //areaConsola.setText("No se ha implementado lógica\n\nPrueba funcionamiento consola");
+        }
     }//GEN-LAST:event_ejecutarBotonActionPerformed
 
     private void limpiarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarBotonActionPerformed
@@ -153,17 +175,36 @@ public class EditorPanel extends javax.swing.JPanel {
     private javax.swing.JPanel consolaPanel;
     private javax.swing.JButton ejecutarBoton;
     private javax.swing.JButton limpiarBoton;
+    private javax.swing.JLabel mostrarColumnaLabel;
     private javax.swing.JPanel panelEditor;
     private javax.swing.JScrollPane scrollConsola;
     private javax.swing.JScrollPane scrollEditor;
     // End of variables declaration//GEN-END:variables
 
-       
-    
     public void pintarPanel(Component panel) {
         panelEditor.removeAll();
         panelEditor.add(panel);
         panelEditor.repaint();
         panelEditor.revalidate();
+    }
+
+    private void mostrarColumna() {
+        areaEditor.addCaretListener(e -> {
+            int caretPosition = areaEditor.getCaretPosition();
+            int fila = 0;
+            try {
+                fila = areaEditor.getLineOfOffset(caretPosition);
+            } catch (BadLocationException ex) {
+                Logger.getLogger(EditorPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            int columna = 0;
+            try {
+                columna = caretPosition - areaEditor.getLineStartOffset(fila);
+            } catch (BadLocationException ex) {
+                Logger.getLogger(EditorPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            mostrarColumnaLabel.setText("Columna: " + (columna + 1));
+        });
     }
 }

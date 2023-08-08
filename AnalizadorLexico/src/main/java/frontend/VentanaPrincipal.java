@@ -2,12 +2,9 @@ package frontend;
 
 import backend.analizador.controlador.LeerArchivoTexto;
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -47,7 +44,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         acerdaDeBoton = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(900, 700));
+        setMinimumSize(new java.awt.Dimension(1000, 700));
 
         contenedorPanel.setBackground(new java.awt.Color(255, 153, 153));
         contenedorPanel.setLayout(new java.awt.BorderLayout());
@@ -96,9 +93,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menuOpciones.add(reportesBoton);
 
         ayudaBoton.setText("Ayuda");
+        ayudaBoton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ayudaBotonMouseClicked(evt);
+            }
+        });
         menuOpciones.add(ayudaBoton);
 
         acerdaDeBoton.setText("Acerca de");
+        acerdaDeBoton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                acerdaDeBotonMouseClicked(evt);
+            }
+        });
         menuOpciones.add(acerdaDeBoton);
 
         setJMenuBar(menuOpciones);
@@ -109,8 +116,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void abrirBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirBotonActionPerformed
         LeerArchivoTexto miArchivo = new LeerArchivoTexto();
         JFileChooser chooser = new JFileChooser();
-        /*FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.CSV", "csv");
-        chooser.setFileFilter(filtro);*/
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.TXT", "txt");
+        chooser.setFileFilter(filtro);
         int seleccion = chooser.showOpenDialog(this);
 
         if (seleccion == JFileChooser.APPROVE_OPTION) {
@@ -136,6 +143,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ReportesPanel reportes = new ReportesPanel();
         pintarPanel(reportes);
     }//GEN-LAST:event_reportesBotonMouseClicked
+
+    private void ayudaBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ayudaBotonMouseClicked
+        JOptionPane.showMessageDialog(this, "Aquí va el tutorial");
+    }//GEN-LAST:event_ayudaBotonMouseClicked
+
+    private void acerdaDeBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acerdaDeBotonMouseClicked
+       // JOptionPane.showMessageDialog(this, "Lenguajes Formales y de Programación\n\nCarné: 201831260\nNombre: Michael Kristopher Marín Reyes");
+    }//GEN-LAST:event_acerdaDeBotonMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

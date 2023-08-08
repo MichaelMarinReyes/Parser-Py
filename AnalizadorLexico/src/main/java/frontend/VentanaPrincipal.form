@@ -62,11 +62,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Ayuda"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ayudaBotonMouseClicked"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="acerdaDeBoton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Acerca de"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="acerdaDeBotonMouseClicked"/>
+          </Events>
         </Menu>
       </SubComponents>
     </Menu>
@@ -74,7 +80,7 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[900, 700]"/>
+      <Dimension value="[1000, 700]"/>
     </Property>
   </Properties>
   <SyntheticProperties>
