@@ -1,0 +1,42 @@
+EJERCICIO 1
+L = {a^n b^n c^n | n >= 1}w*
+
+Validar la siguientes cadenas: aabbcc aabcc
+
+S -> abc | aSc
+
+Gramática
+1. S -> aBc
+2. S -> aSc
+3. S -> abc
+4. B -> bB
+5. B -> S
+6. B -> b
+
+1. aabbcc
+Para a n = 2 -.
+Para b n = 2  |- La expresión es válida
+Para c n = 2 -'
+
+2. aaabbbccc
+Para a n = 3 -.
+Para a n = 3  |- La expresión es válida
+Para a n = 3 -'
+
+EJERCICIO 2
+Dada la siguiente gramática dependiente del contexto:
+
+1. S -> aSb
+2. S -> X
+3. X -> bXc
+4. X -> Y
+5. Y -> cYd
+6. Y -> ε
+
+Determine si las siguientes cadenas pertenecen al lenguaje generado por esta gramática:
+abcd
+aabbcc
+aaabbbcccddd
+
+1.abcd
+
