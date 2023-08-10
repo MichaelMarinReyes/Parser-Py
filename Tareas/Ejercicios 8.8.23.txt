@@ -1,18 +1,8 @@
-EJERCICIO 1
+EJERCICIO 1.
 L = {a^n b^n c^n | n >= 1}w*
+Un lenguaje que tiene la misma cantidad de a'b, b's y c's
 
-Validar la siguientes cadenas: aabbcc aabcc
-
-S -> abc | aSc
-
-Gramática
-1. S -> aBc
-2. S -> aSc
-3. S -> abc
-4. B -> bB
-5. B -> S
-6. B -> b
-
+Validar la siguientes cadenas:
 1. aabbcc
 Para a n = 2 -.
 Para b n = 2  |- La expresión es válida
@@ -23,20 +13,68 @@ Para a n = 3 -.
 Para a n = 3  |- La expresión es válida
 Para a n = 3 -'
 
-EJERCICIO 2
+-----------------------------------------------------
+EJERCICIO 2.
 Dada la siguiente gramática dependiente del contexto:
 
 1. S -> aSb
-2. S -> X
-3. X -> bXc
-4. X -> Y
-5. Y -> cYd
-6. Y -> ε
+2. S -> abX
+3. S -> aabX
+4. S -> X
+5. X -> bXcd
+6. X -> bXc
+7. X -> Xc
+8. X -> Y
+9. Y -> cYd
+10. Y -> ε
+
+
 
 Determine si las siguientes cadenas pertenecen al lenguaje generado por esta gramática:
 abcd
+2, 8, 9, 10
+abX
+ab(Y)
+ab(cYd)
+ab(c(ε)d)
+
 aabbcc
+3, 6, 8, 10
+aabX
+aab(bXc)
+aab(b(Y)c)
+aab(b(ε)c)
+
+
 aaabbbcccddd
+1
+aSb
 
-1.abcd
 
+
+
+-----------------------------------------------------
+EJERCICIO 3.
+Considere el lenguaje:
+L = {a^ib^jc^k | i = j o j = k}
+proporcione una gramática dependiente del contexto
+
+1. S -> XX
+2. X -> aXb
+3. X -> Y
+4. Y -> bYc
+5. Y -> ε
+
+-----------------------------------------------------
+EJERCICIOS
+- Lenguaje de cadenas de la forma a^n b^n
+L = {a^n b^n | n >= 1}
+
+- El conjundo de cadenas {0^n1^n|n >= 1}
+L = {0^n 1^n | n >= 1}
+
+- Conjunto de todas las cadenas formadas por uno o más ceros seguidos del mismo número de unos
+L = {0+ 1^n | n > 0 y n es el número de ceros}
+
+- Lenguaje que siempre forman un par de paréntesis
+L = {(^n )^n | n >= 1}
