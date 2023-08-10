@@ -23,6 +23,7 @@ frontend/VentanaPrincipal.class
 backend/analizador/controlador/ControlError.class
 frontend/VentanaPrincipal$4.class
 frontend/EditorPanel$1.class
+frontend/ReportesPanel$1.class
 frontend/VentanaPrincipal$6.class
 frontend/VentanaPrincipal$1.class
 backend/analizador/controlador/LeerArchivoTexto.class

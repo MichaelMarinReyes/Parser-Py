@@ -124,7 +124,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             String textoLeido;
             textoLeido = miArchivo.abrirArchivo(chooser.getSelectedFile().getAbsolutePath());
             editor.setAreaEditor(textoLeido);
-            JOptionPane.showMessageDialog(this, "Archivo cargado");
+            //JOptionPane.showMessageDialog(this, "Archivo cargado");
         }
 
 
@@ -137,6 +137,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void editorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editorTextoMouseClicked
         this.pintarPanel(editor);
+        //this.pintarPanel(new EditorPanel());
     }//GEN-LAST:event_editorTextoMouseClicked
 
     private void reportesBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportesBotonMouseClicked

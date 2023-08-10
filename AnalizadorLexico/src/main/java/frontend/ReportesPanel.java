@@ -1,14 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package frontend;
+
+import backend.Token;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author michael
  */
 public class ReportesPanel extends javax.swing.JPanel {
+
+    private ArrayList<Token> listaToken;
 
     /**
      * Creates new form ReportesPanel
@@ -31,13 +34,18 @@ public class ReportesPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
+        tablaReportes = new javax.swing.JTable(){
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
         tablaReportes.setFont(new java.awt.Font("MesloLGL Nerd Font", 0, 13)); // NOI18N
         tablaReportes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Lexema", "Línea", "Columna"
+                "Token", "Patrón", "Lexema", "Línea", "Columna", "Ver gráfico"
             }
         ));
         jScrollPane1.setViewportView(tablaReportes);
@@ -50,4 +58,23 @@ public class ReportesPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaReportes;
     // End of variables declaration//GEN-END:variables
+
+    public void agregarDatosTabla(ArrayList<Token> tokens) {
+        this.listaToken = tokens;
+
+        String[] columnas = {"Token", "Patrón", "Lexema", "Línea", "Columna", "Ver gráfico"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, tokens.size());
+        tablaReportes.setModel(modelo);
+
+        TableModel modeloDatos = tablaReportes.getModel();
+        for (int i = 0; i < tokens.size(); i++) {
+            Token token = tokens.get(i);
+            modeloDatos.setValueAt(token.getToken(), i, 0);
+            modeloDatos.setValueAt(token.getPatron(), i, 1);
+            modeloDatos.setValueAt(token.getLexema(), i, 2);
+            modeloDatos.setValueAt(token.getLinea(), i, 3);
+            modeloDatos.setValueAt(token.getColumna(), i, 4);
+            modeloDatos.setValueAt("Click aquí para generar gráfico", i, 5);
+        }
+    }
 }

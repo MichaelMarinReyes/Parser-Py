@@ -5,11 +5,13 @@ package backend;
  * @author michael
  */
 public class Token {
+
     private String lexema;
     private int numeroToken;
-    private int fila;
+    private int linea;
     private int columna;
-    private String tipo;
+    private String token;
+    private String patron = "no implementado";
 
     public Token() {
     }
@@ -17,21 +19,29 @@ public class Token {
     public Token(String lexema, int numeroToken, int fila, int columna, String tipo) {
         this.lexema = lexema;
         this.numeroToken = numeroToken;
-        this.fila = fila;
+        this.linea = fila;
         this.columna = columna;
-        this.tipo = tipo;
+        this.token = tipo;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getToken() {
+        return token;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setToken(String tipo) {
+        this.token = tipo;
     }
 
     public String getLexema() {
         return lexema;
+    }
+
+    public String getPatron() {
+        return patron;
+    }
+
+    public void setPatron(String patron) {
+        this.patron = patron;
     }
 
     public void setLexema(String lexema) {
@@ -46,12 +56,12 @@ public class Token {
         this.numeroToken = numeroToken;
     }
 
-    public int getFila() {
-        return fila;
+    public int getLinea() {
+        return linea;
     }
 
-    public void setFila(int fila) {
-        this.fila = fila;
+    public void setLinea(int linea) {
+        this.linea = linea;
     }
 
     public int getColumna() {
@@ -64,8 +74,8 @@ public class Token {
 
     @Override
     public String toString() {
-        return "Token{" + "lexema=" + lexema + "} {numeroToken=" + numeroToken + "} {fila=" + fila + "} {columna=" + columna + "} {tipo=" + tipo + '}';
+        return "TOKEN: " + token + " PATRON: " + patron + " Lexema: " + lexema + " Linea: " + linea + " Columna: " + columna;
+        //return "Token{" + "lexema=" + lexema + "} {numeroToken=" + numeroToken + "} {linea=" + linea + "} {columna=" + columna + "} {token=" + token + '}';
     }
-    
-    
+
 }
