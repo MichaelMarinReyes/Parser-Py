@@ -12,7 +12,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
-    EditorPanel editor = new EditorPanel();
+    //EditorPanel editor = new EditorPanel();
+    EditorPanel1 editor = new EditorPanel1();
 
     /**
      * Creates new form VentanaPrincipal
@@ -38,7 +39,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         abrirBoton = new javax.swing.JMenuItem();
         guardarArchivo = new javax.swing.JMenuItem();
         editorTexto = new javax.swing.JMenu();
-        graficoBoton = new javax.swing.JMenu();
         reportesBoton = new javax.swing.JMenu();
         ayudaBoton = new javax.swing.JMenu();
         acerdaDeBoton = new javax.swing.JMenu();
@@ -75,14 +75,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         menuOpciones.add(editorTexto);
-
-        graficoBoton.setText("Generar gráfico");
-        graficoBoton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                graficoBotonMouseClicked(evt);
-            }
-        });
-        menuOpciones.add(graficoBoton);
 
         reportesBoton.setText("Reportes");
         reportesBoton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -130,11 +122,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_abrirBotonActionPerformed
 
-    private void graficoBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_graficoBotonMouseClicked
-        GenerarGrafico grafico = new GenerarGrafico();
-        pintarPanel(grafico);
-    }//GEN-LAST:event_graficoBotonMouseClicked
-
     private void editorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editorTextoMouseClicked
         this.pintarPanel(editor);
         //this.pintarPanel(new EditorPanel());
@@ -160,7 +147,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu ayudaBoton;
     private javax.swing.JPanel contenedorPanel;
     private javax.swing.JMenu editorTexto;
-    private javax.swing.JMenu graficoBoton;
     private javax.swing.JMenuItem guardarArchivo;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menuOpciones;

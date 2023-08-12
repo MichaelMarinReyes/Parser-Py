@@ -14,7 +14,7 @@ public class EditorPanel extends javax.swing.JPanel {
     private NumeroLinea numerarEditor;
     private NumeroLinea numerarConsola;
     private ReportesPanel reportes = new ReportesPanel();
-    ArrayList<Token> listaToken = new ArrayList();
+    public static ArrayList<Token> listaToken = new ArrayList();
 
     /**
      * Creates new form PruebaEditor
@@ -135,16 +135,15 @@ public class EditorPanel extends javax.swing.JPanel {
 
             for (int i = 0; i < listaToken.size(); i++) {
                 areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
-
             }
-            reportes.agregarDatosTabla(listaToken);
-            //areaConsola.setText("No se ha implementado lógica\n\nPrueba funcionamiento consola");
+            areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
         }
     }//GEN-LAST:event_ejecutarBotonActionPerformed
 
     private void limpiarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarBotonActionPerformed
         areaEditor.setText("");
         areaConsola.setText("");
+        listaToken.clear();
     }//GEN-LAST:event_limpiarBotonActionPerformed
 
 

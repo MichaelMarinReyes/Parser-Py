@@ -4,12 +4,13 @@ package frontend;
  *
  * @author michael
  */
-public class GenerarGrafico extends javax.swing.JPanel {
+public class VisualizarGrafico extends javax.swing.JFrame {
 
     /**
-     * Creates new form GenerarGrafico
+     * Creates new form VisualizarGrafico
      */
-    public GenerarGrafico() {
+    public VisualizarGrafico() {
+        this.setTitle("Gráfico");
         initComponents();
     }
 
@@ -22,21 +23,23 @@ public class GenerarGrafico extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(0, 204, 255));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 661, Short.MAX_VALUE)
+            .addGap(0, 615, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 489, Short.MAX_VALUE)
+            .addGap(0, 617, Short.MAX_VALUE)
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

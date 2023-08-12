@@ -42,6 +42,14 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="editorTextoMouseClicked"/>
           </Events>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="graficoBoton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Generar gr&#xe1;fico"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="graficoBotonMouseClicked"/>
+          </Events>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="reportesBoton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Reportes"/>

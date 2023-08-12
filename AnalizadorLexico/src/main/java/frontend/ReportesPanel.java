@@ -1,7 +1,9 @@
 package frontend;
 
 import backend.Token;
-import java.util.ArrayList;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -9,15 +11,14 @@ import javax.swing.table.TableModel;
  *
  * @author michael
  */
-public class ReportesPanel extends javax.swing.JPanel {
-
-    private ArrayList<Token> listaToken;
+public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
 
     /**
      * Creates new form ReportesPanel
      */
     public ReportesPanel() {
         initComponents();
+        actualizarTabla();
     }
 
     /**
@@ -45,7 +46,7 @@ public class ReportesPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Token", "Patrón", "Lexema", "Línea", "Columna", "Ver gráfico"
+
             }
         ));
         jScrollPane1.setViewportView(tablaReportes);
@@ -59,22 +60,58 @@ public class ReportesPanel extends javax.swing.JPanel {
     private javax.swing.JTable tablaReportes;
     // End of variables declaration//GEN-END:variables
 
-    public void agregarDatosTabla(ArrayList<Token> tokens) {
-        this.listaToken = tokens;
-
-        String[] columnas = {"Token", "Patrón", "Lexema", "Línea", "Columna", "Ver gráfico"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, tokens.size());
+    public void actualizarTabla() {
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{"No.", "Token", "Patrón", "Lexema", "Línea", "Columna", "Ver gráfico"}, EditorPanel1.listaToken.size());
+        this.tablaReportes.setDefaultRenderer(Object.class, new RenderizarTabla());
         tablaReportes.setModel(modelo);
+        tablaReportes.addMouseListener(this);
 
         TableModel modeloDatos = tablaReportes.getModel();
-        for (int i = 0; i < tokens.size(); i++) {
-            Token token = tokens.get(i);
-            modeloDatos.setValueAt(token.getToken(), i, 0);
-            modeloDatos.setValueAt(token.getPatron(), i, 1);
-            modeloDatos.setValueAt(token.getLexema(), i, 2);
-            modeloDatos.setValueAt(token.getLinea(), i, 3);
-            modeloDatos.setValueAt(token.getColumna(), i, 4);
-            modeloDatos.setValueAt("Click aquí para generar gráfico", i, 5);
+        for (int i = 0; i < EditorPanel1.listaToken.size(); i++) {
+            Token token = EditorPanel1.listaToken.get(i);
+            modeloDatos.setValueAt(String.valueOf(i + 1), i, 0);
+            modeloDatos.setValueAt(token.getToken(), i, 1);
+            modeloDatos.setValueAt(token.getPatron(), i, 2);
+            modeloDatos.setValueAt(token.getLexema(), i, 3);
+            modeloDatos.setValueAt(String.valueOf(token.getLinea()), i, 4);
+            modeloDatos.setValueAt(token.getColumna(), i, 5);
+            modeloDatos.setValueAt(new JButton("Ver Gráfico"), i, 6);
         }
     }
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        int columna = tablaReportes.columnAtPoint(me.getPoint());
+
+        if (columna == 6) {
+            VisualizarGrafico ver = new VisualizarGrafico();
+            //Dialogo ver = new Dialogo();
+            //ver.setModal(true);
+            //ver.setSize(100, 800);
+            ver.setLocationRelativeTo(this);
+            ver.setVisible(true);
+
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
