@@ -13,7 +13,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class VentanaPrincipal extends javax.swing.JFrame {
 
     //EditorPanel editor = new EditorPanel();
-    EditorPanel1 editor = new EditorPanel1();
+    EditorPanel editor = new EditorPanel();
 
     /**
      * Creates new form VentanaPrincipal
@@ -37,7 +37,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menuOpciones = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         abrirBoton = new javax.swing.JMenuItem();
-        guardarArchivo = new javax.swing.JMenuItem();
         editorTexto = new javax.swing.JMenu();
         reportesBoton = new javax.swing.JMenu();
         ayudaBoton = new javax.swing.JMenu();
@@ -62,9 +61,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(abrirBoton);
-
-        guardarArchivo.setText("Guardar como");
-        jMenu1.add(guardarArchivo);
 
         menuOpciones.add(jMenu1);
 
@@ -147,7 +143,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu ayudaBoton;
     private javax.swing.JPanel contenedorPanel;
     private javax.swing.JMenu editorTexto;
-    private javax.swing.JMenuItem guardarArchivo;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menuOpciones;
     private javax.swing.JMenu reportesBoton;

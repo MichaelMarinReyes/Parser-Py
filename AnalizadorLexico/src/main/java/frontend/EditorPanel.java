@@ -2,8 +2,19 @@ package frontend;
 
 import backend.Analizador;
 import backend.Token;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -15,6 +26,7 @@ public class EditorPanel extends javax.swing.JPanel {
     private NumeroLinea numerarConsola;
     private ReportesPanel reportes = new ReportesPanel();
     public static ArrayList<Token> listaToken = new ArrayList();
+    public static ArrayList<Error> errores = new ArrayList<>();
 
     /**
      * Creates new form PruebaEditor
@@ -27,6 +39,7 @@ public class EditorPanel extends javax.swing.JPanel {
         numerarConsola = new NumeroLinea(areaConsola);
         scrollConsola.setRowHeaderView(numerarConsola);
         mostrarColumna();
+        configurarEstiloTextoPane();
     }
 
     /**
@@ -37,44 +50,21 @@ public class EditorPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
-        scrollEditor = new javax.swing.JScrollPane();
-        areaEditor = new javax.swing.JEditorPane();
         mostrarColumnaLabel = new javax.swing.JLabel();
         limpiarBoton = new javax.swing.JButton();
         ejecutarBoton = new javax.swing.JButton();
         scrollConsola = new javax.swing.JScrollPane();
         areaConsola = new javax.swing.JEditorPane();
+        scrollEditor = new javax.swing.JScrollPane();
+        areaEditor = new javax.swing.JTextPane();
 
-        setBackground(new java.awt.Color(153, 153, 153));
+        setBackground(new java.awt.Color(255, 153, 102));
         setPreferredSize(new java.awt.Dimension(844, 590));
-        setLayout(new java.awt.GridBagLayout());
-
-        scrollEditor.setViewportView(areaEditor);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 921;
-        gridBagConstraints.ipady = 351;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(12, 32, 0, 31);
-        add(scrollEditor, gridBagConstraints);
 
         mostrarColumnaLabel.setFont(new java.awt.Font("MesloLGL Nerd Font", 0, 13)); // NOI18N
         mostrarColumnaLabel.setForeground(new java.awt.Color(0, 0, 0));
         mostrarColumnaLabel.setText("jLabel1");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 423, 0, 0);
-        add(mostrarColumnaLabel, gridBagConstraints);
 
         limpiarBoton.setBackground(new java.awt.Color(0, 102, 102));
         limpiarBoton.setFont(new java.awt.Font("MesloLGL Nerd Font", 0, 13)); // NOI18N
@@ -84,13 +74,6 @@ public class EditorPanel extends javax.swing.JPanel {
                 limpiarBotonActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(15, 101, 0, 0);
-        add(limpiarBoton, gridBagConstraints);
 
         ejecutarBoton.setBackground(new java.awt.Color(51, 255, 51));
         ejecutarBoton.setFont(new java.awt.Font("MesloLGL Nerd Font", 1, 13)); // NOI18N
@@ -101,37 +84,55 @@ public class EditorPanel extends javax.swing.JPanel {
                 ejecutarBotonActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 3;
-        gridBagConstraints.ipadx = 29;
-        gridBagConstraints.ipady = 12;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(9, 60, 0, 0);
-        add(ejecutarBoton, gridBagConstraints);
 
         scrollConsola.setViewportView(areaConsola);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 921;
-        gridBagConstraints.ipady = 126;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(18, 32, 20, 31);
-        add(scrollConsola, gridBagConstraints);
+        scrollEditor.setViewportView(areaEditor);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(423, 423, 423)
+                        .addComponent(mostrarColumnaLabel)
+                        .addGap(101, 101, 101)
+                        .addComponent(limpiarBoton)
+                        .addGap(60, 60, 60)
+                        .addComponent(ejecutarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(scrollConsola, javax.swing.GroupLayout.DEFAULT_SIZE, 898, Short.MAX_VALUE)
+                            .addComponent(scrollEditor))))
+                .addGap(31, 31, 31))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(mostrarColumnaLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(limpiarBoton))
+                    .addComponent(ejecutarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addComponent(scrollEditor, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scrollConsola, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
         if (areaEditor.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
         } else {
-            new Analizador(listaToken).analizar(areaEditor.getText());
+            new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
 
             for (int i = 0; i < listaToken.size(); i++) {
                 areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
@@ -149,7 +150,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane areaConsola;
-    private javax.swing.JEditorPane areaEditor;
+    private javax.swing.JTextPane areaEditor;
     private javax.swing.JButton ejecutarBoton;
     private javax.swing.JButton limpiarBoton;
     private javax.swing.JLabel mostrarColumnaLabel;
@@ -181,4 +182,57 @@ public class EditorPanel extends javax.swing.JPanel {
     public void setAreaEditor(String textoLeido) {
         areaEditor.setText(textoLeido);
     }
+
+    private void configurarEstiloTextoPane() {
+        StyledDocument doc = areaEditor.getStyledDocument();
+
+        doc.addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                SwingUtilities.invokeLater(this::actualizarEstiloTexto);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                SwingUtilities.invokeLater(this::actualizarEstiloTexto);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // No se usa para documentos de texto plano
+            }
+
+            public void actualizarEstiloTexto() {
+                StyledDocument doc = areaEditor.getStyledDocument();
+                String texto;
+
+                try {
+                    texto = doc.getText(0, doc.getLength());
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                    return;
+                }
+
+                // Limpiar el estilo anterior
+                doc.setCharacterAttributes(0, doc.getLength(), new SimpleAttributeSet(), true);
+
+                // Define aquí tu lógica de coloreo
+                Pattern patron = Pattern.compile("\\b(palabra_clave1|palabra_clave2|palabra_clave3)\\b");
+                Matcher matcher = patron.matcher(texto);
+
+                while (matcher.find()) {
+                    doc.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), obtenerAtributosPalabraClave(), false);
+                }
+            }
+
+        });
+    }
+
+    private AttributeSet obtenerAtributosPalabraClave() {
+        SimpleAttributeSet attr = new SimpleAttributeSet();
+        StyleConstants.setForeground(attr, Color.BLUE);
+        // Agrega más atributos de estilo según sea necesario
+        return attr;
+    }
+
 }

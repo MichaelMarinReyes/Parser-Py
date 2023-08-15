@@ -23,23 +23,31 @@ public class VisualizarGrafico extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mostarGraficoPanel = new javax.swing.JPanel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 615, Short.MAX_VALUE)
+        mostarGraficoPanel.setBackground(new java.awt.Color(51, 255, 51));
+
+        javax.swing.GroupLayout mostarGraficoPanelLayout = new javax.swing.GroupLayout(mostarGraficoPanel);
+        mostarGraficoPanel.setLayout(mostarGraficoPanelLayout);
+        mostarGraficoPanelLayout.setHorizontalGroup(
+            mostarGraficoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 727, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 617, Short.MAX_VALUE)
+        mostarGraficoPanelLayout.setVerticalGroup(
+            mostarGraficoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 581, Short.MAX_VALUE)
         );
+
+        getContentPane().add(mostarGraficoPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel mostarGraficoPanel;
     // End of variables declaration//GEN-END:variables
+
 }

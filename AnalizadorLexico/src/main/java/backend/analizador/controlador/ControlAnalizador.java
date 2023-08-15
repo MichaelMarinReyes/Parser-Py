@@ -4,7 +4,6 @@ import backend.analizador.controlador.parser.Parseable;
 import backend.analizador.controlador.parser.ParserFactory;
 import backend.analizador.controlador.scanner.Escaneable;
 import backend.analizador.controlador.scanner.ScannerFactory;
-import backend.modelos.ArbolSintactico;
 import backend.modelos.TablaSimbolo;
 
 /**
@@ -51,13 +50,6 @@ public class ControlAnalizador {
             return true;
         }
         return error.getErrors();
-    }
-
-    public ArbolSintactico getArbolSintactico() {
-        if (!isSourceLoad || !isAnalized) {
-            return null;
-        }
-        return scanner.getArbolSintactico();
     }
 
     public TablaSimbolo getTablaSimbolo() {

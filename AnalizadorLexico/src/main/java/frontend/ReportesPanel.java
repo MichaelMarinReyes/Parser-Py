@@ -61,14 +61,14 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
     // End of variables declaration//GEN-END:variables
 
     public void actualizarTabla() {
-        DefaultTableModel modelo = new DefaultTableModel(new String[]{"No.", "Token", "Patrón", "Lexema", "Línea", "Columna", "Ver gráfico"}, EditorPanel1.listaToken.size());
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{"No.", "Token", "Patrón", "Lexema", "Línea", "Columna", "Ver gráfico"}, EditorPanel.listaToken.size());
         this.tablaReportes.setDefaultRenderer(Object.class, new RenderizarTabla());
         tablaReportes.setModel(modelo);
         tablaReportes.addMouseListener(this);
 
         TableModel modeloDatos = tablaReportes.getModel();
-        for (int i = 0; i < EditorPanel1.listaToken.size(); i++) {
-            Token token = EditorPanel1.listaToken.get(i);
+        for (int i = 0; i < EditorPanel.listaToken.size(); i++) {
+            Token token = EditorPanel.listaToken.get(i);
             modeloDatos.setValueAt(String.valueOf(i + 1), i, 0);
             modeloDatos.setValueAt(token.getToken(), i, 1);
             modeloDatos.setValueAt(token.getPatron(), i, 2);
