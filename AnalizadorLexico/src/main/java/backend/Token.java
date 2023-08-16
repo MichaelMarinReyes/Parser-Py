@@ -16,12 +16,13 @@ public class Token {
     public Token() {
     }
 
-    public Token(String lexema, int numeroToken, int fila, int columna, String tipo) {
+    public Token(String lexema, int numeroToken, int fila, int columna, String tipo, String patron) {
         this.lexema = lexema;
         this.numeroToken = numeroToken;
         this.linea = fila;
         this.columna = columna;
         this.token = tipo;
+        this.patron = patron;
     }
 
     public String getToken() {

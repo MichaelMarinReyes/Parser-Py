@@ -3,10 +3,16 @@ package frontend;
 import backend.Analizador;
 import backend.Token;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -27,12 +33,14 @@ public class EditorPanel extends javax.swing.JPanel {
     private ReportesPanel reportes = new ReportesPanel();
     public static ArrayList<Token> listaToken = new ArrayList();
     public static ArrayList<Error> errores = new ArrayList<>();
+    private Image imagenDeFondo;
 
     /**
      * Creates new form PruebaEditor
      */
     public EditorPanel() {
         initComponents();
+        agregarFondo();
         mostrarColumnaLabel.setText("Columna: 1");
         numerarEditor = new NumeroLinea(areaEditor);
         scrollEditor.setRowHeaderView(numerarEditor);
@@ -50,6 +58,7 @@ public class EditorPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         mostrarColumnaLabel = new javax.swing.JLabel();
         limpiarBoton = new javax.swing.JButton();
@@ -61,19 +70,34 @@ public class EditorPanel extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 153, 102));
         setPreferredSize(new java.awt.Dimension(844, 590));
+        setLayout(new java.awt.GridBagLayout());
 
         mostrarColumnaLabel.setFont(new java.awt.Font("MesloLGL Nerd Font", 0, 13)); // NOI18N
         mostrarColumnaLabel.setForeground(new java.awt.Color(0, 0, 0));
         mostrarColumnaLabel.setText("jLabel1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 423, 0, 0);
+        add(mostrarColumnaLabel, gridBagConstraints);
 
         limpiarBoton.setBackground(new java.awt.Color(0, 102, 102));
         limpiarBoton.setFont(new java.awt.Font("MesloLGL Nerd Font", 0, 13)); // NOI18N
+        limpiarBoton.setForeground(new java.awt.Color(255, 255, 255));
         limpiarBoton.setText("Limpiar Editor");
         limpiarBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 limpiarBotonActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(15, 101, 0, 0);
+        add(limpiarBoton, gridBagConstraints);
 
         ejecutarBoton.setBackground(new java.awt.Color(51, 255, 51));
         ejecutarBoton.setFont(new java.awt.Font("MesloLGL Nerd Font", 1, 13)); // NOI18N
@@ -84,48 +108,45 @@ public class EditorPanel extends javax.swing.JPanel {
                 ejecutarBotonActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.ipadx = 29;
+        gridBagConstraints.ipady = 12;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(9, 60, 0, 0);
+        add(ejecutarBoton, gridBagConstraints);
 
         scrollConsola.setViewportView(areaConsola);
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 882;
+        gridBagConstraints.ipady = 124;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(12, 32, 7, 31);
+        add(scrollConsola, gridBagConstraints);
+
         scrollEditor.setViewportView(areaEditor);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(423, 423, 423)
-                        .addComponent(mostrarColumnaLabel)
-                        .addGap(101, 101, 101)
-                        .addComponent(limpiarBoton)
-                        .addGap(60, 60, 60)
-                        .addComponent(ejecutarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(scrollConsola, javax.swing.GroupLayout.DEFAULT_SIZE, 898, Short.MAX_VALUE)
-                            .addComponent(scrollEditor))))
-                .addGap(31, 31, 31))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(mostrarColumnaLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(limpiarBoton))
-                    .addComponent(ejecutarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
-                .addComponent(scrollEditor, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scrollConsola, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 882;
+        gridBagConstraints.ipady = 362;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 32, 0, 31);
+        add(scrollEditor, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
@@ -235,4 +256,11 @@ public class EditorPanel extends javax.swing.JPanel {
         return attr;
     }
 
+    private void agregarFondo() {
+        try {
+            imagenDeFondo = ImageIO.read(getClass().getResource("/imagenes/ImagenFondo.jpg"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }

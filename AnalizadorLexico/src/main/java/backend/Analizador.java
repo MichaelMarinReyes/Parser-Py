@@ -1,5 +1,6 @@
 package backend;
 
+import backend.identificadores.PalabraReservada;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Analizador {
 
-    ArrayList<Token> listaToken = new ArrayList();
+    private ArrayList<Token> listaToken;
 
     public Analizador(ArrayList<Token> listaToken) {
         this.listaToken = listaToken;
@@ -20,6 +21,7 @@ public class Analizador {
         int numeroToken = 0;
         String lexema = "";
         String tipo = "";
+        String patron = "";
         String[] lineas = separarPalabras(cadena, '\n');
 
         for (int i = 0; i < lineas.length; i++) {
@@ -45,7 +47,8 @@ public class Analizador {
                             estado = 1;
                         } else {
                             numeroToken = 1;
-                            tipo = "Cadena";
+                            tipo = "Palabra Reservada";
+                            patron = "NO implementado";
                             estado = 0;
                         }
                         break;
@@ -56,8 +59,73 @@ public class Analizador {
                         } else {
                             numeroToken = 2;
                             tipo = "Entero";
+                            patron = "[0-9]+";
                             estado = 0;
                         }
+                        break;
+                    case 3:
+                        lexema = lexema + lineas[i].charAt(j);
+                        numeroToken = 23;
+                        tipo = "Asignación";
+                        patron = "[=]+";
+                        estado = 0;
+                        break;
+                    case 4:
+                        lexema = lexema + lineas[i].charAt(j);
+                        numeroToken = 4;
+                        tipo = "Suma";
+                        patron = "[+]+";
+                        estado = 0;
+                        break;
+                    case 5:
+                        lexema = lexema + lineas[i].charAt(j);
+                        numeroToken = 5;
+                        tipo = "Resta";
+                        patron = "[-]+";
+                        estado = 0;
+                        break;
+                    case 6:
+                        lexema = lexema + lineas[i].charAt(j);
+                        numeroToken = 6;
+                        tipo = "Multiplicación";
+                        patron = "[*]+";
+                        estado = 0;
+                        break;
+                    case 7:
+                        lexema = lexema + lineas[i].charAt(j);
+                        numeroToken = 7;
+                        tipo = "División";
+                        patron = "[/ | //]+";
+
+                        estado = 0;
+                        break;
+                    case 8:
+                        lexema = lexema + lineas[i].charAt(j);
+                        numeroToken = 8;
+                        tipo = "Módulo";
+                        patron = "[%]+";
+                        estado = 0;
+                        break;
+                    case 9:
+                        lexema = lexema + lineas[i].charAt(j);
+                        numeroToken = 9;
+                        tipo = "Menor que";
+                        patron = "[<]+";
+                        estado = 0;
+                        break;
+                    case 10:
+                        lexema = lexema + lineas[i].charAt(j);
+                        numeroToken = 10;
+                        tipo = "Mayor que";
+                        patron = "[>]+";
+                        estado = 0;
+                        break;
+                    case 11:
+                        lexema = lexema + lineas[i].charAt(j);
+                        numeroToken = 11;
+                        tipo = "Comentario";
+                        patron = "[#]+";
+                        estado = 0;
                         break;
                     case 100:
                         estado = -2;
@@ -73,7 +141,7 @@ public class Analizador {
                 }
 
                 if (estado == 0) {
-                    listaToken.add(new Token(lexema, numeroToken, i + 1, j + 1, tipo));
+                    listaToken.add(new Token(lexema, numeroToken, i + 1, j + 1, tipo, patron));
                     lexema = "";
                 }
 
@@ -89,6 +157,24 @@ public class Analizador {
             return 1;
         } else if (numero > 47 && numero < 58) {
             return 2;
+        } else if (numero == 61) {
+            return 3;
+        } else if (numero == 43) {
+            return 4;
+        } else if (numero == 45) {
+            return 5;
+        } else if (numero == 42) {
+            return 6;
+        } else if (numero == 47) {
+            return 7;
+        } else if (numero == 37) {
+            return 8;
+        } else if (numero == 60) {
+            return 9;
+        } else if (numero == 62) {
+            return 10;
+        } else if (numero == 35) {
+            return 11;
         } else if (numero == 32 || numero == 13 || numero == 9) {
             return 100;
         } else {
