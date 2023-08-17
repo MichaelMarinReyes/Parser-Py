@@ -1,0 +1,4 @@
+digraph G {
+  label=""";
+  // ... agregar más definiciones de nodos y relaciones aquí
+}

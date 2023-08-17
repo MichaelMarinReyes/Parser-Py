@@ -1,7 +1,9 @@
 package backend;
 
-import backend.identificadores.PalabraReservada;
+import backend.identificadores.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -9,12 +11,150 @@ import java.util.ArrayList;
  */
 public class Analizador {
 
+    private Map<String, TokenEnum> diccionarioTipo;
+    private Map<String, AritmeticosEnum> diccionarioAritmetico;
+    private Map<String, ComparacionEnum> diccionarioComparacion;
+    private Map<String, LogicoEnum> diccionarioLogico;
+    private Map<String, PalabraClaveEnum> diccionarioPalabraClave;
+    private Map<String, OtroEnum> diccionarioOtros;
     private ArrayList<Token> listaToken;
+    private String buffer;
+    // private List<Token> listasToken;
 
     public Analizador(ArrayList<Token> listaToken) {
         this.listaToken = listaToken;
+        diccionarioAritmeticos();
+        diccionarioComparacion();
+        diccionarioOtros();
+        diccionariosLogico();
+        diccionarioPalabraClave();
     }
 
+    private void diccionarioAritmeticos() {
+        diccionarioAritmetico = new HashMap<>();
+        this.diccionarioAritmetico.put("+", AritmeticosEnum.SUMA);
+        this.diccionarioAritmetico.put("-", AritmeticosEnum.RESTA);
+        this.diccionarioAritmetico.put("**", AritmeticosEnum.EXPONENTE);
+        this.diccionarioAritmetico.put("/", AritmeticosEnum.DIVISION1);
+        this.diccionarioAritmetico.put("//", AritmeticosEnum.DIVISION2);
+        this.diccionarioAritmetico.put("%", AritmeticosEnum.MODULO);
+        this.diccionarioAritmetico.put("*", AritmeticosEnum.MULTIPLICACION);
+    }
+
+    private void diccionarioComparacion() {
+        diccionarioComparacion = new HashMap<>();
+        this.diccionarioComparacion.put("==", ComparacionEnum.IGUAL);
+        this.diccionarioComparacion.put("=", ComparacionEnum.ASIGNACION);
+        this.diccionarioComparacion.put("!=", ComparacionEnum.DIFERENTE);
+        this.diccionarioComparacion.put(">", ComparacionEnum.MAYOR_QUE);
+        this.diccionarioComparacion.put("<", ComparacionEnum.MENOR_QUE);
+        this.diccionarioComparacion.put(">=", ComparacionEnum.MAYOR_IGUAL_QUE);
+        this.diccionarioComparacion.put("<=", ComparacionEnum.MENOR_IGUAL_QUE);
+    }
+
+    private void diccionariosLogico() {
+        diccionarioLogico = new HashMap<>();
+        this.diccionarioLogico.put("and", LogicoEnum.AND);
+        this.diccionarioLogico.put("or", LogicoEnum.OR);
+        this.diccionarioLogico.put("not", LogicoEnum.NOT);
+    }
+
+    private void diccionarioPalabraClave() {
+        diccionarioPalabraClave = new HashMap<>();
+        this.diccionarioPalabraClave.put("as", PalabraClaveEnum.AS);
+        this.diccionarioPalabraClave.put("assert", PalabraClaveEnum.ASSERT);
+        this.diccionarioPalabraClave.put("break", PalabraClaveEnum.BREAK);
+        this.diccionarioPalabraClave.put("class", PalabraClaveEnum.CLASS);
+        this.diccionarioPalabraClave.put("continue", PalabraClaveEnum.CONTINUE);
+        this.diccionarioPalabraClave.put("def", PalabraClaveEnum.DEF);
+        this.diccionarioPalabraClave.put("del", PalabraClaveEnum.DEL);
+        this.diccionarioPalabraClave.put("elif", PalabraClaveEnum.ELIF);
+        this.diccionarioPalabraClave.put("else", PalabraClaveEnum.ELSE);
+        this.diccionarioPalabraClave.put("except", PalabraClaveEnum.EXCEPT);
+        this.diccionarioPalabraClave.put("False", PalabraClaveEnum.FALSE);
+        this.diccionarioPalabraClave.put("finally", PalabraClaveEnum.FINALLY);
+        this.diccionarioPalabraClave.put("for", PalabraClaveEnum.FOR);
+        this.diccionarioPalabraClave.put("global", PalabraClaveEnum.GLOBAL);
+        this.diccionarioPalabraClave.put("if", PalabraClaveEnum.IF);
+        this.diccionarioPalabraClave.put("import", PalabraClaveEnum.IMPORT);
+        this.diccionarioPalabraClave.put("in", PalabraClaveEnum.IN);
+        this.diccionarioPalabraClave.put("is", PalabraClaveEnum.IS);
+        this.diccionarioPalabraClave.put("lambda", PalabraClaveEnum.LAMBDA);
+        this.diccionarioPalabraClave.put("None", PalabraClaveEnum.NONE);
+        this.diccionarioPalabraClave.put("nonlocal", PalabraClaveEnum.NONLOCAL);
+        this.diccionarioPalabraClave.put("pass", PalabraClaveEnum.PASS);
+        this.diccionarioPalabraClave.put("raise", PalabraClaveEnum.RAISE);
+        this.diccionarioPalabraClave.put("return", PalabraClaveEnum.RETURN);
+        this.diccionarioPalabraClave.put("True", PalabraClaveEnum.TRUE);
+        this.diccionarioPalabraClave.put("try", PalabraClaveEnum.TRY);
+        this.diccionarioPalabraClave.put("while", PalabraClaveEnum.WHILE);
+        this.diccionarioPalabraClave.put("with", PalabraClaveEnum.WITH);
+        this.diccionarioPalabraClave.put("yeald", PalabraClaveEnum.YIELD);
+    }
+
+    private void diccionarioOtros() {
+        diccionarioOtros = new HashMap<>();
+        this.diccionarioOtros.put("12345", OtroEnum.ID);
+        this.diccionarioOtros.put("12345", OtroEnum.CADENA);
+        this.diccionarioOtros.put("12345", OtroEnum.COMA);
+        this.diccionarioOtros.put("12345", OtroEnum.COMENTARIO);
+        this.diccionarioOtros.put("12345", OtroEnum.CORCHETE_DE);
+        this.diccionarioOtros.put("12345", OtroEnum.CORCHETE_IZ);
+        this.diccionarioOtros.put("12345", OtroEnum.DECIMAL);
+        this.diccionarioOtros.put("12345", OtroEnum.DOS_PUNTOS);
+        this.diccionarioOtros.put("12345", OtroEnum.ENTERO);
+        this.diccionarioOtros.put("12345", OtroEnum.LLAVE_DE);
+        this.diccionarioOtros.put("12345", OtroEnum.LLAVE_IZ);
+        this.diccionarioOtros.put("12345", OtroEnum.PARENTESIS_DE);
+        this.diccionarioOtros.put("12345", OtroEnum.PARENTESIS_IZ);
+        this.diccionarioOtros.put("12345", OtroEnum.PUNTO_COMA);
+    }
+
+    /*
+    //DECKARAR EL ALFABETO
+    public void analizador2() {
+        this.diccionario = new HashMap<>();
+        this.listasToken = new List();
+        this.diccionario.put("def", TokenEnum.PALABRA_RESERVADA);
+    }
+
+    public void buscarCoincidencias(String cadena) {
+        char[] entradaChar = cadena.toCharArray();
+        int lineas = 0;
+        int columnas = 0;
+
+        for (char letra : entradaChar) {
+            switch (letra) {
+                case ' ':
+                    if (this.diccionario.containsKey(buffer)) {
+                        Token token = new Token(buffer, 1, lineas, columnas, this.diccionario.containsValue(this), "asdf");
+                        this.listasToken.add(token);
+                        buffer = "";
+                    }
+                    break;
+                case '\n':
+                    columnas = 1;
+                    break;
+                case '(':
+                    
+                    break;
+                case ')':
+
+                    break;
+                case '\"':
+
+                    break;
+                default:
+                    buffer += letra;
+            }
+        }
+    }
+
+    private void espacio(String buffer) {
+        if (!buffer.isBlank()) {
+
+        }
+    }*/
     public void analizar(String cadena) {
         int estado = 0;
         int decimal = 0;

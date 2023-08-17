@@ -1,6 +1,6 @@
 package frontend;
 
-import backend.analizador.controlador.LeerArchivoTexto;
+import backend.LeerArchivoTexto;
 import java.awt.Component;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;

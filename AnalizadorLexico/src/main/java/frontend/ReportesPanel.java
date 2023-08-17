@@ -1,5 +1,6 @@
 package frontend;
 
+import frontend.graphviz.VisualizarGrafico;
 import backend.Token;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -88,6 +89,9 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
             //Dialogo ver = new Dialogo();
             //ver.setModal(true);
             //ver.setSize(100, 800);
+            ver.obtenerLexema(EditorPanel.listaToken.get(tablaReportes.getSelectedRow()).getLexema());
+            ver.setTitle("Gráfico-" + EditorPanel.listaToken.get(tablaReportes.getSelectedRow()).getLexema());
+            ver.setSize(999, 438);
             ver.setLocationRelativeTo(this);
             ver.setVisible(true);
 
