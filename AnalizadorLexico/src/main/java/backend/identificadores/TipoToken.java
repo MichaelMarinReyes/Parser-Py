@@ -13,6 +13,7 @@ public enum TipoToken {
     PALABRA_RESERVADA,
     CONSTANTE,
     COMENTARIO,
+    CADENA,
     OTROS_TOKENS,
     ERROR;
 }
