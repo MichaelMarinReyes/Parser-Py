@@ -153,7 +153,8 @@ public class EditorPanel extends javax.swing.JPanel {
         if (areaEditor.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
         } else {
-            new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
+            //new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
+            new Analizador(listaToken).analizar2(areaEditor.getText() + "\n");
 
             for (int i = 0; i < listaToken.size(); i++) {
                 areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());

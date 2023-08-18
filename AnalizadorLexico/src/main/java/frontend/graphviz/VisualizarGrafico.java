@@ -45,15 +45,14 @@ public class VisualizarGrafico extends javax.swing.JFrame {
 
             Utils.writeStringToFile(dotCode, dotFile.getAbsolutePath());
 
-            // Ejecutar Graphviz para generar la imagen
             ProcessBuilder processBuilder = new ProcessBuilder("dot", "-Tpng", dotFile.getAbsolutePath(), "-o", imageFile.getAbsolutePath());
             Process process = processBuilder.start();
 
             int exitCode = process.waitFor();
 
             if (exitCode == 0) {
-                // Mostrar la imagen en el JLabel
                 labelGrafico.setIcon(new javax.swing.ImageIcon(imageFile.getAbsolutePath()));
+                this.setSize(labelGrafico.getIcon().getIconWidth(), labelGrafico.getIcon().getIconHeight());
                 labelGrafico.setPreferredSize(new Dimension(400, 400));
                 pack();
             } else {

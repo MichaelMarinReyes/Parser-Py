@@ -1,12 +1,10 @@
 frontend/RenderizarTabla.class
-frontend/Dialogo$1.class
 backend/LeerArchivoTexto.class
 backend/Analizador.class
 frontend/VentanaPrincipal$3.class
 backend/Main.class
 frontend/Produccion.class
 frontend/EditorPanel$2.class
-frontend/Dialogo.class
 frontend/NumeroLinea.class
 frontend/NumeroLinea$1.class
 backend/Token.class
@@ -18,6 +16,7 @@ backend/identificadores/OtroEnum.class
 frontend/graphviz/GraphvizUtil.class
 frontend/ReportesPanel.class
 frontend/graphviz/VisualizarGrafico.class
+backend/identificadores/TipoToken.class
 frontend/VentanaPrincipal.class
 backend/identificadores/AritmeticosEnum.class
 frontend/VentanaPrincipal$4.class
@@ -25,7 +24,6 @@ frontend/EditorPanel$1.class
 backend/identificadores/ComparacionEnum.class
 frontend/ReportesPanel$1.class
 frontend/graphviz/VisualizarGrafico$Utils.class
-backend/identificadores/TokenEnum.class
 frontend/VentanaPrincipal$1.class
 backend/identificadores/PalabraClaveEnum.class
 backend/identificadores/LogicoEnum.class

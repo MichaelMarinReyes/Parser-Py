@@ -7,7 +7,6 @@ package backend;
 public class Token {
 
     private String lexema;
-    private int numeroToken;
     private int linea;
     private int columna;
     private String token;
@@ -16,13 +15,12 @@ public class Token {
     public Token() {
     }
 
-    public Token(String lexema, int numeroToken, int fila, int columna, String tipo, String patron) {
-        this.lexema = lexema;
-        this.numeroToken = numeroToken;
-        this.linea = fila;
-        this.columna = columna;
-        this.token = tipo;
+    public Token (String token, String patron, String lexema, int linea, int columna) {
+        this.token = token;
         this.patron = patron;
+        this.lexema = lexema;
+        this.linea = linea;
+        this.columna = columna;
     }
 
     public String getToken() {
@@ -47,14 +45,6 @@ public class Token {
 
     public void setLexema(String lexema) {
         this.lexema = lexema;
-    }
-
-    public int getNumeroToken() {
-        return numeroToken;
-    }
-
-    public void setNumeroToken(int numeroToken) {
-        this.numeroToken = numeroToken;
     }
 
     public int getLinea() {
