@@ -19,13 +19,108 @@ public class Analizador {
         this.listaToken = listaToken;
         iniciarDiccionarios();
     }
-
+    
     public void analizar(String cadena) {
         String buffer = "";
         char[] entradaChar = cadena.toCharArray();
         int linea = 1;
         int columna = 1;
 
+        for (char letra : entradaChar) {
+            switch (letra) {
+                case ' ':
+                case '\t': // Agregamos tabulación como separador
+                    if (!buffer.isEmpty()) {
+                        crearToken(buffer, linea, columna);
+                        buffer = "";
+                    }
+                    columna++;
+                    break;
+                case '\n':
+                    if (!buffer.isEmpty()) {
+                        crearToken(buffer, linea, columna);
+                        buffer = "";
+                    }
+                    linea++;
+                    columna = 1;
+                    break;
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                case '%':
+                    if (!buffer.isEmpty()) {
+                        crearToken(buffer, linea, columna);
+                        buffer = "";
+                    }
+                    crearToken(String.valueOf(letra), linea, columna);
+                    columna++;
+                    break;
+                case '=':
+                case '>':
+                case '<':
+                case '!':
+                    if (!buffer.isEmpty()) {
+                        crearToken(buffer, linea, columna);
+                        buffer = "";
+                    }
+                    buffer += letra;
+                    columna++;
+                    break;
+                case '&':
+                    if (!buffer.isEmpty()) {
+                        crearToken(buffer, linea, columna);
+                        buffer = "";
+                    }
+                    if (entradaChar[columna] == '&') {
+                        buffer = "&&";
+                        crearToken(buffer, linea, columna);
+                        buffer = "";
+                        columna++;
+                    }
+                    break;
+                case '|':
+                    if (!buffer.isEmpty()) {
+                        crearToken(buffer, linea, columna);
+                        buffer = "";
+                    }
+                    if (entradaChar[columna] == '|') {
+                        buffer = "||";
+                        crearToken(buffer, linea, columna);
+                        buffer = "";
+                        columna++;
+                    }
+                    break;
+                case '(':
+                case ')':
+                case '{':
+                case '}':
+                case '[':
+                case ']':
+                case ',':
+                case ';':
+                case ':':
+                case '#':
+                    if (!buffer.isEmpty()) {
+                        crearToken(buffer, linea, columna);
+                        buffer = "";
+                    }
+                    crearToken(String.valueOf(letra), linea, columna);
+                    columna++;
+                    break;
+                default:
+                    buffer += letra;
+                    columna++;
+            }
+        }
+    }
+/*
+    public void analizar(String cadena) {
+        String buffer = "";
+        char[] entradaChar = cadena.toCharArray();
+        int linea = 1;
+        int columna = 1;
+        System.out.println(buffer);
         for (char letra : entradaChar) {
             switch (letra) {
                 case ' ':
@@ -48,16 +143,48 @@ public class Analizador {
                     columna++;
             }
         }
-    }
+    }*/
 
     private void crearToken(String lexema, int linea, int columna) {
-        //cadenaTemp = lexema;
-        if (diccionarioTipo.containsKey(lexema)) {
+        // Reconocer IDs, enteros, decimales y cadenas
+        if (esNumero(lexema)) {
+            if (lexema.contains(".")) {
+                listaToken.add(new Token(TipoToken.DECIMAL.toString(), lexema, linea, columna));
+            } else {
+                listaToken.add(new Token(TipoToken.ENTERO.toString(), lexema, linea, columna));
+            }
+        } else if (esCadena(lexema)) {
+            listaToken.add(new Token(TipoToken.CADENA.toString(), lexema, linea, columna));
+        } else if (esID(lexema)) {
+            listaToken.add(new Token(TipoToken.ID.toString(), lexema, linea, columna));
+        } else if (diccionarioTipo.containsKey(lexema)) {
             TipoToken tipoToken = diccionarioTipo.get(lexema);
             listaToken.add(new Token(tipoToken.toString(), lexema, linea, columna));
         } else {
-            listaToken.add(new Token("OTROS_TOKENS", lexema, linea, columna));
+            listaToken.add(new Token(TipoToken.OTROS_TOKENS.toString(), lexema, linea, columna));
         }
+    }
+    
+    private boolean esNumero(String lexema) {
+        try {
+            Integer.parseInt(lexema);
+            return true;
+        } catch (NumberFormatException e1) {
+            try {
+                Double.parseDouble(lexema);
+                return true;
+            } catch (NumberFormatException e2) {
+                return false;
+            }
+        }
+    }
+    
+    private boolean esCadena(String lexema) {
+        return (lexema.startsWith("\"") && lexema.endsWith("\"")) ||
+               (lexema.startsWith("'") && lexema.endsWith("'"));
+    }
+     private boolean esID(String lexema) {
+        return lexema.matches("[a-zA-Z_][a-zA-Z0-9_]*");
     }
 
     private void iniciarDiccionarios() {
@@ -127,40 +254,5 @@ public class Analizador {
         this.diccionarioTipo.put("\'", TipoToken.OTROS_TOKENS);
         this.diccionarioTipo.put("\"", TipoToken.OTROS_TOKENS);
         this.diccionarioTipo.put("_", TipoToken.OTROS_TOKENS);
-
-        /*
-        System.out.println(reconocerCadenas(cadenaTemp));
-        
-        if (this.reconocerCadenas(cadenaTemp).equals("CADENA")) {
-            this.diccionarioTipo.put("CADENA", TipoToken.CADENA);
-        } else if (this.reconocerCadenas(cadenaTemp).equals("ENTERO")) {
-            this.diccionarioTipo.put("ENTERO", TipoToken.ERROR);
-        } else if (this.reconocerCadenas(cadenaTemp).equals("DECIMAL")) {
-            this.diccionarioTipo.put("DECIMAL", TipoToken.CADENA);
-        } else {
-            this.diccionarioTipo.put("ERROR", TipoToken.ERROR);
-        }*/
-    }
-
-    private String reconocerCadenas(String cadena) {
-        char[] string = cadena.toCharArray();
-        String inicialPalabra = String.valueOf(string[0]);
-        String ultimaLetra = String.valueOf(string[string.length - 1]);
-
-        try {
-
-            if (inicialPalabra.equals("\"") && ultimaLetra.equals("\n")) {
-                return "CADENA";
-            } else if (!inicialPalabra.equals("\"") || !ultimaLetra.equals("\n")) {
-                return "ERROR";
-            } else if (Integer.valueOf(cadena) instanceof Integer) {
-                return "ENTERO";
-            } else if (Double.valueOf(cadena) instanceof Double) {
-                return "DECIMAL";
-            }
-            return "ERROR";
-        } catch (Exception e) {
-            return "ERROR";
-        }
     }
 }

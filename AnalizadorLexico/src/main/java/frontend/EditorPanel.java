@@ -164,13 +164,13 @@ public class EditorPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
         } else {
             new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
-
+/*
             StyledDocument doc = areaEditor.getStyledDocument();
-            String nuevoTexto = "";  // Paso 1: Variable para almacenar el nuevo texto
+            String nuevoTexto = "";  // Paso 1: Variable para almacenar el nuevo texto*/
 
             for (int i = 0; i < listaToken.size(); i++) {
                 areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
-
+/*
                 Style style = doc.addStyle(listaToken.get(i).getToken(), null);
                 StyleConstants.setForeground(style, obtenerColorToken(listaToken.get(i).getToken()));
 
@@ -179,11 +179,11 @@ public class EditorPanel extends javax.swing.JPanel {
                     nuevoTexto += listaToken.get(i).getLexema();  // Paso 2: Agregar al nuevo texto
                 } catch (BadLocationException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
 
             // Reemplazar el contenido anterior del área de editor con el nuevo texto
-            areaEditor.setText(nuevoTexto);
+            //areaEditor.setText(nuevoTexto);
 
             areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
         }

@@ -14,6 +14,9 @@ public enum TipoToken {
     CONSTANTE,
     COMENTARIO,
     CADENA,
+    ENTERO,
+    DECIMAL,
+    ID,
     OTROS_TOKENS,
     ERROR;
 }
