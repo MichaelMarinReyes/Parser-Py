@@ -20,7 +20,7 @@ public class Analizador {
         iniciarDiccionarios();
     }
 
-    public void analizar2(String cadena) {
+    public void analizar(String cadena) {
         String buffer = "";
         char[] entradaChar = cadena.toCharArray();
         int linea = 1;
@@ -54,9 +54,9 @@ public class Analizador {
         //cadenaTemp = lexema;
         if (diccionarioTipo.containsKey(lexema)) {
             TipoToken tipoToken = diccionarioTipo.get(lexema);
-            listaToken.add(new Token(tipoToken.toString(), lexema, lexema, linea, columna));
+            listaToken.add(new Token(tipoToken.toString(), lexema, linea, columna));
         } else {
-            listaToken.add(new Token("OTROS_TOKENS", lexema, lexema, linea, columna));
+            listaToken.add(new Token("OTROS_TOKENS", lexema, linea, columna));
         }
     }
 
@@ -127,7 +127,10 @@ public class Analizador {
         this.diccionarioTipo.put("\'", TipoToken.OTROS_TOKENS);
         this.diccionarioTipo.put("\"", TipoToken.OTROS_TOKENS);
         this.diccionarioTipo.put("_", TipoToken.OTROS_TOKENS);
-/*
+
+        /*
+        System.out.println(reconocerCadenas(cadenaTemp));
+        
         if (this.reconocerCadenas(cadenaTemp).equals("CADENA")) {
             this.diccionarioTipo.put("CADENA", TipoToken.CADENA);
         } else if (this.reconocerCadenas(cadenaTemp).equals("ENTERO")) {
@@ -141,13 +144,23 @@ public class Analizador {
 
     private String reconocerCadenas(String cadena) {
         char[] string = cadena.toCharArray();
-        if (string[0] == '\"' && string[string.length] == '\"') {
-            return "CADENA";
-        } else if (Integer.valueOf(cadena) instanceof Integer) {
-            return "ENTERO";
-        } else if (Double.valueOf(cadena) instanceof Double) {
-            return "DECIMAL";
+        String inicialPalabra = String.valueOf(string[0]);
+        String ultimaLetra = String.valueOf(string[string.length - 1]);
+
+        try {
+
+            if (inicialPalabra.equals("\"") && ultimaLetra.equals("\n")) {
+                return "CADENA";
+            } else if (!inicialPalabra.equals("\"") || !ultimaLetra.equals("\n")) {
+                return "ERROR";
+            } else if (Integer.valueOf(cadena) instanceof Integer) {
+                return "ENTERO";
+            } else if (Double.valueOf(cadena) instanceof Double) {
+                return "DECIMAL";
+            }
+            return "ERROR";
+        } catch (Exception e) {
+            return "ERROR";
         }
-        return "ERROR";
     }
 }

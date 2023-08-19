@@ -20,7 +20,6 @@ public class VisualizarGrafico extends javax.swing.JFrame {
     }
 
     public void obtenerLexema(String lexema) {
-        // Crear el código DOT para el diagrama
         String dotCode = "digraph G {\n";
         dotCode += "rankdir=LR;";
         dotCode += "node [shape=oval];\n";
@@ -37,7 +36,6 @@ public class VisualizarGrafico extends javax.swing.JFrame {
 
         dotCode += "}";
 
-        // Generar el archivo DOT
         try {
             File dotFile = File.createTempFile("graph", ".dot");
             dotFile.deleteOnExit();

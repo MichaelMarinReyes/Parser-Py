@@ -2,23 +2,12 @@ package frontend;
 
 import backend.Analizador;
 import backend.Token;
+import backend.identificadores.TipoToken;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
@@ -33,21 +22,18 @@ public class EditorPanel extends javax.swing.JPanel {
     private ReportesPanel reportes = new ReportesPanel();
     public static ArrayList<Token> listaToken = new ArrayList();
     public static ArrayList<Error> errores = new ArrayList<>();
-    private Image imagenDeFondo;
 
     /**
      * Creates new form PruebaEditor
      */
     public EditorPanel() {
         initComponents();
-        agregarFondo();
         mostrarColumnaLabel.setText("Columna: 1");
         numerarEditor = new NumeroLinea(areaEditor);
         scrollEditor.setRowHeaderView(numerarEditor);
         numerarConsola = new NumeroLinea(areaConsola);
         scrollConsola.setRowHeaderView(numerarConsola);
         mostrarColumna();
-        configurarEstiloTextoPane();
     }
 
     /**
@@ -150,15 +136,55 @@ public class EditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
-        if (areaEditor.getText().length() == 0) {
+        /*if (areaEditor.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
         } else {
-            //new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
-            new Analizador(listaToken).analizar2(areaEditor.getText() + "\n");
+            new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
+
+            StyledDocument doc = areaEditor.getStyledDocument();
+            areaEditor.setText(""); // Limpiar el área de edición
 
             for (int i = 0; i < listaToken.size(); i++) {
                 areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
+
+                Style style = doc.addStyle(listaToken.get(i).getToken(), null);
+                StyleConstants.setForeground(style, obtenerColorToken(listaToken.get(i).getToken()));
+
+                try {
+                    doc.insertString(doc.getLength(), listaToken.get(i).getLexema(), style);
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
             }
+
+            areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
+        }*/
+
+        if (areaEditor.getText().length() == 0) {
+            JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
+        } else {
+            new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
+
+            StyledDocument doc = areaEditor.getStyledDocument();
+            String nuevoTexto = "";  // Paso 1: Variable para almacenar el nuevo texto
+
+            for (int i = 0; i < listaToken.size(); i++) {
+                areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
+
+                Style style = doc.addStyle(listaToken.get(i).getToken(), null);
+                StyleConstants.setForeground(style, obtenerColorToken(listaToken.get(i).getToken()));
+
+                try {
+                    doc.insertString(doc.getLength(), listaToken.get(i).getLexema(), style);
+                    nuevoTexto += listaToken.get(i).getLexema();  // Paso 2: Agregar al nuevo texto
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // Reemplazar el contenido anterior del área de editor con el nuevo texto
+            areaEditor.setText(nuevoTexto);
+
             areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
         }
     }//GEN-LAST:event_ejecutarBotonActionPerformed
@@ -205,63 +231,18 @@ public class EditorPanel extends javax.swing.JPanel {
         areaEditor.setText(textoLeido);
     }
 
-    private void configurarEstiloTextoPane() {
-        StyledDocument doc = areaEditor.getStyledDocument();
-
-        doc.addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                SwingUtilities.invokeLater(this::actualizarEstiloTexto);
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                SwingUtilities.invokeLater(this::actualizarEstiloTexto);
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                // No se usa para documentos de texto plano
-            }
-
-            public void actualizarEstiloTexto() {
-                StyledDocument doc = areaEditor.getStyledDocument();
-                String texto;
-
-                try {
-                    texto = doc.getText(0, doc.getLength());
-                } catch (BadLocationException e) {
-                    e.printStackTrace();
-                    return;
-                }
-
-                // Limpiar el estilo anterior
-                doc.setCharacterAttributes(0, doc.getLength(), new SimpleAttributeSet(), true);
-
-                // Define aquí tu lógica de coloreo
-                Pattern patron = Pattern.compile("\\b(palabra_clave1|palabra_clave2|palabra_clave3)\\b");
-                Matcher matcher = patron.matcher(texto);
-
-                while (matcher.find()) {
-                    doc.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), obtenerAtributosPalabraClave(), false);
-                }
-            }
-
-        });
-    }
-
-    private AttributeSet obtenerAtributosPalabraClave() {
-        SimpleAttributeSet attr = new SimpleAttributeSet();
-        StyleConstants.setForeground(attr, Color.BLUE);
-        // Agrega más atributos de estilo según sea necesario
-        return attr;
-    }
-
-    private void agregarFondo() {
-        try {
-            imagenDeFondo = ImageIO.read(getClass().getResource("/imagenes/ImagenFondo.jpg"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    private Color obtenerColorToken(String tipoToken) {
+        System.out.println(tipoToken);
+        if (tipoToken.equals(TipoToken.ARITMETICO) || tipoToken.equals(TipoToken.COMPARACION) || tipoToken.equals(TipoToken.LOGICO) || tipoToken.equals(TipoToken.ASIGNACION)) {
+            return Color.cyan;
+        } else if (tipoToken.equals(TipoToken.PALABRA_RESERVADA)) {
+            return Color.MAGENTA;
+        } else if (tipoToken.equals(TipoToken.COMENTARIO)) {
+            return Color.gray;
+        } else if (tipoToken.equals(TipoToken.OTROS_TOKENS)) {
+            return Color.GREEN;
+        } else {
+            return Color.red;
         }
     }
 }

@@ -1,5 +1,7 @@
 package backend;
 
+import backend.identificadores.TipoToken;
+
 /**
  *
  * @author michael
@@ -15,10 +17,10 @@ public class Token {
     public Token() {
     }
 
-    public Token (String token, String patron, String lexema, int linea, int columna) {
+    public Token(String token, String lexema, int linea, int columna) {
         this.token = token;
-        this.patron = patron;
         this.lexema = lexema;
+        this.patron = this.definirPatron(token);
         this.linea = linea;
         this.columna = columna;
     }
@@ -61,6 +63,30 @@ public class Token {
 
     public void setColumna(int columna) {
         this.columna = columna;
+    }
+
+    private String definirPatron(String token) {
+        if (token.equals(TipoToken.ARITMETICO)) {
+            return lexema;
+        } else if (token.equals(TipoToken.COMPARACION)) {
+            return lexema;
+        } else if (token.equals(TipoToken.LOGICO)) {
+            return lexema;
+        } else if (token.equals(TipoToken.ASIGNACION)) {
+            return "(=)";
+        } else if (token.equals(TipoToken.PALABRA_RESERVADA)) {
+            return lexema;
+        } else if (token.equals(TipoToken.CONSTANTE)) {
+            return "";
+        } else if (token.equals(TipoToken.COMENTARIO)) {
+            return "(# ([a-z]*[0-9]*) | #([A-Z]*[0-9]))";
+        } else if (token.equals(TipoToken.CADENA)) {
+            return "(\"([a-z]*[0-9]*)\" | \"([A-Z]*[0-9])\")";
+        } else if (token.equals(TipoToken.ERROR)) {
+            return "(\"([a-z]*[0-9]*) | \"([A-Z]*[0-9]))";
+        } else {
+            return lexema;
+        }
     }
 
     @Override
