@@ -111,20 +111,15 @@ public class Analizador {
                                     buffer = "";
                                 }
                                 buffer += letra;
-                                columna++;
-                                break;
-                            case '&':
-                                if (!buffer.isEmpty()) {
-                                    crearToken(buffer, linea, columna);
-                                    buffer = "";
-                                }
-                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '&') {
-                                    buffer = "&&";
-                                    crearToken(buffer, linea, columna);
-                                    buffer = "";
+                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '=') {
+                                    buffer += '=';
                                     columna++;
                                 }
+                                crearToken(buffer, linea, columna);
+                                buffer = "";
+                                columna++;
                                 break;
+
                             case '|':
                                 if (!buffer.isEmpty()) {
                                     crearToken(buffer, linea, columna);
@@ -173,6 +168,10 @@ public class Analizador {
                 }
             }
         }
+        if (esCadena) {
+            crearToken("error " + buffer, linea, columna);
+            buffer = "";
+        }
     }
 
     private void crearToken(String lexema, int linea, int columna) {
@@ -193,8 +192,9 @@ public class Analizador {
             }
         } else if (lexema.contains("#")) {
             listaToken.add(new Token(TipoToken.COMENTARIO.toString(), lexema, linea, columna));
-        } else if (lexema.equals("\'") || lexema.equals("\"")) {
-            listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), "Error al no cerrar las comillas", linea, columna));
+        } else if (lexema.contains("error")) {
+            String[] texto = lexema.split("error");
+            listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), texto[1], linea, columna));
         } else {
             listaToken.add(new Token(TipoToken.OTROS_TOKENS.toString(), lexema, linea, columna));
         }
@@ -219,7 +219,7 @@ public class Analizador {
     }
 
     private boolean esID(String lexema) {
-        return diccionarioTipo.containsKey(lexema);
+        return !diccionarioTipo.containsKey(lexema);
     }
 
     private void iniciarDiccionarios() {

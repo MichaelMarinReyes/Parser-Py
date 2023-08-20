@@ -88,7 +88,7 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
             VisualizarGrafico ver = new VisualizarGrafico();
             ver.obtenerLexema(EditorPanel.listaToken.get(tablaReportes.getSelectedRow()).getLexema());
             ver.setTitle("Gráfico-" + EditorPanel.listaToken.get(tablaReportes.getSelectedRow()).getLexema());
-            ver.setSize(999, 438);
+            ver.setSize(999, 400);
             ver.setLocationRelativeTo(this);
             ver.setVisible(true);
 
