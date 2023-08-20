@@ -18,5 +18,5 @@ public enum TipoToken {
     DECIMAL,
     ID,
     OTROS_TOKENS,
-    ERROR;
+    ERROR_LEXICO;
 }

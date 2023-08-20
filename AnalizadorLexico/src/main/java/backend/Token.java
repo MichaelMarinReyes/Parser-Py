@@ -82,7 +82,7 @@ public class Token {
             return "(# ([a-z]*[0-9]*) | #([A-Z]*[0-9]))";
         } else if (token.equals(TipoToken.CADENA)) {
             return "(\"([a-z]*[0-9]*)\" | \"([A-Z]*[0-9])\")";
-        } else if (token.equals(TipoToken.ERROR)) {
+        } else if (token.equals(TipoToken.ERROR_LEXICO)) {
             return "(\"([a-z]*[0-9]*) | \"([A-Z]*[0-9]))";
         } else {
             return lexema;

@@ -13,140 +13,169 @@ public class Analizador {
 
     private Map<String, TipoToken> diccionarioTipo;
     private ArrayList<Token> listaToken;
-    private String cadenaTemp;
 
     public Analizador(ArrayList<Token> listaToken) {
         this.listaToken = listaToken;
         iniciarDiccionarios();
     }
-    
+
     public void analizar(String cadena) {
         String buffer = "";
         char[] entradaChar = cadena.toCharArray();
         int linea = 1;
         int columna = 1;
+        boolean esCadena = false;
+        boolean esComentario = false;
 
         for (char letra : entradaChar) {
-            switch (letra) {
-                case ' ':
-                case '\t': // Agregamos tabulación como separador
-                    if (!buffer.isEmpty()) {
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
-                    }
-                    columna++;
-                    break;
-                case '\n':
-                    if (!buffer.isEmpty()) {
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
-                    }
+            if (esCadena) {
+                buffer += letra;
+                if (letra == '"' || letra == '\'') {
+                    esCadena = false;
+                    crearToken(buffer, linea, columna);
+                    buffer = "";
+                }
+            } else if (esComentario) {
+                buffer += letra;
+                if (letra == '\n') {
+                    esComentario = false;
+                    crearToken(buffer, linea, columna);
+                    buffer = "";
                     linea++;
                     columna = 1;
-                    break;
-                case '+':
-                case '-':
-                case '*':
-                case '/':
-                case '%':
-                    if (!buffer.isEmpty()) {
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
-                    }
-                    crearToken(String.valueOf(letra), linea, columna);
-                    columna++;
-                    break;
-                case '=':
-                case '>':
-                case '<':
-                case '!':
-                    if (!buffer.isEmpty()) {
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
-                    }
-                    buffer += letra;
-                    columna++;
-                    break;
-                case '&':
-                    if (!buffer.isEmpty()) {
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
-                    }
-                    if (entradaChar[columna] == '&') {
-                        buffer = "&&";
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
+                }
+            } else {
+                switch (letra) {
+                    case ' ':
+                    case '\t':
+                        if (!buffer.isEmpty()) {
+                            crearToken(buffer, linea, columna);
+                            buffer = "";
+                        }
                         columna++;
-                    }
-                    break;
-                case '|':
-                    if (!buffer.isEmpty()) {
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
-                    }
-                    if (entradaChar[columna] == '|') {
-                        buffer = "||";
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
+                        break;
+                    case '\n':
+                        if (!buffer.isEmpty()) {
+                            crearToken(buffer, linea, columna);
+                            buffer = "";
+                        }
+                        linea++;
+                        columna = 1;
+                        break;
+                    case '#':
+                        if (!buffer.isEmpty()) {
+                            crearToken(buffer, linea, columna);
+                            buffer = "";
+                        }
+                        buffer += letra;
+                        esComentario = true;
                         columna++;
-                    }
-                    break;
-                case '(':
-                case ')':
-                case '{':
-                case '}':
-                case '[':
-                case ']':
-                case ',':
-                case ';':
-                case ':':
-                case '#':
-                    if (!buffer.isEmpty()) {
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
-                    }
-                    crearToken(String.valueOf(letra), linea, columna);
-                    columna++;
-                    break;
-                default:
-                    buffer += letra;
-                    columna++;
+                        break;
+                    case '"':
+                    case '\'':
+                        if (!buffer.isEmpty()) {
+                            crearToken(buffer, linea, columna);
+                            buffer = "";
+                        }
+                        if (esCadena) {
+                            buffer += letra;
+                            esCadena = false;
+                            crearToken(buffer, linea, columna);
+                            buffer = "";
+                        } else {
+                            buffer += letra;
+                            esCadena = true;
+                        }
+                        columna++;
+                        break;
+                    default:
+                        switch (letra) {
+                            case '+':
+                            case '-':
+                            case '*':
+                            case '/':
+                            case '%':
+                                if (!buffer.isEmpty()) {
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
+                                }
+                                crearToken(String.valueOf(letra), linea, columna);
+                                columna++;
+                                break;
+                            case '=':
+                            case '>':
+                            case '<':
+                            case '!':
+                                if (!buffer.isEmpty()) {
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
+                                }
+                                buffer += letra;
+                                columna++;
+                                break;
+                            case '&':
+                                if (!buffer.isEmpty()) {
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
+                                }
+                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '&') {
+                                    buffer = "&&";
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
+                                    columna++;
+                                }
+                                break;
+                            case '|':
+                                if (!buffer.isEmpty()) {
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
+                                }
+                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '|') {
+                                    buffer = "||";
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
+                                    columna++;
+                                }
+                                break;
+                            case '(':
+                            case ')':
+                            case '{':
+                            case '}':
+                            case '[':
+                            case ']':
+                            case ',':
+                            case ';':
+                            case ':':
+                                if (!buffer.isEmpty()) {
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
+                                }
+                                buffer += letra;
+                                crearToken(buffer, linea, columna);
+                                buffer = "";
+                                columna++;
+                                break;
+                            default:
+                                if (esID(buffer)) {
+                                    if (diccionarioTipo.containsKey(buffer)) {
+                                        crearToken(buffer, linea, columna);
+                                        buffer = "";
+                                    } else {
+                                        buffer += letra;
+                                    }
+                                    columna++;
+                                } else {
+                                    buffer += letra;
+                                    columna++;
+                                }
+                                break;
+                        }
+                }
             }
         }
     }
-/*
-    public void analizar(String cadena) {
-        String buffer = "";
-        char[] entradaChar = cadena.toCharArray();
-        int linea = 1;
-        int columna = 1;
-        System.out.println(buffer);
-        for (char letra : entradaChar) {
-            switch (letra) {
-                case ' ':
-                    if (!buffer.isEmpty()) {
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
-                    }
-                    columna++;
-                    break;
-                case '\n':
-                    if (!buffer.isEmpty()) {
-                        crearToken(buffer, linea, columna);
-                        buffer = "";
-                    }
-                    linea++;
-                    columna = 1;
-                    break;
-                default:
-                    buffer += letra;
-                    columna++;
-            }
-        }
-    }*/
 
     private void crearToken(String lexema, int linea, int columna) {
-        // Reconocer IDs, enteros, decimales y cadenas
         if (esNumero(lexema)) {
             if (lexema.contains(".")) {
                 listaToken.add(new Token(TipoToken.DECIMAL.toString(), lexema, linea, columna));
@@ -155,16 +184,22 @@ public class Analizador {
             }
         } else if (esCadena(lexema)) {
             listaToken.add(new Token(TipoToken.CADENA.toString(), lexema, linea, columna));
-        } else if (esID(lexema)) {
-            listaToken.add(new Token(TipoToken.ID.toString(), lexema, linea, columna));
         } else if (diccionarioTipo.containsKey(lexema)) {
             TipoToken tipoToken = diccionarioTipo.get(lexema);
-            listaToken.add(new Token(tipoToken.toString(), lexema, linea, columna));
+            if (tipoToken == TipoToken.ID) {
+                listaToken.add(new Token(TipoToken.PALABRA_RESERVADA.toString(), lexema, linea, columna));
+            } else {
+                listaToken.add(new Token(tipoToken.toString(), lexema, linea, columna));
+            }
+        } else if (lexema.contains("#")) {
+            listaToken.add(new Token(TipoToken.COMENTARIO.toString(), lexema, linea, columna));
+        } else if (lexema.equals("\'") || lexema.equals("\"")) {
+            listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), "Error al no cerrar las comillas", linea, columna));
         } else {
             listaToken.add(new Token(TipoToken.OTROS_TOKENS.toString(), lexema, linea, columna));
         }
     }
-    
+
     private boolean esNumero(String lexema) {
         try {
             Integer.parseInt(lexema);
@@ -178,13 +213,13 @@ public class Analizador {
             }
         }
     }
-    
+
     private boolean esCadena(String lexema) {
-        return (lexema.startsWith("\"") && lexema.endsWith("\"")) ||
-               (lexema.startsWith("'") && lexema.endsWith("'"));
+        return (lexema.startsWith("\"") && lexema.endsWith("\"")) || (lexema.startsWith("\'") && lexema.endsWith("\'"));
     }
-     private boolean esID(String lexema) {
-        return lexema.matches("[a-zA-Z_][a-zA-Z0-9_]*");
+
+    private boolean esID(String lexema) {
+        return diccionarioTipo.containsKey(lexema);
     }
 
     private void iniciarDiccionarios() {
@@ -231,7 +266,7 @@ public class Analizador {
         this.diccionarioTipo.put("try", TipoToken.PALABRA_RESERVADA);
         this.diccionarioTipo.put("while", TipoToken.PALABRA_RESERVADA);
         this.diccionarioTipo.put("with", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("yeald", TipoToken.PALABRA_RESERVADA);
+        this.diccionarioTipo.put("yield", TipoToken.PALABRA_RESERVADA);
         //COMPARACION
         this.diccionarioTipo.put("==", TipoToken.COMPARACION);
         this.diccionarioTipo.put("=", TipoToken.COMPARACION);
@@ -251,8 +286,8 @@ public class Analizador {
         this.diccionarioTipo.put(")", TipoToken.OTROS_TOKENS);
         this.diccionarioTipo.put("(", TipoToken.OTROS_TOKENS);
         this.diccionarioTipo.put(";", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put("\'", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put("\"", TipoToken.OTROS_TOKENS);
+        this.diccionarioTipo.put("\'", TipoToken.CADENA);
+        this.diccionarioTipo.put("\"", TipoToken.CADENA);
         this.diccionarioTipo.put("_", TipoToken.OTROS_TOKENS);
     }
 }

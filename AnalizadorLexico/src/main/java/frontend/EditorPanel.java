@@ -136,30 +136,6 @@ public class EditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
-        /*if (areaEditor.getText().length() == 0) {
-            JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
-        } else {
-            new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
-
-            StyledDocument doc = areaEditor.getStyledDocument();
-            areaEditor.setText(""); // Limpiar el área de edición
-
-            for (int i = 0; i < listaToken.size(); i++) {
-                areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
-
-                Style style = doc.addStyle(listaToken.get(i).getToken(), null);
-                StyleConstants.setForeground(style, obtenerColorToken(listaToken.get(i).getToken()));
-
-                try {
-                    doc.insertString(doc.getLength(), listaToken.get(i).getLexema(), style);
-                } catch (BadLocationException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
-        }*/
-
         if (areaEditor.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
         } else {
@@ -232,7 +208,6 @@ public class EditorPanel extends javax.swing.JPanel {
     }
 
     private Color obtenerColorToken(String tipoToken) {
-        System.out.println(tipoToken);
         if (tipoToken.equals(TipoToken.ARITMETICO) || tipoToken.equals(TipoToken.COMPARACION) || tipoToken.equals(TipoToken.LOGICO) || tipoToken.equals(TipoToken.ASIGNACION)) {
             return Color.cyan;
         } else if (tipoToken.equals(TipoToken.PALABRA_RESERVADA)) {
