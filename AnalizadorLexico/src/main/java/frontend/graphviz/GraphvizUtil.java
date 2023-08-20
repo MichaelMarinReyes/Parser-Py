@@ -10,7 +10,7 @@ import java.io.PrintWriter;
  */
 public class GraphvizUtil {
 
-    public static void generateGraph(String dotCode, String outputFileName) throws IOException {
+    public static void generarGrafico(String dotCode, String outputFileName) throws IOException {
         File dotFile = new File("temp.dot");
         try (PrintWriter writer = new PrintWriter(dotFile)) {
             writer.println(dotCode);

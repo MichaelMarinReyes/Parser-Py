@@ -12,7 +12,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
-    //EditorPanel editor = new EditorPanel();
     EditorPanel editor = new EditorPanel();
 
     /**
@@ -112,7 +111,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             String textoLeido;
             textoLeido = miArchivo.abrirArchivo(chooser.getSelectedFile().getAbsolutePath());
             editor.setAreaEditor(textoLeido);
-            //JOptionPane.showMessageDialog(this, "Archivo cargado");
         }
 
 
@@ -148,7 +146,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu reportesBoton;
     // End of variables declaration//GEN-END:variables
 
-    public void pintarPanel(Component panel) {
+    private void pintarPanel(Component panel) {
         contenedorPanel.removeAll();
         contenedorPanel.add(panel);
         contenedorPanel.repaint();

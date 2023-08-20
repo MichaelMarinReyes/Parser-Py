@@ -1,81 +1,293 @@
 @startuml diagrama_de_clases
 package backend {
-    class Identificador {
-        + detectarVariables()
-        + detectarPalabraReservada()
-
+    class Main {
+        + main()
     }
 
-    class Token {
-        - String palabra
-        - ArrayList<Lexema> arregloLexemas
-        - String tipoToken
-        + analizarCadena()
-        + categorizarLexema()
+    class Analizador {
+        - Map<String, TipoToken> diccionario
+        - ArrayList<Token> listaToken
+        + Analizador(ArrayList<Token> listaToken)
+        + analizar(String cadena)
+        - crearToken(String lexema, int linea, int columna)
+        - esNumero(String lexema): boolean
+        - esCadena(String lexema): boolean
+        - esID(String lexema): boolean
+        - iniciarDiccionarios()
     }
 
-    class Lexema {
-        - String palabra
-        - String tipo
-    }
-
-    class GraficarLexema {
-        - Token token
-        - Lexema lexema
+    class LeerArchivoTexto {
+        - String path
+        + abrirArchivo(String ruta): String
     }
 
     package identificadores {
-        enum Operador {
-            SUMA
-            RESTA
-            EXPONENTE
-            DIVISION
-            MODULO
-            MULTIPLICACION
-            IGUAL
-            DIFERENTE
-            MAYOR_QUE
-            MENOR_QUE
-            MAYOR_IGUAL_QUE
-            MENOR_IGUAL_QUE
-            AND
-            OR
-            NOT
-            ASIGNACION
+        enum AritmeticosEnum {
+            SUMA,
+            RESTA,
+            EXPONENTE,
+            DIVISION,
+            DIVISION2,
+            MODULO,
+            MULTIPLICACION;
         }
 
-        enum PalabraReservada {
-            AS
-            ASSERT
-            BREAK
-            CLASS
-            CONTINUE
-            DEF
-            DEL
-            ELIF
-            ELSE
-            EXCEPT
-            FALSE
-            FINALLY
-            FOR
-            FROM
-            GLOBAL
-            IF
-            IMPORT
-            IN
-            IS
-            LAMBDA
-            NONE
-            NONLOCAL
-            PASS
-            RAISE
-            RETURN
-            TRUE
-            TRY
-            WHILE
-            WITH
-            YIELD
-
+        enum ComparacionEnum {
+            IGUAL,
+            ASIGNACION,
+            DIFERENTE,
+            MAYOR_QUE,
+            MENOR_QUE,
+            MAYOR_IGUAL_QUE,
+            MENOR_IGUAL_QUE;
         }
 
-        @enduml
+        enum LogicoEnum {
+            AND,
+            OR,
+            NOT;
+        }
+
+        enum OtroEnum {
+            ENTERO,
+            DECIMAL,
+            CADENA,
+            ID,
+            COMENTARIO,
+            PARENTESIS_IZ,
+            PARENTESIS_DE,
+            LLAVE_IZ,
+            LLAVE_DE,
+            CORCHETE_IZ,
+            CORCHETE_DE,
+            COMA,
+            PUNTO_COMA,
+            DOS_PUNTOS;
+        }
+
+        enum PalabraClave {
+            AS,
+            ASSERT,
+            BREAK,
+            CLASS,
+            CONTINUE,
+            DEF,
+            DEL,
+            ELIF,
+            ELSE,
+            EXCEPT,
+            FALSE,
+            FINALLY,
+            FOR,
+            FROM,
+            GLOBAL,
+            IF,
+            IMPORT,
+            IN,
+            IS,
+            LAMBDA,
+            NONE,
+            NONLOCAL,
+            PASS,
+            RAISE,
+            RETURN,
+            TRUE,
+            TRY,
+            WHILE,
+            WITH,
+            YIELD;
+        }
+
+        enum TipoToken {
+            ARITMETICO,
+            COMPARACION,
+            LOGICO,
+            ASIGNACION,
+            PALABRA_RESERVADA,
+            CONSTANTE,
+            COMENTARIO,
+            CADENA,
+            ENTERO,
+            DECIMAL,
+            ID,
+            OTROS_TOKENS,
+            ERROR_LEXICO;
+        }
+    }
+
+    TipoToken *--"1" AritmeticosEnum
+    TipoToken *--"1" ComparacionEnum
+    TipoToken *--"1" LogicoEnum
+    TipoToken *--"1" PalabraClave
+    TipoToken *--"1" OtroEnum
+
+    Analizador *--TipoToken
+}
+
+package frontend {
+    class JFrame
+    class JEditorPane
+    class JTextPane
+    class JButton
+    class JLabel
+    class JPanel
+    class JScrollPane
+    class JTextComponent
+    class JMenuItem
+    class JMenu
+    class JMenuBar
+    interface  MouseListener
+
+    class VentanaPrincipal {
+        - EditorPanel editor
+        - JMenuItem abrirBoton
+        - JMenu acercaDeBoton
+        - JMenu ayudaBoton
+        - JPanel contenedorPanel
+        - JMenu editorTexto
+        - JMenu jMenu1
+        - JMenuBar menuOPciones
+        - JMenu reportesBoton
+        - JFilechooser chooser
+        + VentanaPrincipal()
+        - abrirBotonActionPerformed(ActionEvent evt)
+        - editorTExtoMOuseClicked(MouseEvent evt)
+        - reportesBotonMouseClicked(MouseEvent evt)
+        - ayudaBotonMouseClicked(MOuseEvent evt)
+        - acercaDeBotonMouseClicked(MouseEvent evt)
+        - pintarPanel(Component panel)
+    }
+
+    class EditorPanel {
+        - JEditorPane areaConsola
+        - JTextPane areaEditor
+        - JButton ejecutarBoton
+        - JButton limpiarBoton
+        - JLabel mosrarColumanLabel
+        - JScrollPane scrollConsola
+        - JScrollPane scrollEditor
+        - NumeroLinea numerarEditor
+        - NumeroLinea numerarConsola
+        - ReportesPanel reportes
+        + ArrayList<Token> listaToken
+        + EditorPanel()
+        + ejecutarBotonActionPerformed(ActionEvent evt)
+        + limpiarBotonActionPerformed(ActionEvent evt)
+        - mostrarColumna()
+        + setAreaEditor()
+        - private obtenerColorToken(String tipoToken): Color
+    }
+
+    class NumeroLinea {
+        + float LEFT
+        + float CENTER
+        + float RIGHT
+        - Color color
+        - Border OUTER
+        - int HEIGHT
+        - JTextComponent component
+        - boolean updateFont
+        - boolean borderGap
+        - Color currentLineForeground
+        - float difitAligment
+        - int minimunDisplayDigits
+        - int lastDigits
+        - int lastHeight
+        - int lastLinea
+        - HashMap<String, FontMetrics> fonts
+        + NumeroLinea(JtextComponent component)
+        + NumeroLinea(JTextComponent component, int minimunDisplayDigits)
+        + getUpdateFont(): boolean
+        + setUpdateFont(boolean updateFont)
+        + getBorderGap(): int
+        + setBorderGap(int borderGap)
+        + getCurrentLineForeground(): Color
+        + setcurrentLineForenground(Color setcurrentLineForenground)
+        + getDigitAlignment(): float
+        + setDigitAlignment(float digitAlignment)
+        + getMinimunDisplayDigits(): int
+        + setMinimunDisplaydigits(int minimumDisplayDigits)
+        + setPreferredWidth()
+        + paintComponent(Graphics g)
+        + isCurrentLine(int rowStartOffset): boolean
+        # getTextLineNumber(int rowStartOffset): String
+        - getOffsetX(int availableWidth,int stringWidth): int
+        - getOffsetY(int rowStartOffset, FontMetrics fontMetrics): int
+        + caretUpdate(CaretEvent e)
+        + changedUpdate(DocumentEvent e)
+        + insertUpdate(DocumentEvent e)
+        + removeUpdate(DocumentEvent e)
+        - documentChanged()
+        + propertyChange(PropertyChangeEvent evt)
+    }
+
+    class RenderizarTabla {
+        + getTableCellRendererComponent(JTable table, Object objetoRenderizable, boolean isSelected, boolean hasFocus, int row, int column): Component
+    }
+
+    class ReportesPanel {
+        - JScrollPane jScrollPane
+        - JTable tablaReportes
+        + ReportesPanel()
+        + actualizarTabla()
+        + mouseClicked(MouseEvent me)
+        + mousePressed(MouseEvent me)
+        + mouseReleased(MouseEvent me)
+        + mouseEnteredmouseExited(MouseEvent me)
+    }
+
+    class VisualizarGrafico {
+        - JPanel jPanel1
+        - JLabel labelGrafico
+        - JScrollPane scrollPane
+        + VisualizarGrafico()
+        + obtenerLexema(String lexema)
+    }
+
+    class GraphvizUtil {
+        + generarGrafico()
+    }
+
+    VentanaPrincipal "extends"--> JFrame
+    VentanaPrincipal o-up- "1" JMenuItem
+    VentanaPrincipal o-up- "5" JMenu
+    VentanaPrincipal o-up- "1" JPanel
+    VentanaPrincipal o-up- "1" JMenuBar
+    VentanaPrincipal o-up- "1" JFilechooser
+    VentanaPrincipal *-- "1" EditorPanel
+    VentanaPrincipal *-right- "1" ReportesPanel
+
+    EditorPanel "1" -->  JPanel
+    EditorPanel "1" *-left- "1" JEditorPane
+    EditorPanel "1" *-- "1" JTextPane
+    EditorPanel "1" *-- "2" JButton
+    EditorPanel "1" *-- "1" JLabel
+    EditorPanel "1" *-- "2" JScrollPane
+    EditorPanel "1" *-right- "1" NumeroLinea
+
+    NumeroLinea -left-|> JPanel
+    NumeroLinea "implements"..> CaretListener
+    NumeroLinea "implements"..> DocumentListener
+    NumeroLinea "implements"..> PropertyChangeListener
+    NumeroLinea --"1" JTextComponent
+
+    RenderizarTabla "extends" --> DefaultTableCellRenderer
+
+    ReportesPanel "extends" --> JPanel
+    ReportesPanel "implements" .up.> MouseListener
+    ReportesPanel *-- "1" JScrollPane
+    ReportesPanel *-up- "1" JTable
+    ReportesPanel o-- "1" RenderizarTabla
+    ReportesPanel *-right- GraphvizUtil
+    ReportesPanel *-- JButton
+
+    VisualizarGrafico "extends" --> JFrame
+    VisualizarGrafico *-up- "1" JPanel
+    VisualizarGrafico *-up- "1" JLabel
+    VisualizarGrafico *-- "1" JScrollPane
+}
+
+Main *--"1" VentanaPrincipal
+EditorPanel *-up- LeerArchivoTexto
+EditorPanel *-up- Analizador
+@enduml
