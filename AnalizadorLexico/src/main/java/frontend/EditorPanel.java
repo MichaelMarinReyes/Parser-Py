@@ -6,6 +6,9 @@ import backend.identificadores.TipoToken;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -136,26 +139,10 @@ public class EditorPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
         } else {
             new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
-/*
-            StyledDocument doc = areaEditor.getStyledDocument();
-            String nuevoTexto = "";  // Paso 1: Variable para almacenar el nuevo texto*/
-
+            aplicarEstilos();
             for (int i = 0; i < listaToken.size(); i++) {
                 areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
-/*
-                Style style = doc.addStyle(listaToken.get(i).getToken(), null);
-                StyleConstants.setForeground(style, obtenerColorToken(listaToken.get(i).getToken()));
-
-                try {
-                    doc.insertString(doc.getLength(), listaToken.get(i).getLexema(), style);
-                    nuevoTexto += listaToken.get(i).getLexema();  // Paso 2: Agregar al nuevo texto
-                } catch (BadLocationException e) {
-                    e.printStackTrace();
-                }*/
             }
-
-            // Reemplazar el contenido anterior del área de editor con el nuevo texto
-            //areaEditor.setText(nuevoTexto);
 
             areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
         }
@@ -165,6 +152,7 @@ public class EditorPanel extends javax.swing.JPanel {
         areaEditor.setText("");
         areaConsola.setText("");
         listaToken.clear();
+        eliminarEstilos();
     }//GEN-LAST:event_limpiarBotonActionPerformed
 
 
@@ -203,17 +191,47 @@ public class EditorPanel extends javax.swing.JPanel {
         areaEditor.setText(textoLeido);
     }
 
-    private Color obtenerColorToken(String tipoToken) {
-        if (tipoToken.equals(TipoToken.ARITMETICO) || tipoToken.equals(TipoToken.COMPARACION) || tipoToken.equals(TipoToken.LOGICO) || tipoToken.equals(TipoToken.ASIGNACION)) {
-            return Color.cyan;
-        } else if (tipoToken.equals(TipoToken.PALABRA_RESERVADA)) {
-            return Color.MAGENTA;
-        } else if (tipoToken.equals(TipoToken.COMENTARIO)) {
-            return Color.gray;
-        } else if (tipoToken.equals(TipoToken.OTROS_TOKENS)) {
-            return Color.GREEN;
-        } else {
-            return Color.red;
+    /**
+     * Método para aplicar los estilos a los tokens en el área de texto.
+     */
+    private void aplicarEstilos() {
+        StyledDocument doc = areaEditor.getStyledDocument();
+
+        eliminarEstilos();
+
+        for (Token token : listaToken) {
+            int inicio = areaEditor.getDocument().getDefaultRootElement().getElement(token.getLinea() - 1).getStartOffset() + token.getColumna() - token.getLexema().length();
+            int longitud = token.getLexema().length();
+            Style estilo = doc.addStyle("estilo", null);
+
+            if (token.getToken().equals(TipoToken.ID.toString())) {
+                StyleConstants.setBold(estilo, true);
+            } else if (token.getToken().equals(TipoToken.COMPARACION.toString()) || token.getToken().equals(TipoToken.LOGICO.toString()) || token.getToken().equals(TipoToken.ASIGNACION.toString())) {
+                StyleConstants.setForeground(estilo, Color.CYAN);
+            } else if (token.getToken().equals(TipoToken.PALABRA_RESERVADA.toString())) {
+                StyleConstants.setForeground(estilo, Color.BLUE);
+            } else if (token.getToken().equals(TipoToken.ENTERO.toString()) || token.getToken().equals(TipoToken.DECIMAL.toString()) || token.getToken().equals(TipoToken.CADENA.toString())) {
+                StyleConstants.setForeground(estilo, Color.ORANGE);
+            } else if (token.getToken().equals(TipoToken.COMENTARIO.toString())) {
+                StyleConstants.setForeground(estilo, Color.GRAY);
+            } else if (token.getToken().equals(TipoToken.OTROS_TOKENS.toString())) {
+                StyleConstants.setForeground(estilo, Color.GREEN);
+            } else if (token.getToken().equals(TipoToken.ERROR_LEXICO.toString())) {
+                StyleConstants.setForeground(estilo, Color.RED);
+            }
+
+            doc.setCharacterAttributes(inicio, longitud, estilo, true);
+        }
+    }
+
+    /**
+     * Método para eliminar todos los estilos aplicados en un análisis previo.
+     */
+    private void eliminarEstilos() {
+        StyledDocument doc = areaEditor.getStyledDocument();
+        Style estilo = doc.getStyle("estilo");
+        if (estilo != null) {
+            doc.setCharacterAttributes(0, doc.getLength(), estilo, true);
         }
     }
 }

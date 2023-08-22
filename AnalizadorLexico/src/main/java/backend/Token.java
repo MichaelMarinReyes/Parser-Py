@@ -66,7 +66,6 @@ public class Token {
     @Override
     public String toString() {
         return "TOKEN: " + token + " PATRON: " + patron + " Lexema: " + lexema + " Linea: " + linea + " Columna: " + columna;
-        //return "Token{" + "lexema=" + lexema + "} {numeroToken=" + numeroToken + "} {linea=" + linea + "} {columna=" + columna + "} {token=" + token + '}';
     }
 
 }

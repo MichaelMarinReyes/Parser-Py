@@ -103,7 +103,18 @@ public class Analizador {
                                 columna++;
                                 break;
                             case '=':
-                                listaToken.add(new Token(TipoToken.ASIGNACION.toString(),"=", linea, columna, "="));
+                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '=') {
+                                    buffer += letra;
+                                    buffer += entradaChar[columna];
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
+                                    columna++;
+                                } else {
+                                    listaToken.add(new Token(TipoToken.ASIGNACION.toString(), "=", linea, columna, "="));
+                                    buffer = "";
+                                }
+                                columna++;
+                                break;
                             case '>':
                             case '<':
                             case '!':
@@ -112,22 +123,16 @@ public class Analizador {
                                     buffer = "";
                                 }
                                 buffer += letra;
-                                crearToken(buffer, linea, columna);
-                                buffer = "";
-                                columna++;
-                                break;
-
-                            case '|':
-                                if (!buffer.isEmpty()) {
-                                    crearToken(buffer, linea, columna);
-                                    buffer = "";
-                                }
-                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '|') {
-                                    buffer = "||";
+                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '=') {
+                                    buffer += entradaChar[columna];
                                     crearToken(buffer, linea, columna);
                                     buffer = "";
                                     columna++;
+                                } else {
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
                                 }
+                                columna++;
                                 break;
                             case '(':
                             case ')':
