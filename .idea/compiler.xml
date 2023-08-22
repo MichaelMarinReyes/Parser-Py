@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="AnalizadorLexico" />
+        <module name="Parser-Py" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="AnalizadorLexico" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

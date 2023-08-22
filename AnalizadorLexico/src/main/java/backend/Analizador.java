@@ -191,7 +191,6 @@ public class Analizador {
             listaToken.add(new Token(TipoToken.COMENTARIO.toString(), lexema, linea, columna, "(#[0-9]*[a-z]* | #[0-9]*[A-Z]* #[a-z]*[0-9]* | #[A-Z]*[0-9]*)"));
         } else if (lexema.contains("error")) {
             String[] texto = lexema.split("error");
-            System.out.println(texto[1]);
             listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), texto[1], linea, columna, texto[1]));
         } else if (lexema.contains("_")) {
             char[] texto = lexema.toCharArray();

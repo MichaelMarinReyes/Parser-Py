@@ -1,7 +1,5 @@
 package backend;
 
-import backend.identificadores.TipoToken;
-
 /**
  *
  * @author michael
@@ -63,33 +61,6 @@ public class Token {
 
     public void setColumna(int columna) {
         this.columna = columna;
-    }
-
-    private String definirPatron(String token) {
-        System.out.println(token);
-        if (token.equals(TipoToken.ARITMETICO)) {
-            return lexema;
-        } else if (token.equals(TipoToken.COMPARACION)) {
-            return lexema;
-        } else if (token.equals(TipoToken.LOGICO)) {
-            return lexema;
-        } else if (token.equals(TipoToken.ASIGNACION)) {
-            return "(=)";
-        } else if (token.equals(TipoToken.PALABRA_RESERVADA)) {
-            return lexema;
-        } else if (token.equals(TipoToken.DECIMAL)) {
-            return "([0-9]+.[0-9]+)";
-        } else if(token.equals(TipoToken.ENTERO)) {
-            return "([0-9]+)";
-        } else if (token.equals(TipoToken.COMENTARIO)) {
-            return "(# ([a-z]*[0-9]*) | #([A-Z]*[0-9]))";
-        } else if (token.equals(TipoToken.CADENA)) {
-            return "(\"([a-z]*[0-9]*)\" | \"([A-Z]*[0-9])\")";
-        } else if (token.equals(TipoToken.ERROR_LEXICO)) {
-            return "No existe en el lenguaje";
-        } else {
-            return lexema;
-        }
     }
 
     @Override

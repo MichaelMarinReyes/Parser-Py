@@ -155,7 +155,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_ayudaBotonMouseClicked
 
     private void acerdaDeBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acerdaDeBotonMouseClicked
-        String ayuda = "\n   Lenguajes Formales y de Programación\n\n   Carné: 201831260\n   Nombre: Michael Kristopher Marín Reyes";
+        String ayuda = "\n   \t   Parser-py\n   \t   Versión 1.0\n\n   Lenguajes Formales y de Programación\n\n   Carné: 201831260\n   Nombre: Michael Kristopher Marín Reyes";
 
         JTextArea textoAcercaDe = new JTextArea(ayuda);
         textoAcercaDe.setBackground(Color.LIGHT_GRAY);
