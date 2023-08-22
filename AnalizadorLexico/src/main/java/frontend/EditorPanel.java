@@ -50,7 +50,7 @@ public class EditorPanel extends javax.swing.JPanel {
         scrollEditor = new javax.swing.JScrollPane();
         areaEditor = new javax.swing.JTextPane();
 
-        setBackground(new java.awt.Color(255, 153, 102));
+        setBackground(new java.awt.Color(255, 255, 0));
         setPreferredSize(new java.awt.Dimension(844, 590));
         setLayout(new java.awt.GridBagLayout());
 
@@ -64,7 +64,7 @@ public class EditorPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(18, 423, 0, 0);
         add(mostrarColumnaLabel, gridBagConstraints);
 
-        limpiarBoton.setBackground(new java.awt.Color(0, 102, 102));
+        limpiarBoton.setBackground(new java.awt.Color(0, 153, 255));
         limpiarBoton.setFont(new java.awt.Font("MesloLGL Nerd Font", 0, 13)); // NOI18N
         limpiarBoton.setForeground(new java.awt.Color(255, 255, 255));
         limpiarBoton.setText("Limpiar Editor");

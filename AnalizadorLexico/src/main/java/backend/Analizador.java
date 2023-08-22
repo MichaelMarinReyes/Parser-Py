@@ -215,7 +215,7 @@ public class Analizador {
     }
 
     private boolean esCadena(String lexema) {
-        return (lexema.startsWith("\"") && lexema.endsWith("\"")) || (lexema.startsWith("\'") && lexema.endsWith("\'"));
+        return ((lexema.startsWith("\"") && lexema.endsWith("\""))) || ((lexema.startsWith("\'") && lexema.endsWith("\'")));
     }
 
     private boolean esID(String lexema) {

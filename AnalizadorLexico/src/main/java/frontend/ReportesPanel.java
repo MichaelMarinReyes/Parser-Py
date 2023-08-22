@@ -34,6 +34,7 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaReportes = new javax.swing.JTable();
 
+        setBackground(new java.awt.Color(255, 255, 0));
         setLayout(new java.awt.BorderLayout());
 
         tablaReportes = new javax.swing.JTable(){
@@ -50,6 +51,8 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
 
             }
         ));
+        tablaReportes.setGridColor(new java.awt.Color(0, 153, 204));
+        tablaReportes.setSelectionForeground(new java.awt.Color(255, 255, 0));
         jScrollPane1.setViewportView(tablaReportes);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);

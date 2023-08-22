@@ -1,6 +1,5 @@
 package frontend.graphviz;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
@@ -57,6 +56,7 @@ public class VisualizarGrafico extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void obtenerLexema(String lexema) {
+        System.out.println(lexema);
         String dotCode = "digraph G {\n";
         dotCode += "rankdir=LR;";
         dotCode += "node [shape=oval];\n";

@@ -1,9 +1,12 @@
 package frontend;
 
 import backend.LeerArchivoTexto;
+import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.border.CompoundBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -44,15 +47,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 700));
 
-        contenedorPanel.setBackground(new java.awt.Color(255, 153, 153));
+        contenedorPanel.setBackground(new java.awt.Color(255, 255, 0));
         contenedorPanel.setLayout(new java.awt.BorderLayout());
         getContentPane().add(contenedorPanel, java.awt.BorderLayout.CENTER);
 
+        menuOpciones.setBackground(new java.awt.Color(0, 153, 255));
         menuOpciones.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         menuOpciones.setForeground(new java.awt.Color(153, 153, 153));
 
         jMenu1.setText("Archivo");
 
+        abrirBoton.setBackground(new java.awt.Color(0, 153, 255));
         abrirBoton.setText("Abrir archivo");
         abrirBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,7 +123,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void editorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editorTextoMouseClicked
         this.pintarPanel(editor);
-        //this.pintarPanel(new EditorPanel());
     }//GEN-LAST:event_editorTextoMouseClicked
 
     private void reportesBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportesBotonMouseClicked
@@ -127,11 +131,40 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_reportesBotonMouseClicked
 
     private void ayudaBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ayudaBotonMouseClicked
-        JOptionPane.showMessageDialog(this, "Aquí va el tutorial");
+        String ayuda = "\n\tPresione Archivo y Cargar archivo para cargar un archivo de texto nuevo.\n"
+                + "\tPresione Editor para regresar a la pestaña de editor de texto.\n"
+                + "\tPresione Reportes para ver la tabla de reportes con los tokens encontrados en el documento.\n"
+                + "\tPresione Ayuda para ver ayuda.\n"
+                + "\tPresione Acerda de para ver datos del desarrollador.\n\n"
+                + "\tComuniquese con el desarrollador para más información.";
+
+        JTextArea textoAyuda = new JTextArea(ayuda);
+        textoAyuda.setBackground(Color.LIGHT_GRAY);
+        textoAyuda.setForeground(Color.BLUE);
+        textoAyuda.setBorder(new CompoundBorder());
+        textoAyuda.setEditable(false);
+        JDialog dialogoAyuda = new JDialog(this, true);
+        dialogoAyuda.add(textoAyuda);
+        dialogoAyuda.setTitle("Ayuda");
+        dialogoAyuda.setSize(750, 200);
+        dialogoAyuda.setLocationRelativeTo(this);
+        dialogoAyuda.setVisible(true);
     }//GEN-LAST:event_ayudaBotonMouseClicked
 
     private void acerdaDeBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acerdaDeBotonMouseClicked
-       // JOptionPane.showMessageDialog(this, "Lenguajes Formales y de Programación\n\nCarné: 201831260\nNombre: Michael Kristopher Marín Reyes");
+        String ayuda = "\n\tLenguajes Formales y de Programación\n\n\tCarné: 201831260\n\tNombre: Michael Kristopher Marín Reyes";
+
+        JTextArea textoAyuda = new JTextArea(ayuda);
+        textoAyuda.setBackground(Color.LIGHT_GRAY);
+        textoAyuda.setForeground(Color.BLUE);
+        textoAyuda.setBorder(new CompoundBorder());
+        textoAyuda.setEditable(false);
+        JDialog dialogoAyuda = new JDialog(this, true);
+        dialogoAyuda.add(textoAyuda);
+        dialogoAyuda.setTitle("Acerca de");
+        dialogoAyuda.setSize(400, 200);
+        dialogoAyuda.setLocationRelativeTo(this);
+        dialogoAyuda.setVisible(true);
     }//GEN-LAST:event_acerdaDeBotonMouseClicked
 
 
