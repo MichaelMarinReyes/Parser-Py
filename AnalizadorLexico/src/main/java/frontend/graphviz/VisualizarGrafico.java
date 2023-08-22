@@ -56,29 +56,33 @@ public class VisualizarGrafico extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void obtenerLexema(String lexema) {
-        System.out.println(lexema);
-        String dotCode = "digraph G {\n";
-        dotCode += "rankdir=LR;";
-        dotCode += "node [shape=oval];\n";
+        StringBuilder dotCode = new StringBuilder("digraph G {\n");
+        dotCode.append("rankdir=LR;\n");
+        dotCode.append("node [shape=oval];\n");
 
         for (int i = 0; i < lexema.length(); i++) {
-            dotCode += i + " [label=\"" + lexema.charAt(i) + "\"];\n";
+            char character = lexema.charAt(i);
+            String label = escapeDotLabel(character);
+
+            dotCode.append(i).append(" [label=\"").append(label).append("\"];\n");
+
             if (i == lexema.length() - 1) {
-                dotCode += i + " [peripheries=2];\n";
+                dotCode.append(i).append(" [peripheries=2];\n");
             }
+
             if (i > 0) {
-                dotCode += (i - 1) + " -> " + i + ";\n";
+                dotCode.append(i - 1).append(" -> ").append(i).append(";\n");
             }
         }
 
-        dotCode += "}";
+        dotCode.append("}");
 
         try {
             File dotFile = File.createTempFile("graph", ".dot");
             dotFile.deleteOnExit();
             File imageFile = new File(dotFile.getAbsolutePath() + ".png");
 
-            Utils.writeStringToFile(dotCode, dotFile.getAbsolutePath());
+            Utils.writeStringToFile(dotCode.toString(), dotFile.getAbsolutePath());
 
             ProcessBuilder processBuilder = new ProcessBuilder("dot", "-Tpng", dotFile.getAbsolutePath(), "-o", imageFile.getAbsolutePath());
             Process process = processBuilder.start();
@@ -94,6 +98,14 @@ public class VisualizarGrafico extends javax.swing.JFrame {
             }
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private String escapeDotLabel(char character) {
+        if (character == '"' || character == '\'') {
+            return "\\" + character;
+        } else {
+            return String.valueOf(character);
         }
     }
 

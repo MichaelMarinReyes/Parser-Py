@@ -103,6 +103,7 @@ public class Analizador {
                                 columna++;
                                 break;
                             case '=':
+                                listaToken.add(new Token(TipoToken.ASIGNACION.toString(),"=", linea, columna, "="));
                             case '>':
                             case '<':
                             case '!':
@@ -111,10 +112,6 @@ public class Analizador {
                                     buffer = "";
                                 }
                                 buffer += letra;
-                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '=') {
-                                    buffer += '=';
-                                    columna++;
-                                }
                                 crearToken(buffer, linea, columna);
                                 buffer = "";
                                 columna++;
@@ -177,26 +174,37 @@ public class Analizador {
     private void crearToken(String lexema, int linea, int columna) {
         if (esNumero(lexema)) {
             if (lexema.contains(".")) {
-                listaToken.add(new Token(TipoToken.DECIMAL.toString(), lexema, linea, columna));
+                listaToken.add(new Token(TipoToken.DECIMAL.toString(), lexema, linea, columna, "([0-9]+.[0-9]+)"));
             } else {
-                listaToken.add(new Token(TipoToken.ENTERO.toString(), lexema, linea, columna));
+                listaToken.add(new Token(TipoToken.ENTERO.toString(), lexema, linea, columna, "[0-9]+"));
             }
         } else if (esCadena(lexema)) {
-            listaToken.add(new Token(TipoToken.CADENA.toString(), lexema, linea, columna));
+            listaToken.add(new Token(TipoToken.CADENA.toString(), lexema, linea, columna, "((\"[a-z]*[0-9]*\") | (\"[A-Z]*[0-9])\") | ((\'[a-z]*[0-9]*\') | (\'[A-Z]*[0-9])\')"));
         } else if (diccionarioTipo.containsKey(lexema)) {
             TipoToken tipoToken = diccionarioTipo.get(lexema);
             if (tipoToken == TipoToken.ID) {
-                listaToken.add(new Token(TipoToken.PALABRA_RESERVADA.toString(), lexema, linea, columna));
+                listaToken.add(new Token(TipoToken.PALABRA_RESERVADA.toString(), lexema, linea, columna, lexema));
             } else {
-                listaToken.add(new Token(tipoToken.toString(), lexema, linea, columna));
+                listaToken.add(new Token(tipoToken.toString(), lexema, linea, columna, lexema));
             }
         } else if (lexema.contains("#")) {
-            listaToken.add(new Token(TipoToken.COMENTARIO.toString(), lexema, linea, columna));
+            listaToken.add(new Token(TipoToken.COMENTARIO.toString(), lexema, linea, columna, "(#[0-9]*[a-z]* | #[0-9]*[A-Z]* #[a-z]*[0-9]* | #[A-Z]*[0-9]*)"));
         } else if (lexema.contains("error")) {
             String[] texto = lexema.split("error");
-            listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), texto[1], linea, columna));
+            System.out.println(texto[1]);
+            listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), texto[1], linea, columna, texto[1]));
+        } else if (lexema.contains("_")) {
+            char[] texto = lexema.toCharArray();
+            String inicial = String.valueOf(texto[0]);
+            boolean comienzaNumero = false;
+            comienzaNumero = esNumero(inicial);
+            if (comienzaNumero) {
+                listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), lexema, linea, columna, "No existe en el lenguaje"));
+            } else {
+                listaToken.add(new Token(TipoToken.ID.toString(), lexema, linea, columna, "([\\w]|_)+(\\w|\\d)*"));
+            }
         } else {
-            listaToken.add(new Token(TipoToken.OTROS_TOKENS.toString(), lexema, linea, columna));
+            listaToken.add(new Token(TipoToken.OTROS_TOKENS.toString(), lexema, linea, columna, lexema));
         }
     }
 

@@ -17,10 +17,10 @@ public class Token {
     public Token() {
     }
 
-    public Token(String token, String lexema, int linea, int columna) {
+    public Token(String token, String lexema, int linea, int columna, String patron) {
         this.token = token;
         this.lexema = lexema;
-        this.patron = this.definirPatron(token);
+        this.patron = patron;
         this.linea = linea;
         this.columna = columna;
     }
@@ -66,6 +66,7 @@ public class Token {
     }
 
     private String definirPatron(String token) {
+        System.out.println(token);
         if (token.equals(TipoToken.ARITMETICO)) {
             return lexema;
         } else if (token.equals(TipoToken.COMPARACION)) {
@@ -76,14 +77,16 @@ public class Token {
             return "(=)";
         } else if (token.equals(TipoToken.PALABRA_RESERVADA)) {
             return lexema;
-        } else if (token.equals(TipoToken.CONSTANTE)) {
-            return "";
+        } else if (token.equals(TipoToken.DECIMAL)) {
+            return "([0-9]+.[0-9]+)";
+        } else if(token.equals(TipoToken.ENTERO)) {
+            return "([0-9]+)";
         } else if (token.equals(TipoToken.COMENTARIO)) {
             return "(# ([a-z]*[0-9]*) | #([A-Z]*[0-9]))";
         } else if (token.equals(TipoToken.CADENA)) {
             return "(\"([a-z]*[0-9]*)\" | \"([A-Z]*[0-9])\")";
         } else if (token.equals(TipoToken.ERROR_LEXICO)) {
-            return "(\"([a-z]*[0-9]*) | \"([A-Z]*[0-9]))";
+            return "No existe en el lenguaje";
         } else {
             return lexema;
         }

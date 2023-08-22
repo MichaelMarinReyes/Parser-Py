@@ -14,6 +14,7 @@ backend/identificadores/OtroEnum.class
 frontend/graphviz/GraphvizUtil.class
 frontend/ReportesPanel.class
 frontend/graphviz/VisualizarGrafico.class
+frontend/VentanaPrincipal$7.class
 backend/identificadores/TipoToken.class
 frontend/VentanaPrincipal.class
 backend/identificadores/AritmeticosEnum.class
@@ -21,6 +22,7 @@ frontend/VentanaPrincipal$4.class
 frontend/EditorPanel$1.class
 backend/identificadores/ComparacionEnum.class
 frontend/ReportesPanel$1.class
+frontend/VentanaPrincipal$6.class
 frontend/graphviz/VisualizarGrafico$Utils.class
 frontend/VentanaPrincipal$1.class
 backend/identificadores/PalabraClaveEnum.class

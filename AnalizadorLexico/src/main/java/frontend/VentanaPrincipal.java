@@ -3,6 +3,7 @@ package frontend;
 import backend.LeerArchivoTexto;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
@@ -131,17 +132,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_reportesBotonMouseClicked
 
     private void ayudaBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ayudaBotonMouseClicked
-        String ayuda = "\n\tPresione Archivo y Cargar archivo para cargar un archivo de texto nuevo.\n"
-                + "\tPresione Editor para regresar a la pestaña de editor de texto.\n"
-                + "\tPresione Reportes para ver la tabla de reportes con los tokens encontrados en el documento.\n"
-                + "\tPresione Ayuda para ver ayuda.\n"
-                + "\tPresione Acerda de para ver datos del desarrollador.\n\n"
-                + "\tComuniquese con el desarrollador para más información.";
+        String ayuda = "\n   * Presione Archivo y Cargar archivo para cargar un archivo de texto nuevo.\n"
+                + "   * Presione Editor para regresar a la pestaña de editor de texto.\n"
+                + "   * Presione Reportes para ver la tabla de reportes con los tokens encontrados en el documento.\n"
+                + "   * Presione Ayuda para ver ayuda.\n"
+                + "   * Presione Acerda de para ver datos del desarrollador.\n\n"
+                + "   * Comuniquese con el desarrollador para más información.";
 
         JTextArea textoAyuda = new JTextArea(ayuda);
         textoAyuda.setBackground(Color.LIGHT_GRAY);
         textoAyuda.setForeground(Color.BLUE);
         textoAyuda.setBorder(new CompoundBorder());
+        textoAyuda.setFont(new Font("Bold", Font.BOLD, 12){
+        });
         textoAyuda.setEditable(false);
         JDialog dialogoAyuda = new JDialog(this, true);
         dialogoAyuda.add(textoAyuda);
@@ -152,17 +155,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_ayudaBotonMouseClicked
 
     private void acerdaDeBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acerdaDeBotonMouseClicked
-        String ayuda = "\n\tLenguajes Formales y de Programación\n\n\tCarné: 201831260\n\tNombre: Michael Kristopher Marín Reyes";
+        String ayuda = "\n   Lenguajes Formales y de Programación\n\n   Carné: 201831260\n   Nombre: Michael Kristopher Marín Reyes";
 
-        JTextArea textoAyuda = new JTextArea(ayuda);
-        textoAyuda.setBackground(Color.LIGHT_GRAY);
-        textoAyuda.setForeground(Color.BLUE);
-        textoAyuda.setBorder(new CompoundBorder());
-        textoAyuda.setEditable(false);
+        JTextArea textoAcercaDe = new JTextArea(ayuda);
+        textoAcercaDe.setBackground(Color.LIGHT_GRAY);
+        textoAcercaDe.setForeground(Color.BLUE);
+        textoAcercaDe.setBorder(new CompoundBorder());
+        textoAcercaDe.setFont(new Font("Bold", Font.BOLD, 12){
+        });
+        textoAcercaDe.setEditable(false);
         JDialog dialogoAyuda = new JDialog(this, true);
-        dialogoAyuda.add(textoAyuda);
+        dialogoAyuda.add(textoAcercaDe);
         dialogoAyuda.setTitle("Acerca de");
-        dialogoAyuda.setSize(400, 200);
+        dialogoAyuda.setSize(320, 200);
         dialogoAyuda.setLocationRelativeTo(this);
         dialogoAyuda.setVisible(true);
     }//GEN-LAST:event_acerdaDeBotonMouseClicked

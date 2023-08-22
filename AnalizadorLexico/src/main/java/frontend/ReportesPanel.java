@@ -2,6 +2,7 @@ package frontend;
 
 import frontend.graphviz.VisualizarGrafico;
 import backend.Token;
+import backend.identificadores.TipoToken;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
@@ -80,6 +81,31 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
             modeloDatos.setValueAt(String.valueOf(token.getLinea()), i, 4);
             modeloDatos.setValueAt(token.getColumna(), i, 5);
             modeloDatos.setValueAt(new JButton("Ver Gráfico"), i, 6);
+        }
+    }
+
+    public void definirPatron(Token token, int indice) {
+        System.out.println(token);
+        if (token.equals(TipoToken.ARITMETICO)) {
+            EditorPanel.listaToken.get(indice).setPatron(token.getLexema());
+        } else if (token.equals(TipoToken.COMPARACION)) {
+            EditorPanel.listaToken.get(indice).setPatron(token.getLexema());
+        } else if (token.equals(TipoToken.LOGICO)) {
+            EditorPanel.listaToken.get(indice).setPatron(token.getLexema());
+        } else if (token.equals(TipoToken.ASIGNACION)) {
+            EditorPanel.listaToken.get(indice).setPatron(token.getLexema());
+        } else if (token.equals(TipoToken.PALABRA_RESERVADA)) {
+            EditorPanel.listaToken.get(indice).setPatron(token.getLexema());
+        } else if (token.equals(TipoToken.DECIMAL)) {
+            EditorPanel.listaToken.get(indice).setPatron("([0-9]+.[0-9]+)");
+        } else if (token.equals(TipoToken.ENTERO)) {
+            EditorPanel.listaToken.get(indice).setPatron("([0-9]+)");
+        } else if (token.equals(TipoToken.COMENTARIO)) {
+            EditorPanel.listaToken.get(indice).setPatron("(#[0-9]*[a-z]* | #[0-9]*[A-Z]* #[a-z]*[0-9]* | #[A-Z]*[0-9]*)");
+        } else if (token.equals(TipoToken.CADENA)) {
+            EditorPanel.listaToken.get(indice).setPatron("((\"[a-z]*[0-9]*\") | (\"[A-Z]*[0-9])\") | ((\'[a-z]*[0-9]*\') | (\'[A-Z]*[0-9])\')");
+        } else if (token.equals(TipoToken.ERROR_LEXICO)) {
+            EditorPanel.listaToken.get(indice).setPatron("No existe en el lenguaje");
         }
     }
 
