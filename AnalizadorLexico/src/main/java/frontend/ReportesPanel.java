@@ -6,14 +6,18 @@ import backend.identificadores.TipoToken;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author michael
  */
 public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
+
+    private TableRowSorter<DefaultTableModel> sorter;
 
     /**
      * Creates new form ReportesPanel
@@ -34,6 +38,7 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaReportes = new javax.swing.JTable();
+        filtroBox = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 0));
         setLayout(new java.awt.BorderLayout());
@@ -57,18 +62,45 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
         jScrollPane1.setViewportView(tablaReportes);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        filtroBox.setBackground(new java.awt.Color(255, 255, 0));
+        filtroBox.setForeground(new java.awt.Color(0, 153, 204));
+        filtroBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS" }));
+        filtroBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                filtroBoxItemStateChanged(evt);
+            }
+        });
+        add(filtroBox, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void filtroBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filtroBoxItemStateChanged
+        filtrarTabla();
+    }//GEN-LAST:event_filtroBoxItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> filtroBox;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaReportes;
     // End of variables declaration//GEN-END:variables
+
+    private void filtrarTabla() {
+        if (!filtroBox.getSelectedItem().toString().equals("TODOS")) {
+            sorter.setRowFilter(RowFilter.regexFilter(filtroBox.getSelectedItem().toString(), 1));
+        } else {
+            sorter.setRowFilter(null);
+        }
+
+    }
 
     public void actualizarTabla() {
         DefaultTableModel modelo = new DefaultTableModel(new String[]{"No.", "Token", "Patrón", "Lexema", "Línea", "Columna", "Ver gráfico"}, EditorPanel.listaToken.size());
         this.tablaReportes.setDefaultRenderer(Object.class, new RenderizarTabla());
         tablaReportes.setModel(modelo);
+        tablaReportes.setAutoCreateRowSorter(true);
+        sorter = new TableRowSorter<>(modelo);
+        tablaReportes.setRowSorter(sorter);
         tablaReportes.addMouseListener(this);
 
         TableModel modeloDatos = tablaReportes.getModel();
@@ -82,6 +114,7 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
             modeloDatos.setValueAt(token.getColumna(), i, 5);
             modeloDatos.setValueAt(new JButton("Ver Gráfico"), i, 6);
         }
+        llenarComboBox();
     }
 
     public void definirPatron(Token token, int indice) {
@@ -121,6 +154,12 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
             ver.setLocationRelativeTo(this);
             ver.setVisible(true);
 
+        }
+    }
+
+    private void llenarComboBox() {
+        for (int i = 0; i < TipoToken.values().length; i++) {
+            filtroBox.addItem(TipoToken.values()[i].toString());
         }
     }
 

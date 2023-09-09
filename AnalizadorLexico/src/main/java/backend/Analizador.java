@@ -27,6 +27,14 @@ public class Analizador {
         boolean esCadena = false;
         boolean esComentario = false;
 
+//        for (int i = 0; i < entradaChar.length; i++) {
+//            char c = entradaChar[i];
+//            //c = <
+//            //c = entradaChar[i+1]}
+//            // i ++
+//            
+//            
+//        }
         for (char letra : entradaChar) {
             if (esCadena) {
                 buffer += letra;

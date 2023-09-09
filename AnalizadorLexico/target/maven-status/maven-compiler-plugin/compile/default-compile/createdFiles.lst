@@ -3,6 +3,7 @@ backend/LeerArchivoTexto.class
 backend/Analizador.class
 frontend/VentanaPrincipal$3.class
 backend/Main.class
+frontend/ReportesPanel$2.class
 frontend/EditorPanel$2.class
 frontend/NumeroLinea.class
 frontend/NumeroLinea$1.class
