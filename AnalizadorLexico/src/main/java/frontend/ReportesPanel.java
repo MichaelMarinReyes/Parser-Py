@@ -1,8 +1,9 @@
 package frontend;
 
+import backend.Analizador;
 import frontend.graphviz.VisualizarGrafico;
 import backend.Token;
-import backend.identificadores.TipoToken;
+import backend.identificadores.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ import javax.swing.table.TableRowSorter;
 public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
 
     private TableRowSorter<DefaultTableModel> sorter;
+
     /**
      * Creates new form ReportesPanel
      */
@@ -90,11 +92,13 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
     // End of variables declaration//GEN-END:variables
 
     private void llenarComboBox() {
-        for (int i = 0; i < TipoToken.values().length; i++) {
-            filtroComboBox.addItem(TipoToken.values()[i].toString());
+        if (EditorPanel.listaToken != null) {
+            for (int i = 0; i < EditorPanel.listaToken.size(); i++) {
+                filtroComboBox.addItem(EditorPanel.listaToken.get(i).getToken());
+            }
         }
     }
-    
+
     public void actualizarTabla() {
         DefaultTableModel modelo = new DefaultTableModel(new String[]{"No.", "Token", "Patrón", "Lexema", "Línea", "Columna", "Ver gráfico"}, EditorPanel.listaToken.size());
         this.tablaReportes.setDefaultRenderer(Object.class, new RenderizarTabla());
