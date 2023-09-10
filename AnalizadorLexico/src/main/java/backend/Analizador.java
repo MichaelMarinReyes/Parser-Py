@@ -11,6 +11,11 @@ import java.util.Map;
  */
 public class Analizador {
 
+    private Map<String, AritmeticosEnum> aritmeticosDiccionario;
+    private Map<String, ComparacionEnum> comparacionDiccionacio;
+    private Map<String, OtroEnum> otrosDiccionario;
+    private Map<String, LogicoEnum> logicosDiccionario;
+    private Map<String, PalabraClaveEnum> palabrasClaveDiccionario;
     private Map<String, TipoToken> diccionarioTipo;
     private ArrayList<Token> listaToken;
 
@@ -93,6 +98,21 @@ public class Analizador {
                             case '+':
                             case '-':
                             case '*':
+                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '*') {
+                                    buffer += letra;
+                                    buffer += entradaChar[columna];
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
+                                    columna++;
+                                } else {
+                                    if (!buffer.isEmpty()) {
+                                        crearToken(buffer, linea, columna);
+                                        buffer = "";
+                                    }
+                                    crearToken(String.valueOf(letra), linea, columna);
+                                    columna++;
+                                }
+                                break;
                             case '/':
                             case '%':
                                 if (!buffer.isEmpty()) {
@@ -177,27 +197,23 @@ public class Analizador {
     }
 
     private void crearToken(String lexema, int linea, int columna) {
-        if (esNumero(lexema)) {
+        if (esNumero(lexema)) { //DETECTA DECIMALES
             if (lexema.contains(".")) {
                 listaToken.add(new Token(TipoToken.DECIMAL.toString(), lexema, linea, columna, "([0-9]+.[0-9]+)"));
-            } else {
+            } else { //DETECTA ENTEROS
                 listaToken.add(new Token(TipoToken.ENTERO.toString(), lexema, linea, columna, "[0-9]+"));
             }
-        } else if (esCadena(lexema)) {
+        } else if (esCadena(lexema)) { //DETECTA CADENAS
             listaToken.add(new Token(TipoToken.CADENA.toString(), lexema, linea, columna, "((\"[a-z]*[0-9]*\") | (\"[A-Z]*[0-9])\") | ((\'[a-z]*[0-9]*\') | (\'[A-Z]*[0-9])\')"));
-        } else if (diccionarioTipo.containsKey(lexema)) {
-            TipoToken tipoToken = diccionarioTipo.get(lexema);
-            if (tipoToken == TipoToken.ID) {
-                listaToken.add(new Token(TipoToken.PALABRA_RESERVADA.toString(), lexema, linea, columna, lexema));
-            } else {
-                listaToken.add(new Token(tipoToken.toString(), lexema, linea, columna, lexema));
-            }
-        } else if (lexema.contains("#")) {
+        } else if (palabrasClaveDiccionario.containsKey(lexema)) {
+            PalabraClaveEnum palabraClave = palabrasClaveDiccionario.get(lexema);
+            listaToken.add(new Token(palabraClave.toString(), lexema, linea, columna, lexema));
+        } else if (lexema.contains("#")) {//DETECTA COMENTARIOS
             listaToken.add(new Token(TipoToken.COMENTARIO.toString(), lexema, linea, columna, "(#[0-9]*[a-z]* | #[0-9]*[A-Z]* #[a-z]*[0-9]* | #[A-Z]*[0-9]*)"));
         } else if (lexema.contains("error")) {
             String[] texto = lexema.split("error");
             listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), texto[1], linea, columna, texto[1]));
-        } else if (lexema.contains("_")) {
+        } else if (lexema.contains("_")) { //DETECTA VARIABLES
             char[] texto = lexema.toCharArray();
             String inicial = String.valueOf(texto[0]);
             boolean comienzaNumero = false;
@@ -207,8 +223,26 @@ public class Analizador {
             } else {
                 listaToken.add(new Token(TipoToken.ID.toString(), lexema, linea, columna, "([\\w]|_)+(\\w|\\d)*"));
             }
+        } else if (diccionarioTipo.containsKey(lexema)) {
+            TipoToken tipoToken = diccionarioTipo.get(lexema);
+            listaToken.add(new Token(tipoToken.toString(), lexema, linea, columna, lexema));
         } else {
-            listaToken.add(new Token(TipoToken.OTROS_TOKENS.toString(), lexema, linea, columna, lexema));
+            // Buscar en los diccionarios específicos
+            if (aritmeticosDiccionario.containsKey(lexema)) {
+                AritmeticosEnum aritmetico = aritmeticosDiccionario.get(lexema);
+                listaToken.add(new Token(aritmetico.toString(), lexema, linea, columna, lexema));
+            } else if (comparacionDiccionacio.containsKey(lexema)) {
+                ComparacionEnum comparacion = comparacionDiccionacio.get(lexema);
+                listaToken.add(new Token(comparacion.toString(), lexema, linea, columna, lexema));
+            } else if (logicosDiccionario.containsKey(lexema)) {
+                LogicoEnum logico = logicosDiccionario.get(lexema);
+                listaToken.add(new Token(logico.toString(), lexema, linea, columna, lexema));
+            } else if (otrosDiccionario.containsKey(lexema)) {
+                OtroEnum otro = otrosDiccionario.get(lexema);
+                listaToken.add(new Token(otro.toString(), lexema, linea, columna, lexema));
+            } else {
+                listaToken.add(new Token(TipoToken.OTROS_TOKENS.toString(), lexema, linea, columna, lexema));
+            }
         }
     }
 
@@ -231,75 +265,79 @@ public class Analizador {
     }
 
     private boolean esID(String lexema) {
-        return !diccionarioTipo.containsKey(lexema);
+        return !palabrasClaveDiccionario.containsKey(lexema);
     }
 
     private void iniciarDiccionarios() {
+        aritmeticosDiccionario = new HashMap<>();
+        comparacionDiccionacio = new HashMap<>();
+        logicosDiccionario = new HashMap<>();
+        otrosDiccionario = new HashMap<>();
+        palabrasClaveDiccionario = new HashMap<>();
         diccionarioTipo = new HashMap<>();
-        this.diccionarioTipo.put("+", TipoToken.ARITMETICO);
-        this.diccionarioTipo.put("-", TipoToken.ARITMETICO);
-        this.diccionarioTipo.put("**", TipoToken.ARITMETICO);
-        this.diccionarioTipo.put("/", TipoToken.ARITMETICO);
-        this.diccionarioTipo.put("//", TipoToken.ARITMETICO);
-        this.diccionarioTipo.put("%", TipoToken.ARITMETICO);
-        this.diccionarioTipo.put("*", TipoToken.ARITMETICO);
+
+        this.aritmeticosDiccionario.put("+", AritmeticosEnum.SUMA);
+        this.aritmeticosDiccionario.put("-", AritmeticosEnum.RESTA);
+        this.aritmeticosDiccionario.put("**", AritmeticosEnum.EXPONENTE);
+        this.aritmeticosDiccionario.put("/", AritmeticosEnum.DIVISION1);
+        this.aritmeticosDiccionario.put("//", AritmeticosEnum.DIVISION2);
+        this.aritmeticosDiccionario.put("%", AritmeticosEnum.MODULO);
+        this.aritmeticosDiccionario.put("*", AritmeticosEnum.MULTIPLICACION);
         //LOGICOS
-        this.diccionarioTipo.put("and", TipoToken.LOGICO);
-        this.diccionarioTipo.put("or", TipoToken.LOGICO);
-        this.diccionarioTipo.put("not", TipoToken.LOGICO);
-        //ASIGNACION
-        this.diccionarioTipo.put("=", TipoToken.ASIGNACION);
+        this.logicosDiccionario.put("and", LogicoEnum.AND);
+        this.logicosDiccionario.put("or", LogicoEnum.OR);
+        this.logicosDiccionario.put("not", LogicoEnum.NOT);
         //PALABRAS CLAVE
-        this.diccionarioTipo.put("as", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("assert", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("break", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("class", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("continue", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("def", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("del", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("elif", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("else", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("except", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("False", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("finally", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("for", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("global", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("if", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("import", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("in", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("is", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("lambda", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("None", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("nonlocal", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("pass", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("raise", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("return", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("True", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("try", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("while", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("with", TipoToken.PALABRA_RESERVADA);
-        this.diccionarioTipo.put("yield", TipoToken.PALABRA_RESERVADA);
+        this.palabrasClaveDiccionario.put("as", PalabraClaveEnum.AS);
+        this.palabrasClaveDiccionario.put("assert", PalabraClaveEnum.ASSERT);
+        this.palabrasClaveDiccionario.put("break", PalabraClaveEnum.BREAK);
+        this.palabrasClaveDiccionario.put("class", PalabraClaveEnum.CLASS);
+        this.palabrasClaveDiccionario.put("continue", PalabraClaveEnum.CONTINUE);
+        this.palabrasClaveDiccionario.put("def", PalabraClaveEnum.DEF);
+        this.palabrasClaveDiccionario.put("del", PalabraClaveEnum.DEL);
+        this.palabrasClaveDiccionario.put("elif", PalabraClaveEnum.ELIF);
+        this.palabrasClaveDiccionario.put("else", PalabraClaveEnum.ELSE);
+        this.palabrasClaveDiccionario.put("except", PalabraClaveEnum.EXCEPT);
+        this.palabrasClaveDiccionario.put("False", PalabraClaveEnum.FALSE);
+        this.palabrasClaveDiccionario.put("finally", PalabraClaveEnum.FINALLY);
+        this.palabrasClaveDiccionario.put("for", PalabraClaveEnum.FOR);
+        this.palabrasClaveDiccionario.put("global", PalabraClaveEnum.GLOBAL);
+        this.palabrasClaveDiccionario.put("if", PalabraClaveEnum.IF);
+        this.palabrasClaveDiccionario.put("import", PalabraClaveEnum.IMPORT);
+        this.palabrasClaveDiccionario.put("in", PalabraClaveEnum.IN);
+        this.palabrasClaveDiccionario.put("is", PalabraClaveEnum.IS);
+        this.palabrasClaveDiccionario.put("lambda", PalabraClaveEnum.NONE);
+        this.palabrasClaveDiccionario.put("None", PalabraClaveEnum.NONE);
+        this.palabrasClaveDiccionario.put("nonlocal", PalabraClaveEnum.NONLOCAL);
+        this.palabrasClaveDiccionario.put("pass", PalabraClaveEnum.PASS);
+        this.palabrasClaveDiccionario.put("raise", PalabraClaveEnum.RAISE);
+        this.palabrasClaveDiccionario.put("return", PalabraClaveEnum.RETURN);
+        this.palabrasClaveDiccionario.put("True", PalabraClaveEnum.TRUE);
+        this.palabrasClaveDiccionario.put("try", PalabraClaveEnum.TRY);
+        this.palabrasClaveDiccionario.put("while", PalabraClaveEnum.WHILE);
+        this.palabrasClaveDiccionario.put("with", PalabraClaveEnum.WITH);
+        this.palabrasClaveDiccionario.put("yield", PalabraClaveEnum.YIELD);
         //COMPARACION
-        this.diccionarioTipo.put("==", TipoToken.COMPARACION);
-        this.diccionarioTipo.put("=", TipoToken.COMPARACION);
-        this.diccionarioTipo.put("!=", TipoToken.COMPARACION);
-        this.diccionarioTipo.put(">", TipoToken.COMPARACION);
-        this.diccionarioTipo.put("<", TipoToken.COMPARACION);
-        this.diccionarioTipo.put(">=", TipoToken.COMPARACION);
-        this.diccionarioTipo.put("<=", TipoToken.COMPARACION);
+        this.comparacionDiccionacio.put("==", ComparacionEnum.IGUAL);
+        this.comparacionDiccionacio.put("=", ComparacionEnum.ASIGNACION);
+        this.comparacionDiccionacio.put("!=", ComparacionEnum.DIFERENTE);
+        this.comparacionDiccionacio.put(">", ComparacionEnum.MAYOR_QUE);
+        this.comparacionDiccionacio.put("<", ComparacionEnum.MAYOR_QUE);
+        this.comparacionDiccionacio.put(">=", ComparacionEnum.MAYOR_IGUAL_QUE);
+        this.comparacionDiccionacio.put("<=", ComparacionEnum.MENOR_IGUAL_QUE);
         //OTROS
-        this.diccionarioTipo.put("#", TipoToken.COMENTARIO);
-        this.diccionarioTipo.put(",", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put("]", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put("[", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put(":", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put("}", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put("{", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put(")", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put("(", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put(";", TipoToken.OTROS_TOKENS);
-        this.diccionarioTipo.put("\'", TipoToken.CADENA);
-        this.diccionarioTipo.put("\"", TipoToken.CADENA);
-        this.diccionarioTipo.put("_", TipoToken.OTROS_TOKENS);
+        this.otrosDiccionario.put("#", OtroEnum.COMENTARIO);
+        this.otrosDiccionario.put(",", OtroEnum.COMA);
+        this.otrosDiccionario.put("]", OtroEnum.CORCHETE_CIERRA);
+        this.otrosDiccionario.put("[", OtroEnum.CORCHETE_ABRE);
+        this.otrosDiccionario.put(":", OtroEnum.DOS_PUNTOS);
+        this.otrosDiccionario.put("}", OtroEnum.LLAVE_CIERRA);
+        this.otrosDiccionario.put("{", OtroEnum.LLAVE_ABRE);
+        this.otrosDiccionario.put(")", OtroEnum.PARENTESIS_CIERRA);
+        this.otrosDiccionario.put("(", OtroEnum.PARENTESIS_ABRE);
+        this.otrosDiccionario.put(";", OtroEnum.PUNTO_COMA);
+        this.otrosDiccionario.put("\'", OtroEnum.CADENA);
+        this.otrosDiccionario.put("\"", OtroEnum.CADENA);
+        this.otrosDiccionario.put("_", OtroEnum.GUION_BAJO);
     }
 }

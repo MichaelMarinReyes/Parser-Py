@@ -116,10 +116,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             String textoLeido;
             textoLeido = miArchivo.abrirArchivo(chooser.getSelectedFile().getAbsolutePath());
+            this.pintarPanel(editor);
             editor.setAreaEditor(textoLeido);
         }
-
-
     }//GEN-LAST:event_abrirBotonActionPerformed
 
     private void editorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editorTextoMouseClicked
@@ -143,7 +142,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         textoAyuda.setBackground(Color.LIGHT_GRAY);
         textoAyuda.setForeground(Color.BLUE);
         textoAyuda.setBorder(new CompoundBorder());
-        textoAyuda.setFont(new Font("Bold", Font.BOLD, 12){
+        textoAyuda.setFont(new Font("Bold", Font.BOLD, 12) {
         });
         textoAyuda.setEditable(false);
         JDialog dialogoAyuda = new JDialog(this, true);
@@ -161,7 +160,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         textoAcercaDe.setBackground(Color.LIGHT_GRAY);
         textoAcercaDe.setForeground(Color.BLUE);
         textoAcercaDe.setBorder(new CompoundBorder());
-        textoAcercaDe.setFont(new Font("Bold", Font.BOLD, 12){
+        textoAcercaDe.setFont(new Font("Bold", Font.BOLD, 12) {
         });
         textoAcercaDe.setEditable(false);
         JDialog dialogoAyuda = new JDialog(this, true);
