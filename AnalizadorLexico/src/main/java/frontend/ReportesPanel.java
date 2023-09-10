@@ -1,13 +1,16 @@
 package frontend;
 
+import backend.Analizador;
 import frontend.graphviz.VisualizarGrafico;
 import backend.Token;
-import backend.identificadores.TipoToken;
+import backend.identificadores.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -15,12 +18,15 @@ import javax.swing.table.TableModel;
  */
 public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
 
+    private TableRowSorter<DefaultTableModel> sorter;
+
     /**
      * Creates new form ReportesPanel
      */
     public ReportesPanel() {
         initComponents();
         actualizarTabla();
+        llenarComboBox();
     }
 
     /**
@@ -34,6 +40,7 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaReportes = new javax.swing.JTable();
+        filtroComboBox = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 0));
         setLayout(new java.awt.BorderLayout());
@@ -57,18 +64,48 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
         jScrollPane1.setViewportView(tablaReportes);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        filtroComboBox.setBackground(new java.awt.Color(255, 255, 0));
+        filtroComboBox.setForeground(new java.awt.Color(0, 153, 204));
+        filtroComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS" }));
+        filtroComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                filtroComboBoxItemStateChanged(evt);
+            }
+        });
+        add(filtroComboBox, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void filtroComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filtroComboBoxItemStateChanged
+        if (!filtroComboBox.getSelectedItem().toString().equals("TODOS")) {
+            sorter.setRowFilter(RowFilter.regexFilter(filtroComboBox.getSelectedItem().toString(), 1));
+        } else {
+            sorter.setRowFilter(null);
+        }
+    }//GEN-LAST:event_filtroComboBoxItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> filtroComboBox;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaReportes;
     // End of variables declaration//GEN-END:variables
+
+    private void llenarComboBox() {
+        if (EditorPanel.listaToken != null) {
+            for (int i = 0; i < EditorPanel.listaToken.size(); i++) {
+                filtroComboBox.addItem(EditorPanel.listaToken.get(i).getToken());
+            }
+        }
+    }
 
     public void actualizarTabla() {
         DefaultTableModel modelo = new DefaultTableModel(new String[]{"No.", "Token", "Patrón", "Lexema", "Línea", "Columna", "Ver gráfico"}, EditorPanel.listaToken.size());
         this.tablaReportes.setDefaultRenderer(Object.class, new RenderizarTabla());
         tablaReportes.setModel(modelo);
+        tablaReportes.setAutoCreateRowSorter(true);
+        sorter = new TableRowSorter<>(modelo);
+        tablaReportes.setRowSorter(sorter);
         tablaReportes.addMouseListener(this);
 
         TableModel modeloDatos = tablaReportes.getModel();

@@ -135,6 +135,10 @@ public class EditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
+        if (listaToken != null) {
+            listaToken.clear();
+            areaConsola.setText("");
+        }
         if (areaEditor.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
         } else {
