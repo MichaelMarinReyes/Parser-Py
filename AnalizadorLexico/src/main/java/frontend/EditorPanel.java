@@ -254,7 +254,7 @@ public class EditorPanel extends javax.swing.JPanel {
                 StyleConstants.setForeground(estilo, Color.ORANGE);
             } else if (token.getToken().equals(TipoToken.COMENTARIO.toString())) {
                 StyleConstants.setForeground(estilo, Color.GRAY);
-            } else if (token.getToken().equals(TipoToken.OTROS_TOKENS.toString())) {
+            } else if (token.getToken().equals(TipoToken.ERROR_LEXICO.toString())) {
                 StyleConstants.setForeground(estilo, Color.GREEN);
             } else if (token.getToken().equals(TipoToken.ERROR_LEXICO.toString())) {
                 StyleConstants.setForeground(estilo, Color.RED);

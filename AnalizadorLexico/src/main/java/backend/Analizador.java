@@ -32,7 +32,9 @@ public class Analizador {
         boolean esCadena = false;
         boolean esComentario = false;
 
-        for (char letra : entradaChar) {
+        for (int i = 0; i < entradaChar.length; i++) {
+            char letra = entradaChar[i];
+
             if (esCadena) {
                 buffer += letra;
                 if (letra == '"' || letra == '\'') {
@@ -98,18 +100,17 @@ public class Analizador {
                             case '+':
                             case '-':
                             case '*':
-                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '*') {
-                                    buffer += letra;
-                                    buffer += entradaChar[columna];
-                                    crearToken(buffer, linea, columna);
+                                if (entradaChar[i + 1] == '*') {
+                                    listaToken.add(new Token(AritmeticosEnum.EXPONENTE.toString(), "**", linea, columna, "**"));
+                                    buffer = "";
+                                    columna++;
+                                } else if (entradaChar[i + 1] == ' ' && entradaChar[i + 2] == '*') {
+                                    listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), "* *", linea, columna, "No existe en el alfabeto"));
                                     buffer = "";
                                     columna++;
                                 } else {
-                                    if (!buffer.isEmpty()) {
-                                        crearToken(buffer, linea, columna);
-                                        buffer = "";
-                                    }
-                                    crearToken(String.valueOf(letra), linea, columna);
+                                    listaToken.add(new Token(AritmeticosEnum.MULTIPLICACION.toString(), "*", linea, columna, "*"));
+                                    buffer = "";
                                     columna++;
                                 }
                                 break;
@@ -123,10 +124,8 @@ public class Analizador {
                                 columna++;
                                 break;
                             case '=':
-                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '=') {
-                                    buffer += letra;
-                                    buffer += entradaChar[columna];
-                                    crearToken(buffer, linea, columna);
+                                if (entradaChar[i + 1] == '=') {
+                                    listaToken.add(new Token(ComparacionEnum.IGUAL.toString(), "==", linea, columna, "=="));
                                     buffer = "";
                                     columna++;
                                 } else {
@@ -136,20 +135,34 @@ public class Analizador {
                                 columna++;
                                 break;
                             case '>':
-                            case '<':
-                            case '!':
-                                if (!buffer.isEmpty()) {
-                                    crearToken(buffer, linea, columna);
-                                    buffer = "";
-                                }
-                                buffer += letra;
-                                if (columna < entradaChar.length - 1 && entradaChar[columna] == '=') {
-                                    buffer += entradaChar[columna];
-                                    crearToken(buffer, linea, columna);
+                                if (entradaChar[i + 1] == '=') {
+                                    listaToken.add(new Token(ComparacionEnum.MAYOR_IGUAL_QUE.toString(), ">=", linea, columna, ">="));
                                     buffer = "";
                                     columna++;
                                 } else {
-                                    crearToken(buffer, linea, columna);
+                                    listaToken.add(new Token(ComparacionEnum.MAYOR_QUE.toString(), ">", linea, columna, ">"));
+                                    buffer = "";
+                                }
+                                columna++;
+                                break;
+                            case '<':
+                                if (entradaChar[i + 1] == '=') {
+                                    listaToken.add(new Token(ComparacionEnum.MENOR_IGUAL_QUE.toString(), "<=", linea, columna, "<="));
+                                    buffer = "";
+                                    columna++;
+                                } else {
+                                    listaToken.add(new Token(ComparacionEnum.MENOR_QUE.toString(), "<", linea, columna, "<"));
+                                    buffer = "";
+                                }
+                                columna++;
+                                break;
+                            case '!':
+                                if (entradaChar[i + 1] == '=') {
+                                    listaToken.add(new Token(ComparacionEnum.DIFERENTE.toString(), "!=", linea, columna, "!="));
+                                    buffer = "";
+                                    columna++;
+                                } else if (entradaChar[i + 1] == ' ') {
+                                    listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), "! ", linea, columna, "No existe en el alfabeto"));
                                     buffer = "";
                                 }
                                 columna++;
@@ -197,23 +210,31 @@ public class Analizador {
     }
 
     private void crearToken(String lexema, int linea, int columna) {
-        if (esNumero(lexema)) { //DETECTA DECIMALES
+        if (esNumero(lexema)) {
             if (lexema.contains(".")) {
                 listaToken.add(new Token(TipoToken.DECIMAL.toString(), lexema, linea, columna, "([0-9]+.[0-9]+)"));
-            } else { //DETECTA ENTEROS
+            } else {
                 listaToken.add(new Token(TipoToken.ENTERO.toString(), lexema, linea, columna, "[0-9]+"));
             }
-        } else if (esCadena(lexema)) { //DETECTA CADENAS
+        } else if (lexema.contains("#")) {
+            listaToken.add(new Token(TipoToken.COMENTARIO.toString(), lexema, linea, columna, "(#[0-9]*[a-z]* | #[0-9]*[A-Z]* #[a-z]*[0-9]* | #[A-Z]*[0-9]*)"));
+        } else if (errorLexico(lexema)) {
+            if (lexema.contains("\n")) {
+                //String[] errores = lexema.split("\n");
+                listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), lexema, linea, columna, "No existe en el alfabeto"));
+                //listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), errores[1], linea, columna, "No existe en el alfabeto"));
+            } else {
+                listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), lexema, linea, columna, "No existe en el alfabeto"));
+            }
+        } else if (esCadena(lexema)) {
             listaToken.add(new Token(TipoToken.CADENA.toString(), lexema, linea, columna, "((\"[a-z]*[0-9]*\") | (\"[A-Z]*[0-9])\") | ((\'[a-z]*[0-9]*\') | (\'[A-Z]*[0-9])\')"));
         } else if (palabrasClaveDiccionario.containsKey(lexema)) {
             PalabraClaveEnum palabraClave = palabrasClaveDiccionario.get(lexema);
             listaToken.add(new Token(palabraClave.toString(), lexema, linea, columna, lexema));
-        } else if (lexema.contains("#")) {//DETECTA COMENTARIOS
-            listaToken.add(new Token(TipoToken.COMENTARIO.toString(), lexema, linea, columna, "(#[0-9]*[a-z]* | #[0-9]*[A-Z]* #[a-z]*[0-9]* | #[A-Z]*[0-9]*)"));
         } else if (lexema.contains("error")) {
             String[] texto = lexema.split("error");
             listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), texto[1], linea, columna, texto[1]));
-        } else if (lexema.contains("_")) { //DETECTA VARIABLES
+        } else if (lexema.contains("_")) {
             char[] texto = lexema.toCharArray();
             String inicial = String.valueOf(texto[0]);
             boolean comienzaNumero = false;
@@ -227,7 +248,6 @@ public class Analizador {
             TipoToken tipoToken = diccionarioTipo.get(lexema);
             listaToken.add(new Token(tipoToken.toString(), lexema, linea, columna, lexema));
         } else {
-            // Buscar en los diccionarios específicos
             if (aritmeticosDiccionario.containsKey(lexema)) {
                 AritmeticosEnum aritmetico = aritmeticosDiccionario.get(lexema);
                 listaToken.add(new Token(aritmetico.toString(), lexema, linea, columna, lexema));
@@ -241,9 +261,26 @@ public class Analizador {
                 OtroEnum otro = otrosDiccionario.get(lexema);
                 listaToken.add(new Token(otro.toString(), lexema, linea, columna, lexema));
             } else {
-                listaToken.add(new Token(TipoToken.OTROS_TOKENS.toString(), lexema, linea, columna, lexema));
+                listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), lexema, linea, columna, "No existe en el alfabeto"));
             }
         }
+    }
+
+    private boolean errorLexico(String lexema) {
+        char[] cadena = lexema.toCharArray();
+
+        for (int i = 0; i < cadena.length; i++) {
+            if (cadena[i] == 10) {
+                return true;
+            } else if (cadena[0] == 39 || cadena[cadena.length - 1] == 34) {
+                if (cadena[0] == 34 && cadena[cadena.length - 1] == 34) {
+                    return false;
+                } else if (cadena[0] == 39 && cadena[cadena.length - 1] == 39) {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean esNumero(String lexema) {
