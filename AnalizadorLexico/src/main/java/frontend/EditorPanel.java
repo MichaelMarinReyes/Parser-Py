@@ -4,6 +4,7 @@ import backend.Analizador;
 import backend.Token;
 import backend.identificadores.TipoToken;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.text.Style;
@@ -18,7 +19,6 @@ public class EditorPanel extends javax.swing.JPanel {
 
     private NumeroLinea numerarEditor;
     private NumeroLinea numerarConsola;
-    private ReportesPanel reportes = new ReportesPanel();
     public static ArrayList<Token> listaToken = new ArrayList();
     public static ArrayList<Error> errores = new ArrayList<>();
 
@@ -33,6 +33,20 @@ public class EditorPanel extends javax.swing.JPanel {
         numerarConsola = new NumeroLinea(areaConsola);
         scrollConsola.setRowHeaderView(numerarConsola);
         mostrarColumna();
+        this.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_F5) {
+                    ejecutarAnalisis();
+                }
+            }
+        });
+        this.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_F4) {
+                    limpiarTodo();
+                }
+            }
+        });
     }
 
     /**
@@ -74,6 +88,11 @@ public class EditorPanel extends javax.swing.JPanel {
         limpiarBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 limpiarBotonActionPerformed(evt);
+            }
+        });
+        limpiarBoton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                limpiarBotonKeyPressed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -135,6 +154,34 @@ public class EditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
+        ejecutarAnalisis();
+    }//GEN-LAST:event_ejecutarBotonActionPerformed
+
+    private void limpiarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarBotonActionPerformed
+        areaEditor.setText("");
+        areaConsola.setText("");
+        listaToken.clear();
+        eliminarEstilos();
+    }//GEN-LAST:event_limpiarBotonActionPerformed
+
+    private void limpiarBotonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_limpiarBotonKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_F4) {
+            limpiarTodo();
+        }
+    }//GEN-LAST:event_limpiarBotonKeyPressed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JEditorPane areaConsola;
+    private javax.swing.JTextPane areaEditor;
+    private javax.swing.JButton ejecutarBoton;
+    private javax.swing.JButton limpiarBoton;
+    private javax.swing.JLabel mostrarColumnaLabel;
+    private javax.swing.JScrollPane scrollConsola;
+    private javax.swing.JScrollPane scrollEditor;
+    // End of variables declaration//GEN-END:variables
+
+    public void ejecutarAnalisis() {
         if (listaToken != null) {
             listaToken.clear();
             areaConsola.setText("");
@@ -150,25 +197,14 @@ public class EditorPanel extends javax.swing.JPanel {
 
             areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
         }
-    }//GEN-LAST:event_ejecutarBotonActionPerformed
+    }
 
-    private void limpiarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarBotonActionPerformed
+    public void limpiarTodo() {
         areaEditor.setText("");
         areaConsola.setText("");
         listaToken.clear();
         eliminarEstilos();
-    }//GEN-LAST:event_limpiarBotonActionPerformed
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JEditorPane areaConsola;
-    private javax.swing.JTextPane areaEditor;
-    private javax.swing.JButton ejecutarBoton;
-    private javax.swing.JButton limpiarBoton;
-    private javax.swing.JLabel mostrarColumnaLabel;
-    private javax.swing.JScrollPane scrollConsola;
-    private javax.swing.JScrollPane scrollEditor;
-    // End of variables declaration//GEN-END:variables
+    }
 
     private void mostrarColumna() {
         areaEditor.addCaretListener(e -> {
@@ -218,7 +254,7 @@ public class EditorPanel extends javax.swing.JPanel {
                 StyleConstants.setForeground(estilo, Color.ORANGE);
             } else if (token.getToken().equals(TipoToken.COMENTARIO.toString())) {
                 StyleConstants.setForeground(estilo, Color.GRAY);
-            } else if (token.getToken().equals(TipoToken.OTROS_TOKENS.toString())) {
+            } else if (token.getToken().equals(TipoToken.ERROR_LEXICO.toString())) {
                 StyleConstants.setForeground(estilo, Color.GREEN);
             } else if (token.getToken().equals(TipoToken.ERROR_LEXICO.toString())) {
                 StyleConstants.setForeground(estilo, Color.RED);

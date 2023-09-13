@@ -1,11 +1,15 @@
 package frontend;
 
-import backend.Analizador;
 import frontend.graphviz.VisualizarGrafico;
 import backend.Token;
 import backend.identificadores.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import javax.swing.JButton;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -92,9 +96,25 @@ public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
     // End of variables declaration//GEN-END:variables
 
     private void llenarComboBox() {
-        if (EditorPanel.listaToken != null) {
-            for (int i = 0; i < EditorPanel.listaToken.size(); i++) {
-                filtroComboBox.addItem(EditorPanel.listaToken.get(i).getToken());
+        ArrayList<Token> copiaTokens = new ArrayList<>();
+        HashSet<String> tiposToken = new HashSet<>();
+
+        if (copiaTokens != null) {
+            for (Token token : EditorPanel.listaToken) {
+                String tokenTipo = token.getToken();
+                if (!tiposToken.contains(tokenTipo)) {
+                    copiaTokens.add(token);
+                    tiposToken.add(tokenTipo);
+                }
+            }
+            Collections.sort(copiaTokens, new Comparator<Token>() {
+                @Override
+                public int compare(Token t1, Token t2) {
+                    return t1.getToken().compareTo(t2.getToken());
+                }
+            });
+            for (int i = 0; i < copiaTokens.size(); i++) {
+                filtroComboBox.addItem(copiaTokens.get(i).getToken());
             }
         }
     }
