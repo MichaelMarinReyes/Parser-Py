@@ -1,3 +1,4 @@
+frontend/VentanaPrincipal$8.class
 frontend/RenderizarTabla.class
 backend/LeerArchivoTexto.class
 backend/Analizador.class
@@ -24,6 +25,7 @@ backend/identificadores/ComparacionEnum.class
 frontend/ReportesPanel$1.class
 frontend/VentanaPrincipal$6.class
 frontend/graphviz/VisualizarGrafico$Utils.class
+frontend/VentanaPrincipal$9.class
 frontend/VentanaPrincipal$1.class
 backend/identificadores/PalabraClaveEnum.class
 backend/identificadores/LogicoEnum.class
