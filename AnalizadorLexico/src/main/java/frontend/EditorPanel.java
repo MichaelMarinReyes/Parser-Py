@@ -236,18 +236,16 @@ public class EditorPanel extends javax.swing.JPanel {
         Style defaultStyle = areaEditor.getStyle(StyleContext.DEFAULT_STYLE);
 
         for (Token token : listaToken) {
-            int inicio = (token.getColumna() - token.getLexema().length()) < 1 ? 1 : token.getColumna() - token.getLexema().length(); // La posición de inicio del token
-            int fin = inicio + token.getLexema().length() - 1; // La posición final del token
+            int inicio = (token.getColumna() - token.getLexema().length()) < 1 ? 1 : token.getColumna() - token.getLexema().length();
+            int fin = inicio + token.getLexema().length() - 1;
 
-            // Crea un estilo para el token
             Style tokenStyle = areaEditor.addStyle(token.getLexema(), defaultStyle);
-            Color color = Color.BLACK; // Color por defecto (otros)
+            Color color = Color.BLACK;
 
-            // Asigna un color según el tipo de token
             if (esAritmetico(token.getToken()) || esComparacion(token.getToken()) || esLogico(token.getToken())) {
                 color = Color.CYAN;
             } else if (esPalabraClave(token.getToken())) {
-                color = new Color(128, 0, 128); // Morado
+                color = new Color(128, 0, 128);
             } else if (esOtroToken(token.getToken())) {
                 if (token.getToken().equals("DECIMAL") || token.getToken().equals("ENTERO") || token.getToken().equals("ID")) {
                     color = Color.YELLOW;
@@ -265,10 +263,7 @@ public class EditorPanel extends javax.swing.JPanel {
             }
 
             StyleConstants.setForeground(tokenStyle, color);
-
-            // Aplica el estilo al texto del token
             doc.setCharacterAttributes(inicio, fin - inicio, tokenStyle, false);
-            color = Color.BLACK;
         }
     }
 
