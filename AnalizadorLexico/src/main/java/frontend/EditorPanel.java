@@ -2,13 +2,14 @@ package frontend;
 
 import backend.Analizador;
 import backend.Token;
-import backend.identificadores.TipoToken;
+import backend.identificadores.*;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 /**
@@ -32,6 +33,8 @@ public class EditorPanel extends javax.swing.JPanel {
         scrollEditor.setRowHeaderView(numerarEditor);
         numerarConsola = new NumeroLinea(areaConsola);
         scrollConsola.setRowHeaderView(numerarConsola);
+        areaEditor.setBackground(Color.LIGHT_GRAY);
+        areaConsola.setBackground(Color.LIGHT_GRAY);
         mostrarColumna();
         this.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -161,7 +164,6 @@ public class EditorPanel extends javax.swing.JPanel {
         areaEditor.setText("");
         areaConsola.setText("");
         listaToken.clear();
-        eliminarEstilos();
     }//GEN-LAST:event_limpiarBotonActionPerformed
 
     private void limpiarBotonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_limpiarBotonKeyPressed
@@ -190,12 +192,11 @@ public class EditorPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
         } else {
             new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
-            aplicarEstilos();
             for (int i = 0; i < listaToken.size(); i++) {
                 areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
             }
-
             areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
+            colorearTokens();
         }
     }
 
@@ -203,7 +204,6 @@ public class EditorPanel extends javax.swing.JPanel {
         areaEditor.setText("");
         areaConsola.setText("");
         listaToken.clear();
-        eliminarEstilos();
     }
 
     private void mostrarColumna() {
@@ -231,47 +231,99 @@ public class EditorPanel extends javax.swing.JPanel {
         areaEditor.setText(textoLeido);
     }
 
-    /**
-     * Método para aplicar los estilos a los tokens en el área de texto.
-     */
-    private void aplicarEstilos() {
+    private void colorearTokens() {
         StyledDocument doc = areaEditor.getStyledDocument();
-
-        eliminarEstilos();
+        Style defaultStyle = areaEditor.getStyle(StyleContext.DEFAULT_STYLE);
 
         for (Token token : listaToken) {
-            int inicio = areaEditor.getDocument().getDefaultRootElement().getElement(token.getLinea() - 1).getStartOffset() + token.getColumna() - token.getLexema().length();
-            int longitud = token.getLexema().length();
-            Style estilo = doc.addStyle("estilo", null);
+            int inicio = (token.getColumna() - token.getLexema().length()) < 1 ? 1 : token.getColumna() - token.getLexema().length(); // La posición de inicio del token
+            int fin = inicio + token.getLexema().length() - 1; // La posición final del token
 
-            if (token.getToken().equals(TipoToken.ID.toString())) {
-                StyleConstants.setBold(estilo, true);
-            } else if (token.getToken().equals(TipoToken.COMPARACION.toString()) || token.getToken().equals(TipoToken.LOGICO.toString()) || token.getToken().equals(TipoToken.ASIGNACION.toString())) {
-                StyleConstants.setForeground(estilo, Color.CYAN);
-            } else if (token.getToken().equals(TipoToken.PALABRA_RESERVADA.toString())) {
-                StyleConstants.setForeground(estilo, Color.BLUE);
-            } else if (token.getToken().equals(TipoToken.ENTERO.toString()) || token.getToken().equals(TipoToken.DECIMAL.toString()) || token.getToken().equals(TipoToken.CADENA.toString())) {
-                StyleConstants.setForeground(estilo, Color.ORANGE);
-            } else if (token.getToken().equals(TipoToken.COMENTARIO.toString())) {
-                StyleConstants.setForeground(estilo, Color.GRAY);
-            } else if (token.getToken().equals(TipoToken.ERROR_LEXICO.toString())) {
-                StyleConstants.setForeground(estilo, Color.GREEN);
-            } else if (token.getToken().equals(TipoToken.ERROR_LEXICO.toString())) {
-                StyleConstants.setForeground(estilo, Color.RED);
+            // Crea un estilo para el token
+            Style tokenStyle = areaEditor.addStyle(token.getLexema(), defaultStyle);
+            Color color = Color.BLACK; // Color por defecto (otros)
+
+            // Asigna un color según el tipo de token
+            if (esAritmetico(token.getToken()) || esComparacion(token.getToken()) || esLogico(token.getToken())) {
+                color = Color.CYAN;
+            } else if (esPalabraClave(token.getToken())) {
+                color = new Color(128, 0, 128); // Morado
+            } else if (esOtroToken(token.getToken())) {
+                if (token.getToken().equals("DECIMAL") || token.getToken().equals("ENTERO") || token.getToken().equals("ID")) {
+                    color = Color.YELLOW;
+                } else if (token.getToken().equals("COMENTARIO")) {
+                    color = Color.GRAY;
+                } else {
+                    color = Color.GREEN;
+                }
+            } else if (esTipoToken(token.getToken())) {
+                if (token.getToken().equals("ERROR_LEXICO")) {
+                    color = Color.RED;
+                } else {
+                    color = Color.GREEN;
+                }
             }
 
-            doc.setCharacterAttributes(inicio, longitud, estilo, true);
+            StyleConstants.setForeground(tokenStyle, color);
+
+            // Aplica el estilo al texto del token
+            doc.setCharacterAttributes(inicio, fin - inicio, tokenStyle, false);
+            color = Color.BLACK;
         }
     }
 
-    /**
-     * Método para eliminar todos los estilos aplicados en un análisis previo.
-     */
-    private void eliminarEstilos() {
-        StyledDocument doc = areaEditor.getStyledDocument();
-        Style estilo = doc.getStyle("estilo");
-        if (estilo != null) {
-            doc.setCharacterAttributes(0, doc.getLength(), estilo, true);
+    private boolean esAritmetico(String token) {
+        for (int i = 0; i < AritmeticosEnum.values().length; i++) {
+            if (token.equals(AritmeticosEnum.values()[i].toString())) {
+                return true;
+            }
         }
+        return false;
     }
+
+    private boolean esComparacion(String token) {
+        for (int i = 0; i < ComparacionEnum.values().length; i++) {
+            if (token.equals(ComparacionEnum.values()[i].toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean esLogico(String token) {
+        for (int i = 0; i < LogicoEnum.values().length; i++) {
+            if (token.equals(LogicoEnum.values()[i].toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean esPalabraClave(String token) {
+        for (int i = 0; i < PalabraClaveEnum.values().length; i++) {
+            if (token.equals(PalabraClaveEnum.values()[i].toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean esTipoToken(String token) {
+        for (int i = 0; i < TipoToken.values().length; i++) {
+            if (token.equals(TipoToken.values()[i].toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean esOtroToken(String token) {
+        for (int i = 0; i < OtroEnum.values().length; i++) {
+            if (token.equals(OtroEnum.values()[i].toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

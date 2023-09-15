@@ -1,8 +1,10 @@
 frontend/RenderizarTabla.class
+frontend/EditorPanel$4.class
 backend/LeerArchivoTexto.class
 backend/Analizador.class
 frontend/VentanaPrincipal$3.class
 backend/Main.class
+frontend/ReportesPanel$2.class
 frontend/EditorPanel$2.class
 frontend/NumeroLinea.class
 frontend/NumeroLinea$1.class
@@ -10,9 +12,12 @@ backend/Token.class
 frontend/VentanaPrincipal$5.class
 frontend/EditorPanel.class
 frontend/VentanaPrincipal$2.class
+frontend/EditorPanel$3.class
 backend/identificadores/OtroEnum.class
 frontend/graphviz/GraphvizUtil.class
+frontend/EditorPanel$5.class
 frontend/ReportesPanel.class
+frontend/ReportesPanel$3.class
 frontend/graphviz/VisualizarGrafico.class
 frontend/VentanaPrincipal$7.class
 backend/identificadores/TipoToken.class
