@@ -108,13 +108,26 @@ public class Analizador {
                                     listaToken.add(new Token(TipoToken.ERROR_LEXICO.toString(), "* *", linea, columna, "No existe en el alfabeto"));
                                     buffer = "";
                                     columna++;
-                                } else {
+                                } else if (entradaChar[i] == '*' && (entradaChar[i - 1] != '*')) {
                                     listaToken.add(new Token(AritmeticosEnum.MULTIPLICACION.toString(), "*", linea, columna, "*"));
                                     buffer = "";
                                     columna++;
                                 }
+
                                 break;
                             case '/':
+                                if (entradaChar[i] == '/' && !(entradaChar[i - 1] == '/')) {
+                                    if (entradaChar[i + 1] == '/') {
+                                        listaToken.add(new Token(AritmeticosEnum.DIVISION2.toString(), "//", linea, columna, "//"));
+                                        buffer = "";
+                                        columna++;
+                                    } else if (entradaChar[i] == '/' && (entradaChar[i - 1] != '/')) {
+                                        listaToken.add(new Token(AritmeticosEnum.DIVISION1.toString(), "/", linea, columna, "/"));
+                                        buffer = "";
+                                    }
+                                    columna++;
+                                }
+                                break;
                             case '%':
                                 if (!buffer.isEmpty()) {
                                     crearToken(buffer, linea, columna);
@@ -124,15 +137,17 @@ public class Analizador {
                                 columna++;
                                 break;
                             case '=':
-                                if (entradaChar[i + 1] == '=') {
-                                    listaToken.add(new Token(ComparacionEnum.IGUAL.toString(), "==", linea, columna, "=="));
-                                    buffer = "";
+                                if (entradaChar[i] == '=' && !(entradaChar[i - 1] == '<' || entradaChar[i - 1] == '>' || entradaChar[i - 1] == '!')) {
+                                    if (entradaChar[i + 1] == '=') {
+                                        listaToken.add(new Token(ComparacionEnum.IGUAL.toString(), "==", linea, columna, "=="));
+                                        buffer = "";
+                                        columna++;
+                                    } else if (entradaChar[i] == '=' && (entradaChar[i - 1] != '=')) {
+                                        listaToken.add(new Token(TipoToken.ASIGNACION.toString(), "=", linea, columna, "="));
+                                        buffer = "";
+                                    }
                                     columna++;
-                                } else {
-                                    listaToken.add(new Token(TipoToken.ASIGNACION.toString(), "=", linea, columna, "="));
-                                    buffer = "";
                                 }
-                                columna++;
                                 break;
                             case '>':
                                 if (entradaChar[i + 1] == '=') {
