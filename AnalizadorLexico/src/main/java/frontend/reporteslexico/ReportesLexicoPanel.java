@@ -1,8 +1,10 @@
-package frontend;
+package frontend.reporteslexico;
 
 import backend.lexico.identificadores.TipoToken;
 import frontend.graphviz.VisualizarGrafico;
 import backend.lexico.Token;
+import frontend.EditorPanel;
+import frontend.RenderizarTabla;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -20,14 +22,14 @@ import javax.swing.table.TableRowSorter;
  *
  * @author michael
  */
-public class ReportesPanel extends javax.swing.JPanel implements MouseListener {
+public class ReportesLexicoPanel extends javax.swing.JPanel implements MouseListener {
 
     private TableRowSorter<DefaultTableModel> sorter;
 
     /**
      * Creates new form ReportesPanel
      */
-    public ReportesPanel() {
+    public ReportesLexicoPanel() {
         initComponents();
         actualizarTabla();
         llenarComboBox();

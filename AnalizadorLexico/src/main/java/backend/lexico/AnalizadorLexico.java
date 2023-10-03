@@ -322,7 +322,7 @@ public class AnalizadorLexico {
     }
 
     private boolean esID(String lexema) {
-        return !palabrasClaveDiccionario.containsKey(lexema);
+        return lexema.matches("[a-zA-Z_][a-zA-Z0-9_]*");
     }
 
     private void iniciarDiccionarios() {

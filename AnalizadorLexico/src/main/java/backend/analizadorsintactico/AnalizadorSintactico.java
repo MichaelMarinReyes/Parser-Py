@@ -12,63 +12,97 @@ public class AnalizadorSintactico {
 
     private ArrayList<Token> tokens;
     private int indiceTokenActual;
+    private ArrayList<Integer> cantidadFunciones;
+    private ArrayList<Integer> cantidadLlamadas;
+    private ArrayList<Integer> erroresLexicos;
+    private ArrayList<Integer> erroresSintacticos;
 
-    public AnalizadorSintactico(ArrayList<Token> tokens) {
-        this.tokens = tokens;
-        this.indiceTokenActual = 0;
+    private ArrayList<Token> listaToken;
+    private int indice;
+
+    public AnalizadorSintactico(ArrayList<Token> listaToken) {
+        this.listaToken = listaToken;
+        this.indice = 0;
+        cantidadFunciones = new ArrayList<>();
+        cantidadLlamadas = new ArrayList<>();
+        erroresLexicos = new ArrayList<>();
+        erroresSintacticos = new ArrayList<>();
     }
 
     public void analizar() {
-        while (indiceTokenActual < tokens.size()) {
-            analizarSentencia();
-        }
-    }
+        while (indice < listaToken.size()) {
+            if (reconocerVariable()) {
+                System.out.println("Se ha reconocido una declaración de variable.");
+            } else if (reconocerFuncion()) {
+                System.out.println("Se ha reconocido una declaración de función.");
 
-    private void analizarSentencia() {
-        if (coincide(TipoToken.IDENTIFICADOR) && coincide(TipoToken.ASIGNACION)) {
-            analizarExpresion();
-        } else if (coincide(TipoToken.SI)) {
-            analizarExpresion();
-            analizarBloque();
-        } else if (coincide(PalabraClaveEnum.MIENTRAS)) {
-            analizarExpresion();
-            analizarBloque();
-        } else if (coincide(TipoToken.PARA)) {
-            coincide(TipoToken.IDENTIFICADOR); // Suponiendo por ahora que hay un identificador después de 'para'
-            coincide(TipoToken.EN);
-            analizarExpresion();
-            analizarBloque();
-        } else if (coincide(TipoToken.DEFINIR)) {
-            coincide(TipoToken.IDENTIFICADOR); // Suponiendo por ahora que hay un identificador después de 'definir'
-            analizarParametros();
-            analizarBloque();
-        }
-    }
+            } else if (reconocerCiclo()) {
+                System.out.println("Se ha reconocido un ciclo.");
+            } else if (reconocerComentario()) {
+                System.out.println("Se ha encontrado un comentario");
+            } else {
+                erroresSintacticos.add(1);
+                System.out.println("Error de sintaxis en la línea " + listaToken.get(indice).getLinea() + ", columna " + listaToken.get(indice).getColumna());
+                System.out.println("Errores sintácticos: " + erroresSintacticos.size());
 
-    private void analizarExpresion() {
-        // Lógica de análisis de expresiones
-    }
-
-    private void analizarBloque() {
-        coincide(TipoToken.DOS_PUNTOS);
-        while (!coincide(TipoToken.FIN_BLOQUE) && indiceTokenActual < tokens.size()) {
-            analizarSentencia();
-        }
-    }
-
-    private void analizarParametros() {
-        coincide(TipoToken.PARENTESIS_IZQUIERDO);
-        while (!coincide(TipoToken.PARENTESIS_DERECHO)) {
-            coincide(TipoToken.IDENTIFICADOR);
-            if (!coincide(TipoToken.COMA)) {
-                break;
             }
         }
     }
 
-    private boolean coincide(TipoToken tipo) {
-        if (indiceTokenActual < tokens.size() && tokens.get(indiceTokenActual).getTipo() == tipo) {
-            indiceTokenActual++;
+    private boolean reconocerVariable() {
+        if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("ID")) {
+            indice++;
+            if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("ASIGNACION")) {
+                indice++;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean reconocerFuncion() {
+        if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("DEF")) {
+            indice++;
+            if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("ID")) {
+                indice++;
+                if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("PARENTESIS_ABRE")) {
+                    indice++;
+                    // Aquí puedes implementar la lógica para reconocer los parámetros de la función
+                    // ...
+                    if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("PARENTESIS_CIERRA")) {
+                        indice++;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean reconocerCiclo() {
+        if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("FOR")) {
+            indice++;
+            if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("ID")) {
+                indice++;
+                if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("IN")) {
+                    indice++;
+                    // Aquí puedes implementar la lógica para reconocer la expresión iterable
+                    // ...
+                    if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("DOS_PUNTOS")) {
+                        indice++;
+                        // Aquí puedes implementar la lógica para reconocer el bloque del ciclo
+                        // ...
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean reconocerComentario() {
+        if (indice < listaToken.size() && listaToken.get(indice).getToken().equals("COMENTARIO")) {
+            indice++;
             return true;
         }
         return false;

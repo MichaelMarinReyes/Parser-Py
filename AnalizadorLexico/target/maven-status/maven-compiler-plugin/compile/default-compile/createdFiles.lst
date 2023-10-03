@@ -4,14 +4,16 @@ frontend/VentanaPrincipal$3.class
 backend/Main.class
 frontend/reportessintactico/ReportesSimboloGlobal$2.class
 backend/lexico/identificadores/AritmeticosEnum.class
+frontend/reporteslexico/ReportesLexicoPanel$1.class
 backend/lexico/identificadores/PalabraClaveEnum.class
 backend/lexico/identificadores/LogicoEnum.class
 frontend/EditorPanel$5.class
-frontend/ReportesPanel$3.class
 frontend/graphviz/VisualizarGrafico.class
+frontend/reporteslexico/ReportesLexicoPanel.class
 frontend/VentanaPrincipal$7.class
 frontend/VentanaPrincipal$4.class
 frontend/EditorPanel$1.class
+frontend/reporteslexico/ReportesLexicoPanel$2.class
 frontend/reportessintactico/ReportesGenerales$1.class
 frontend/graphviz/VisualizarGrafico$Utils.class
 frontend/VentanaPrincipal$1.class
@@ -19,7 +21,6 @@ frontend/VentanaPrincipal$8.class
 frontend/RenderizarTabla.class
 backend/LeerArchivoTexto.class
 frontend/reportessintactico/ReportesGenerales$2.class
-frontend/ReportesPanel$2.class
 frontend/reportessintactico/ReportesBloqueCodigo$2.class
 backend/lexico/Token.class
 frontend/reportessintactico/ReportesBloqueCodigo$1.class
@@ -37,10 +38,9 @@ frontend/VentanaPrincipal$2.class
 frontend/EditorPanel$3.class
 frontend/reportessintactico/ReportesGenerales$3.class
 frontend/graphviz/GraphvizUtil.class
-frontend/ReportesPanel.class
+frontend/reporteslexico/ReportesLexicoPanel$3.class
 frontend/VentanaPrincipal.class
 backend/lexico/identificadores/OtroEnum.class
-frontend/ReportesPanel$1.class
 frontend/reportessintactico/ReportesSimboloGlobal$3.class
 frontend/VentanaPrincipal$6.class
 frontend/reportessintactico/ReportesBloqueCodigo$3.class

@@ -1,5 +1,6 @@
 package frontend;
 
+import frontend.reporteslexico.ReportesLexicoPanel;
 import backend.LeerArchivoTexto;
 import frontend.reportessintactico.*;
 import java.awt.Color;
@@ -211,7 +212,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_acerdaDeBotonMouseClicked
 
     private void reportesLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesLexicoActionPerformed
-        ReportesPanel reportes = new ReportesPanel();
+        ReportesLexicoPanel reportes = new ReportesLexicoPanel();
         pintarPanel(reportes);
     }//GEN-LAST:event_reportesLexicoActionPerformed
 

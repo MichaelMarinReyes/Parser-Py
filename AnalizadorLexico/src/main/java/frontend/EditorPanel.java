@@ -1,11 +1,7 @@
 package frontend;
 
-import backend.lexico.identificadores.OtroEnum;
-import backend.lexico.identificadores.LogicoEnum;
-import backend.lexico.identificadores.TipoToken;
-import backend.lexico.identificadores.ComparacionEnum;
-import backend.lexico.identificadores.AritmeticosEnum;
-import backend.lexico.identificadores.PalabraClaveEnum;
+import backend.analizadorsintactico.AnalizadorSintactico;
+import backend.lexico.identificadores.*;
 import backend.lexico.AnalizadorLexico;
 import backend.lexico.Token;
 import java.awt.Color;
@@ -44,7 +40,7 @@ public class EditorPanel extends javax.swing.JPanel {
         this.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 if (evt.getKeyCode() == KeyEvent.VK_F5) {
-                    ejecutarAnalisis();
+                    ejecutarAnalisisLexico();
                 }
             }
         });
@@ -162,7 +158,8 @@ public class EditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
-        ejecutarAnalisis();
+        ejecutarAnalisisLexico();
+        //ejecutarAnalisisSintactico();
     }//GEN-LAST:event_ejecutarBotonActionPerformed
 
     private void limpiarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarBotonActionPerformed
@@ -188,7 +185,7 @@ public class EditorPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane scrollEditor;
     // End of variables declaration//GEN-END:variables
 
-    public void ejecutarAnalisis() {
+    public void ejecutarAnalisisLexico() {
         if (listaToken != null) {
             listaToken.clear();
             areaConsola.setText("");
@@ -203,6 +200,14 @@ public class EditorPanel extends javax.swing.JPanel {
             areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
             colorearTokens();
         }
+    }
+
+    private void ejecutarAnalisisSintactico() {
+
+        new AnalizadorSintactico(listaToken).analizar();
+
+        areaConsola.setText(areaConsola.getText() + "\n\nANALISIS SINTÁCTICO FINALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
+
     }
 
     public void limpiarTodo() {
