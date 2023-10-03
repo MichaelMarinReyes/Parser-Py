@@ -1,6 +1,11 @@
-package backend;
+package backend.lexico;
 
-import backend.identificadores.*;
+import backend.lexico.identificadores.OtroEnum;
+import backend.lexico.identificadores.LogicoEnum;
+import backend.lexico.identificadores.TipoToken;
+import backend.lexico.identificadores.ComparacionEnum;
+import backend.lexico.identificadores.AritmeticosEnum;
+import backend.lexico.identificadores.PalabraClaveEnum;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +14,7 @@ import java.util.Map;
  *
  * @author michael
  */
-public class Analizador {
+public class AnalizadorLexico {
 
     private Map<String, AritmeticosEnum> aritmeticosDiccionario;
     private Map<String, ComparacionEnum> comparacionDiccionacio;
@@ -19,7 +24,7 @@ public class Analizador {
     private Map<String, TipoToken> diccionarioTipo;
     private ArrayList<Token> listaToken;
 
-    public Analizador(ArrayList<Token> listaToken) {
+    public AnalizadorLexico(ArrayList<Token> listaToken) {
         this.listaToken = listaToken;
         iniciarDiccionarios();
     }

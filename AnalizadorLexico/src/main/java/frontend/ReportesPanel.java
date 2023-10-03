@@ -1,8 +1,8 @@
 package frontend;
 
+import backend.lexico.identificadores.TipoToken;
 import frontend.graphviz.VisualizarGrafico;
-import backend.Token;
-import backend.identificadores.*;
+import backend.lexico.Token;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;

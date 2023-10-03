@@ -1,11 +1,13 @@
 package frontend;
 
 import backend.LeerArchivoTexto;
+import frontend.reportessintactico.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.border.CompoundBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -42,6 +44,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         abrirBoton = new javax.swing.JMenuItem();
         editorTexto = new javax.swing.JMenu();
         reportesBoton = new javax.swing.JMenu();
+        reportesLexico = new javax.swing.JMenuItem();
+        tablaSimbolosReportes = new javax.swing.JMenuItem();
+        tablaSimboloBloquesReportes = new javax.swing.JMenuItem();
+        reportesSintactico = new javax.swing.JMenuItem();
         ayudaBoton = new javax.swing.JMenu();
         acerdaDeBoton = new javax.swing.JMenu();
 
@@ -78,11 +84,43 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menuOpciones.add(editorTexto);
 
         reportesBoton.setText("Reportes");
-        reportesBoton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                reportesBotonMouseClicked(evt);
+
+        reportesLexico.setBackground(new java.awt.Color(0, 153, 255));
+        reportesLexico.setText("Reporte Tokens");
+        reportesLexico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportesLexicoActionPerformed(evt);
             }
         });
+        reportesBoton.add(reportesLexico);
+
+        tablaSimbolosReportes.setBackground(new java.awt.Color(0, 153, 255));
+        tablaSimbolosReportes.setText("Tabla de símbolos");
+        tablaSimbolosReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tablaSimbolosReportesActionPerformed(evt);
+            }
+        });
+        reportesBoton.add(tablaSimbolosReportes);
+
+        tablaSimboloBloquesReportes.setBackground(new java.awt.Color(0, 153, 255));
+        tablaSimboloBloquesReportes.setText("Tabla de símbolos por bloques");
+        tablaSimboloBloquesReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tablaSimboloBloquesReportesActionPerformed(evt);
+            }
+        });
+        reportesBoton.add(tablaSimboloBloquesReportes);
+
+        reportesSintactico.setBackground(new java.awt.Color(0, 153, 255));
+        reportesSintactico.setText("Reportes Sintáctico");
+        reportesSintactico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportesSintacticoActionPerformed(evt);
+            }
+        });
+        reportesBoton.add(reportesSintactico);
+
         menuOpciones.add(reportesBoton);
 
         ayudaBoton.setText("Ayuda");
@@ -109,26 +147,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void abrirBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirBotonActionPerformed
         LeerArchivoTexto miArchivo = new LeerArchivoTexto();
         JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.TXT", "txt");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.TXT, *.PY", "txt", "py");
         chooser.setFileFilter(filtro);
         int seleccion = chooser.showOpenDialog(this);
 
         if (seleccion == JFileChooser.APPROVE_OPTION) {
-            String textoLeido;
-            textoLeido = miArchivo.abrirArchivo(chooser.getSelectedFile().getAbsolutePath());
-            this.pintarPanel(editor);
-            editor.setAreaEditor(textoLeido);
+            String nombreArchivo = chooser.getSelectedFile().getName();
+            String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf('.') + 1).toLowerCase();
+
+            if (extension.equals("txt") || extension.equals("py")) {
+                String textoLeido = miArchivo.abrirArchivo(chooser.getSelectedFile().getAbsolutePath());
+                this.pintarPanel(editor);
+                editor.setAreaEditor(textoLeido);
+            } else {
+                JOptionPane.showMessageDialog(this, "Solo se permiten archivos .txt y .py", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_abrirBotonActionPerformed
 
     private void editorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editorTextoMouseClicked
         this.pintarPanel(editor);
     }//GEN-LAST:event_editorTextoMouseClicked
-
-    private void reportesBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportesBotonMouseClicked
-        ReportesPanel reportes = new ReportesPanel();
-        pintarPanel(reportes);
-    }//GEN-LAST:event_reportesBotonMouseClicked
 
     private void ayudaBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ayudaBotonMouseClicked
         String ayuda = "\n   * Presione Archivo y Cargar archivo para cargar un archivo de texto nuevo.\n"
@@ -171,6 +210,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         dialogoAyuda.setVisible(true);
     }//GEN-LAST:event_acerdaDeBotonMouseClicked
 
+    private void reportesLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesLexicoActionPerformed
+        ReportesPanel reportes = new ReportesPanel();
+        pintarPanel(reportes);
+    }//GEN-LAST:event_reportesLexicoActionPerformed
+
+    private void reportesSintacticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesSintacticoActionPerformed
+        ReportesGenerales reportesSintactico = new ReportesGenerales();
+        pintarPanel(reportesSintactico);
+    }//GEN-LAST:event_reportesSintacticoActionPerformed
+
+    private void tablaSimbolosReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tablaSimbolosReportesActionPerformed
+        ReportesSimboloGlobal tabalSimbolos = new ReportesSimboloGlobal();
+        pintarPanel(tabalSimbolos);
+    }//GEN-LAST:event_tablaSimbolosReportesActionPerformed
+
+    private void tablaSimboloBloquesReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tablaSimboloBloquesReportesActionPerformed
+        ReportesBloqueCodigo bloqueCodigoReportes = new ReportesBloqueCodigo();
+        pintarPanel(bloqueCodigoReportes);
+    }//GEN-LAST:event_tablaSimboloBloquesReportesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem abrirBoton;
@@ -181,6 +240,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menuOpciones;
     private javax.swing.JMenu reportesBoton;
+    private javax.swing.JMenuItem reportesLexico;
+    private javax.swing.JMenuItem reportesSintactico;
+    private javax.swing.JMenuItem tablaSimboloBloquesReportes;
+    private javax.swing.JMenuItem tablaSimbolosReportes;
     // End of variables declaration//GEN-END:variables
 
     private void pintarPanel(Component panel) {

@@ -1,8 +1,13 @@
 package frontend;
 
-import backend.Analizador;
-import backend.Token;
-import backend.identificadores.*;
+import backend.lexico.identificadores.OtroEnum;
+import backend.lexico.identificadores.LogicoEnum;
+import backend.lexico.identificadores.TipoToken;
+import backend.lexico.identificadores.ComparacionEnum;
+import backend.lexico.identificadores.AritmeticosEnum;
+import backend.lexico.identificadores.PalabraClaveEnum;
+import backend.lexico.AnalizadorLexico;
+import backend.lexico.Token;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -191,7 +196,7 @@ public class EditorPanel extends javax.swing.JPanel {
         if (areaEditor.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "No hay nada para analizar\nEscribe algo en el editor de código");
         } else {
-            new Analizador(listaToken).analizar(areaEditor.getText() + "\n");
+            new AnalizadorLexico(listaToken).analizar(areaEditor.getText() + "\n");
             for (int i = 0; i < listaToken.size(); i++) {
                 areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
             }

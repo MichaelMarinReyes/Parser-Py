@@ -1,4 +1,4 @@
-package backend.identificadores;
+package backend.lexico.identificadores;
 
 /**
  *
