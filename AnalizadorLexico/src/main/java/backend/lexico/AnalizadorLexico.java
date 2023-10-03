@@ -236,6 +236,8 @@ public class AnalizadorLexico {
             } else {
                 listaToken.add(new Token(TipoToken.ENTERO.toString(), lexema, linea, columna, "[0-9]+"));
             }
+        } else if (esID(lexema)) {
+            listaToken.add(new Token(TipoToken.ID.toString(), lexema, linea, columna, "([\\w]|_)+(\\w|\\d)*"));
         } else if (lexema.contains("#")) {
             listaToken.add(new Token(TipoToken.COMENTARIO.toString(), lexema, linea, columna, "(#[0-9]*[a-z]* | #[0-9]*[A-Z]* #[a-z]*[0-9]* | #[A-Z]*[0-9]*)"));
         } else if (errorLexico(lexema)) {
@@ -322,7 +324,7 @@ public class AnalizadorLexico {
     }
 
     private boolean esID(String lexema) {
-        return lexema.matches("[a-zA-Z_][a-zA-Z0-9_]*");
+        return lexema.matches("[a-zA-Z_][a-zA-Z0-9_]*") && !palabrasClaveDiccionario.containsKey(lexema) && !logicosDiccionario.containsKey(lexema);
     }
 
     private void iniciarDiccionarios() {
@@ -358,6 +360,7 @@ public class AnalizadorLexico {
         this.palabrasClaveDiccionario.put("False", PalabraClaveEnum.FALSE);
         this.palabrasClaveDiccionario.put("finally", PalabraClaveEnum.FINALLY);
         this.palabrasClaveDiccionario.put("for", PalabraClaveEnum.FOR);
+        this.palabrasClaveDiccionario.put("range", PalabraClaveEnum.RANGE);
         this.palabrasClaveDiccionario.put("global", PalabraClaveEnum.GLOBAL);
         this.palabrasClaveDiccionario.put("if", PalabraClaveEnum.IF);
         this.palabrasClaveDiccionario.put("import", PalabraClaveEnum.IMPORT);

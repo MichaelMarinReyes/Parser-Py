@@ -18,6 +18,7 @@ public enum PalabraClaveEnum {
     FALSE,
     FINALLY,
     FOR,
+    RANGE,
     FROM,
     GLOBAL,
     IF,
