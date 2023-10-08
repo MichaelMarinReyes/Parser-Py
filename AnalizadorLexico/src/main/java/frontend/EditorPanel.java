@@ -23,6 +23,7 @@ public class EditorPanel extends javax.swing.JPanel {
     private NumeroLinea numerarConsola;
     public static ArrayList<Token> listaToken = new ArrayList();
     public static ArrayList<Error> errores = new ArrayList<>();
+    private AnalizadorSintactico sintactico;
 
     /**
      * Creates new form PruebaEditor
@@ -159,7 +160,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
         ejecutarAnalisisLexico();
-        //ejecutarAnalisisSintactico();
+        ejecutarAnalisisSintactico();
     }//GEN-LAST:event_ejecutarBotonActionPerformed
 
     private void limpiarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarBotonActionPerformed
@@ -203,9 +204,9 @@ public class EditorPanel extends javax.swing.JPanel {
     }
 
     private void ejecutarAnalisisSintactico() {
-
-        new AnalizadorSintactico(listaToken).analizar();
-
+        sintactico = new AnalizadorSintactico(listaToken);
+        sintactico.analizar();
+        areaConsola.setText(areaConsola.getText() + "\n" + sintactico.getBloqueDeCodigoIdentificado());
         areaConsola.setText(areaConsola.getText() + "\n\nANALISIS SINTÁCTICO FINALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
 
     }

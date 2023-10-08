@@ -4,7 +4,6 @@
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/lexico/identificadores/LogicoEnum.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/lexico/identificadores/PalabraClaveEnum.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/lexico/AnalizadorLexico.java
-/home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/reportessintactico/ReportesSimboloGlobal.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/reportessintactico/ReportesGenerales.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/LeerArchivoTexto.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/lexico/identificadores/TipoToken.java
@@ -16,6 +15,5 @@
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/NumeroLinea.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/lexico/identificadores/ComparacionEnum.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/EditorPanel.java
-/home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/reportessintactico/ReportesBloqueCodigo.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/lexico/Token.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/graphviz/GraphvizUtil.java

@@ -118,7 +118,7 @@ public class ReportesGenerales extends javax.swing.JPanel implements MouseListen
     }
 
     public void actualizarTabla() {
-        DefaultTableModel modelo = new DefaultTableModel(new String[]{"Funciones/Métodos", "Llamadas", "Errores léxicos", "Errores sintácticos", "Parámetros"}, EditorPanel.listaToken.size());
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{"Símbolo", "Tipo", "Valor", "Línea", "Columnas"}, EditorPanel.listaToken.size());
         this.tablaReportes.setDefaultRenderer(Object.class, new RenderizarTabla());
         tablaReportes.setModel(modelo);
         tablaReportes.setAutoCreateRowSorter(true);

@@ -46,8 +46,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         editorTexto = new javax.swing.JMenu();
         reportesBoton = new javax.swing.JMenu();
         reportesLexico = new javax.swing.JMenuItem();
-        tablaSimbolosReportes = new javax.swing.JMenuItem();
-        tablaSimboloBloquesReportes = new javax.swing.JMenuItem();
         reportesSintactico = new javax.swing.JMenuItem();
         ayudaBoton = new javax.swing.JMenu();
         acerdaDeBoton = new javax.swing.JMenu();
@@ -94,24 +92,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         reportesBoton.add(reportesLexico);
-
-        tablaSimbolosReportes.setBackground(new java.awt.Color(0, 153, 255));
-        tablaSimbolosReportes.setText("Tabla de símbolos");
-        tablaSimbolosReportes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tablaSimbolosReportesActionPerformed(evt);
-            }
-        });
-        reportesBoton.add(tablaSimbolosReportes);
-
-        tablaSimboloBloquesReportes.setBackground(new java.awt.Color(0, 153, 255));
-        tablaSimboloBloquesReportes.setText("Tabla de símbolos por bloques");
-        tablaSimboloBloquesReportes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tablaSimboloBloquesReportesActionPerformed(evt);
-            }
-        });
-        reportesBoton.add(tablaSimboloBloquesReportes);
 
         reportesSintactico.setBackground(new java.awt.Color(0, 153, 255));
         reportesSintactico.setText("Reportes Sintáctico");
@@ -221,16 +201,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pintarPanel(reportesSintactico);
     }//GEN-LAST:event_reportesSintacticoActionPerformed
 
-    private void tablaSimbolosReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tablaSimbolosReportesActionPerformed
-        ReportesSimboloGlobal tabalSimbolos = new ReportesSimboloGlobal();
-        pintarPanel(tabalSimbolos);
-    }//GEN-LAST:event_tablaSimbolosReportesActionPerformed
-
-    private void tablaSimboloBloquesReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tablaSimboloBloquesReportesActionPerformed
-        ReportesBloqueCodigo bloqueCodigoReportes = new ReportesBloqueCodigo();
-        pintarPanel(bloqueCodigoReportes);
-    }//GEN-LAST:event_tablaSimboloBloquesReportesActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem abrirBoton;
@@ -243,8 +213,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu reportesBoton;
     private javax.swing.JMenuItem reportesLexico;
     private javax.swing.JMenuItem reportesSintactico;
-    private javax.swing.JMenuItem tablaSimboloBloquesReportes;
-    private javax.swing.JMenuItem tablaSimbolosReportes;
     // End of variables declaration//GEN-END:variables
 
     private void pintarPanel(Component panel) {
