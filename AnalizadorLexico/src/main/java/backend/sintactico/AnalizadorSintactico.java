@@ -1,4 +1,4 @@
-package backend.analizadorsintactico;
+package backend.sintactico;
 
 import backend.lexico.Token;
 import backend.lexico.identificadores.*;
@@ -31,7 +31,6 @@ public class AnalizadorSintactico {
             Token tokenActual = listaToken.get(indiceActual);
 
             if (tokenActual.getToken().equals(TipoToken.ID.toString())) {
-                // Regla para declaración y asignación de variables
                 if (indiceActual + 2 < listaToken.size()
                         && listaToken.get(indiceActual + 1).getToken().equals(TipoToken.ASIGNACION.toString())) {
                     Token identificador = tokenActual;
@@ -43,11 +42,10 @@ public class AnalizadorSintactico {
                     System.out.println("Operador de asignación: " + asignacion.getLexema());
                     System.out.println("Expresión: " + expresion.getLexema());
 
-                    indiceActual += 3; // Avanzar 3 tokens (identificador, asignación, expresión)
+                    indiceActual += 3;
                     mostrarBloqueDeCodigo();
                 }
             } else if (tokenActual.getToken().equals(TipoToken.ERROR_LEXICO.toString())) {
-                // Manejar errores léxicos
                 System.out.println("Error léxico en la línea " + tokenActual.getLinea() + ", columna " + tokenActual.getColumna() + ": " + tokenActual.getLexema());
                 indiceActual++;
                 mostrarBloqueDeCodigo();
@@ -67,7 +65,7 @@ public class AnalizadorSintactico {
                 System.out.println("Separador: " + separador.getLexema());
                 System.out.println("Valor False: " + valorFalse.getLexema());
 
-                indiceActual += 6; // Avanzar 6 tokens (identificador, operador ternario, expresión, valor true, separador, valor false)
+                indiceActual += 6;
                 mostrarBloqueDeCodigo();
             } else if (tokenActual.getLexema().equals("for")) {
                 Token forToken = tokenActual;
@@ -83,7 +81,7 @@ public class AnalizadorSintactico {
                 System.out.println("Token 'range': " + rangeToken.getLexema());
                 System.out.println("Token ':': " + dosPuntos.getLexema());
 
-                indiceActual += 5; // Avanzar 5 tokens (for, variable, in, range, dosPuntos)
+                indiceActual += 5;
                 mostrarBloqueDeCodigo();
             } else if (tokenActual.getLexema().equals("while")) {
                 Token whileToken = tokenActual;
@@ -95,7 +93,7 @@ public class AnalizadorSintactico {
                 System.out.println("Condición: " + condicion.getLexema());
                 System.out.println("Token ':': " + dosPuntos.getLexema());
 
-                indiceActual += 3; // Avanzar 3 tokens (while, condicion, dosPuntos)
+                indiceActual += 3;
                 mostrarBloqueDeCodigo();
             } else if (tokenActual.getLexema().equals("def")) {
                 Token defToken = tokenActual;
@@ -113,15 +111,13 @@ public class AnalizadorSintactico {
                 System.out.println("Token ')': " + parentesisCierra.getLexema());
                 System.out.println("Token ':': " + dosPuntos.getLexema());
 
-                indiceActual += 6; // Avanzar 6 tokens (def, nombreFuncion, parentesisAbre, parametro, parentesisCierra, dosPuntos)
+                indiceActual += 6;
                 mostrarBloqueDeCodigo();
             } else if (tokenActual.getToken().equals(TipoToken.COMENTARIO.toString())) {
                 System.out.println("Comentario en línea " + tokenActual.getLinea() + ": " + tokenActual.getLexema());
                 indiceActual++;
                 mostrarBloqueDeCodigo();
             } else {
-                // Otros casos
-                // ...
                 indiceActual++;
                 mostrarBloqueDeCodigo();
             }
@@ -129,13 +125,11 @@ public class AnalizadorSintactico {
     }
 
     private void mostrarBloqueDeCodigo() {
-        // Obtener el inicio y fin del bloque de código
         int inicioBloque = indiceActual;
-        int finBloque = obtenerFinBloque(); // Implementa este método según tus necesidades
+        int finBloque = obtenerFinBloque();
 
-        // Imprimir el bloque de código
         System.out.println("Bloque de código:");
-        bloqueDeCodigoIdentificado.setLength(0); // Limpiar el StringBuilder
+        bloqueDeCodigoIdentificado.setLength(0);
         for (int i = inicioBloque; i <= finBloque; i++) {
             if (i <= listaToken.size() - 1) {
                 Token token = listaToken.get(i);
@@ -143,16 +137,10 @@ public class AnalizadorSintactico {
             }
         }
 
-        // Actualizar el índice actual
         indiceActual = finBloque + 1;
     }
 
     private int obtenerFinBloque() {
-        // Implementa la lógica para determinar el final del bloque de código.
-        // Puedes utilizar diferentes criterios según el lenguaje que estés analizando.
-        // Por ejemplo, puedes buscar el cierre de llaves o algún otro indicador específico.
-
-        // Ejemplo básico: buscar el siguiente punto y coma como indicador de fin de bloque
         int i = indiceActual;
         while (i < listaToken.size() && !listaToken.get(i).getLexema().equals(";")) {
             i++;

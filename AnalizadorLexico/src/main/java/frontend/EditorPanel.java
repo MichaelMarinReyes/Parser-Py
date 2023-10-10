@@ -1,6 +1,6 @@
 package frontend;
 
-import backend.analizadorsintactico.AnalizadorSintactico;
+import backend.sintactico.AnalizadorSintactico;
 import backend.lexico.identificadores.*;
 import backend.lexico.AnalizadorLexico;
 import backend.lexico.Token;
@@ -160,7 +160,8 @@ public class EditorPanel extends javax.swing.JPanel {
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
         ejecutarAnalisisLexico();
-        ejecutarAnalisisSintactico();
+        //ejecutarAnalisisSintactico();
+        ColorearEditor.colorPalabras(areaEditor.getStyledDocument(), areaEditor.getText(), listaToken);
     }//GEN-LAST:event_ejecutarBotonActionPerformed
 
     private void limpiarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarBotonActionPerformed
@@ -199,7 +200,6 @@ public class EditorPanel extends javax.swing.JPanel {
                 areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
             }
             areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
-            colorearTokens();
         }
     }
 
@@ -207,7 +207,7 @@ public class EditorPanel extends javax.swing.JPanel {
         sintactico = new AnalizadorSintactico(listaToken);
         sintactico.analizar();
         areaConsola.setText(areaConsola.getText() + "\n" + sintactico.getBloqueDeCodigoIdentificado());
-        areaConsola.setText(areaConsola.getText() + "\n\nANALISIS SINTÁCTICO FINALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
+        areaConsola.setText(areaConsola.getText() + "\nANALISIS SINTÁCTICO FINALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
 
     }
 
@@ -241,95 +241,4 @@ public class EditorPanel extends javax.swing.JPanel {
     public void setAreaEditor(String textoLeido) {
         areaEditor.setText(textoLeido);
     }
-
-    private void colorearTokens() {
-        StyledDocument doc = areaEditor.getStyledDocument();
-        Style defaultStyle = areaEditor.getStyle(StyleContext.DEFAULT_STYLE);
-
-        for (Token token : listaToken) {
-            int inicio = (token.getColumna() - token.getLexema().length()) < 1 ? 1 : token.getColumna() - token.getLexema().length();
-            int fin = inicio + token.getLexema().length() - 1;
-
-            Style tokenStyle = areaEditor.addStyle(token.getLexema(), defaultStyle);
-            Color color = Color.BLACK;
-
-            if (esAritmetico(token.getToken()) || esComparacion(token.getToken()) || esLogico(token.getToken())) {
-                color = Color.CYAN;
-            } else if (esPalabraClave(token.getToken())) {
-                color = new Color(128, 0, 128);
-            } else if (esOtroToken(token.getToken())) {
-                if (token.getToken().equals("DECIMAL") || token.getToken().equals("ENTERO") || token.getToken().equals("ID")) {
-                    color = Color.YELLOW;
-                } else if (token.getToken().equals("COMENTARIO")) {
-                    color = Color.GRAY;
-                } else {
-                    color = Color.GREEN;
-                }
-            } else if (esTipoToken(token.getToken())) {
-                if (token.getToken().equals("ERROR_LEXICO")) {
-                    color = Color.RED;
-                } else {
-                    color = Color.GREEN;
-                }
-            }
-
-            StyleConstants.setForeground(tokenStyle, color);
-            doc.setCharacterAttributes(inicio, fin - inicio, tokenStyle, false);
-        }
-    }
-
-    private boolean esAritmetico(String token) {
-        for (int i = 0; i < AritmeticosEnum.values().length; i++) {
-            if (token.equals(AritmeticosEnum.values()[i].toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean esComparacion(String token) {
-        for (int i = 0; i < ComparacionEnum.values().length; i++) {
-            if (token.equals(ComparacionEnum.values()[i].toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean esLogico(String token) {
-        for (int i = 0; i < LogicoEnum.values().length; i++) {
-            if (token.equals(LogicoEnum.values()[i].toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean esPalabraClave(String token) {
-        for (int i = 0; i < PalabraClaveEnum.values().length; i++) {
-            if (token.equals(PalabraClaveEnum.values()[i].toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean esTipoToken(String token) {
-        for (int i = 0; i < TipoToken.values().length; i++) {
-            if (token.equals(TipoToken.values()[i].toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean esOtroToken(String token) {
-        for (int i = 0; i < OtroEnum.values().length; i++) {
-            if (token.equals(OtroEnum.values()[i].toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }

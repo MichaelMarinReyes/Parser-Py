@@ -18,14 +18,14 @@ import javax.swing.table.TableRowSorter;
  *
  * @author michael
  */
-public class ReportesGenerales extends javax.swing.JPanel implements MouseListener {
+public class ReportesSintacticoPanel extends javax.swing.JPanel implements MouseListener {
 
     private TableRowSorter<DefaultTableModel> sorter;
 
     /**
      * Creates new form ReportesPanel
      */
-    public ReportesGenerales() {
+    public ReportesSintacticoPanel() {
         initComponents();
         actualizarTabla();
         llenarComboBox();

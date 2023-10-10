@@ -197,7 +197,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_reportesLexicoActionPerformed
 
     private void reportesSintacticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesSintacticoActionPerformed
-        ReportesGenerales reportesSintactico = new ReportesGenerales();
+        ReportesSintacticoPanel reportesSintactico = new ReportesSintacticoPanel();
         pintarPanel(reportesSintactico);
     }//GEN-LAST:event_reportesSintacticoActionPerformed
 
