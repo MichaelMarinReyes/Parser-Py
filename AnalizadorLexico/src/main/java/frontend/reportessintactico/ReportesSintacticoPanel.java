@@ -2,7 +2,7 @@ package frontend.reportessintactico;
 
 import frontend.*;
 import frontend.graphviz.VisualizarGrafico;
-import backend.lexico.Token;
+import backend.sintactico.BloqueCodigo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -94,31 +94,31 @@ public class ReportesSintacticoPanel extends javax.swing.JPanel implements Mouse
     // End of variables declaration//GEN-END:variables
 
     private void llenarComboBox() {
-        ArrayList<Token> copiaTokens = new ArrayList<>();
-        HashSet<String> tiposToken = new HashSet<>();
+        ArrayList<BloqueCodigo> copiaBloquesCodigo = new ArrayList<>();
+        HashSet<String> tiposBloques = new HashSet<>();
 
-        if (copiaTokens != null) {
-            for (Token token : EditorPanel.listaToken) {
-                String tokenTipo = token.getToken();
-                if (!tiposToken.contains(tokenTipo)) {
-                    copiaTokens.add(token);
-                    tiposToken.add(tokenTipo);
+        if (copiaBloquesCodigo != null) {
+            for (BloqueCodigo bloque : EditorPanel.bloqueCodigo) {
+                String tipoBloque = bloque.getTipo();
+                if (!tiposBloques.contains(tipoBloque)) {
+                    copiaBloquesCodigo.add(bloque);
+                    tiposBloques.add(tipoBloque);
                 }
             }
-            Collections.sort(copiaTokens, new Comparator<Token>() {
+            Collections.sort(copiaBloquesCodigo, new Comparator<BloqueCodigo>() {
                 @Override
-                public int compare(Token t1, Token t2) {
-                    return t1.getToken().compareTo(t2.getToken());
+                public int compare(BloqueCodigo t1, BloqueCodigo t2) {
+                    return t1.getTipo().compareTo(t2.getTipo());
                 }
             });
-            for (int i = 0; i < copiaTokens.size(); i++) {
-                filtroComboBox.addItem(copiaTokens.get(i).getToken());
+            for (int i = 0; i < copiaBloquesCodigo.size(); i++) {
+                filtroComboBox.addItem(copiaBloquesCodigo.get(i).getTipo());
             }
         }
     }
 
     public void actualizarTabla() {
-        DefaultTableModel modelo = new DefaultTableModel(new String[]{"Símbolo", "Tipo", "Valor", "Línea", "Columnas"}, EditorPanel.listaToken.size());
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{"No.", "Símbolo", "Tipo", "Valor", "Línea", "Columna", "Usos"}, EditorPanel.bloqueCodigo.size());
         this.tablaReportes.setDefaultRenderer(Object.class, new RenderizarTabla());
         tablaReportes.setModel(modelo);
         tablaReportes.setAutoCreateRowSorter(true);
@@ -127,13 +127,17 @@ public class ReportesSintacticoPanel extends javax.swing.JPanel implements Mouse
         tablaReportes.addMouseListener(this);
 
         TableModel modeloDatos = tablaReportes.getModel();
-        for (int i = 0; i < EditorPanel.listaToken.size(); i++) {
-         /*   Token token = EditorPanel.listaToken.get(i);
-            modeloDatos.setValueAt(String.valueOf(i + 1), i, 0); //Funciones / métodos
-            modeloDatos.setValueAt(token.getToken(), i, 1); //Llamadas
-            modeloDatos.setValueAt(String.valueOf(token.getLinea()), i, 4); //Errores léxicos
-            modeloDatos.setValueAt(token.getColumna(), i, 5); //Errores sintácticos
-            modeloDatos.setValueAt(token.getColumna(), i, 5); //Parámetros*/
+        if (EditorPanel.bloqueCodigo != null) {
+            for (int i = 0; i < EditorPanel.bloqueCodigo.size(); i++) {
+                BloqueCodigo bloqueCodigo = EditorPanel.bloqueCodigo.get(i);
+                modeloDatos.setValueAt(String.valueOf(i + 1), i, 0);
+                modeloDatos.setValueAt(bloqueCodigo.getSimbolo(), i, 0);
+                modeloDatos.setValueAt(bloqueCodigo.getTipo(), i, 1);
+                modeloDatos.setValueAt(bloqueCodigo.getValor(), i, 4);
+                modeloDatos.setValueAt(String.valueOf(bloqueCodigo.getLinea()), i, 5);
+                modeloDatos.setValueAt(String.valueOf(bloqueCodigo.getColumna()), i, 5);
+                modeloDatos.setValueAt(String.valueOf(bloqueCodigo.getUsos()), i, 5);
+            }
         }
     }
 

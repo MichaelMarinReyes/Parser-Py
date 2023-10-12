@@ -1,17 +1,13 @@
 package frontend;
 
 import backend.sintactico.AnalizadorSintactico;
-import backend.lexico.identificadores.*;
 import backend.lexico.AnalizadorLexico;
 import backend.lexico.Token;
+import backend.sintactico.BloqueCodigo;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
-import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -22,7 +18,7 @@ public class EditorPanel extends javax.swing.JPanel {
     private NumeroLinea numerarEditor;
     private NumeroLinea numerarConsola;
     public static ArrayList<Token> listaToken = new ArrayList();
-    public static ArrayList<Error> errores = new ArrayList<>();
+    public static ArrayList<BloqueCodigo> bloqueCodigo = new ArrayList<>();
     private AnalizadorSintactico sintactico;
 
     /**
@@ -160,14 +156,14 @@ public class EditorPanel extends javax.swing.JPanel {
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
         ejecutarAnalisisLexico();
-        //ejecutarAnalisisSintactico();
-        ColorearEditor.colorPalabras(areaEditor.getStyledDocument(), areaEditor.getText(), listaToken);
+        ejecutarAnalisisSintactico();
     }//GEN-LAST:event_ejecutarBotonActionPerformed
 
     private void limpiarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarBotonActionPerformed
         areaEditor.setText("");
         areaConsola.setText("");
         listaToken.clear();
+        bloqueCodigo.clear();
     }//GEN-LAST:event_limpiarBotonActionPerformed
 
     private void limpiarBotonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_limpiarBotonKeyPressed
@@ -201,10 +197,14 @@ public class EditorPanel extends javax.swing.JPanel {
             }
             areaConsola.setText(areaConsola.getText() + "\n\nARCHIVO ANALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
         }
+        ColorearEditor.colorPalabras(areaEditor.getStyledDocument(), areaEditor.getText(), listaToken);
     }
 
     private void ejecutarAnalisisSintactico() {
-        sintactico = new AnalizadorSintactico(listaToken);
+        if (bloqueCodigo != null) {
+            bloqueCodigo.clear();
+        }
+        sintactico = new AnalizadorSintactico(listaToken, bloqueCodigo);
         sintactico.analizar();
         areaConsola.setText(areaConsola.getText() + "\n" + sintactico.getBloqueDeCodigoIdentificado());
         areaConsola.setText(areaConsola.getText() + "\nANALISIS SINTÁCTICO FINALIZADO\n---------------------------------------------------------------------------------------------------------------------------------");
