@@ -1,6 +1,7 @@
 frontend/EditorPanel$4.class
 frontend/VentanaPrincipal$3.class
 backend/Main.class
+frontend/reportessintactico/VisualizarBloqueCodigo.class
 backend/lexico/identificadores/AritmeticosEnum.class
 backend/sintactico/condicionalesfuncionesmetodos/CondicionalIfElse.class
 frontend/reportessintactico/ReportesSintacticoPanel$1.class
@@ -40,6 +41,7 @@ frontend/EditorPanel$3.class
 frontend/graphviz/GraphvizUtil.class
 frontend/reporteslexico/ReportesLexicoPanel$3.class
 frontend/VentanaPrincipal.class
+backend/sintactico/DetectarBloqueCodigo.class
 frontend/reportessintactico/ReportesSintacticoPanel$2.class
 backend/lexico/identificadores/OtroEnum.class
 frontend/ColorearEditor.class

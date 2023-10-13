@@ -1,15 +1,21 @@
 package backend.sintactico.condicionalesfuncionesmetodos;
 
+import backend.lexico.Token;
+import java.util.ArrayList;
+
 /**
  *
  * @author michael
  */
 public class FuncionesMetodos {
 
-    private static String[] tokens;
+    private static ArrayList<Token> tokens;
     private static int currentToken;
 
-    public FuncionesMetodos() {
+    public FuncionesMetodos(ArrayList<Token> tokens) {
+        FuncionesMetodos.tokens = tokens;
+        currentToken = 0;
+        declaracion();
     }
 
     private void declaracion() {
@@ -23,7 +29,7 @@ public class FuncionesMetodos {
     }
 
     private void listaParametros() {
-        if (match("identificador")) {
+        if (match("IDENTIFICADOR")) {
             while (match(",")) {
                 identificador();
             }
@@ -31,7 +37,7 @@ public class FuncionesMetodos {
     }
 
     private void bloque() {
-        while (!match("return") && !match("EOF")) {
+        while (currentToken < tokens.size() && !match("return") && !match("EOF")) {
             sentencia();
         }
         if (match("return")) {
@@ -48,10 +54,10 @@ public class FuncionesMetodos {
                 match(":");
                 bloque();
             }
-        } else if (match("identificador")) {
+        } else if (match("IDENTIFICADOR")) {
             match("=");
             expresion();
-        } else if (match("identificador")) {
+        } else if (match("IDENTIFICADOR")) {
             match("(");
             argumentos();
             match(")");
@@ -74,7 +80,7 @@ public class FuncionesMetodos {
     }
 
     private boolean match(String expected) {
-        if (currentToken < tokens.length && tokens[currentToken].equals(expected)) {
+        if (currentToken < tokens.size() && tokens.get(currentToken).getToken().equals(expected)) {
             currentToken++;
             return true;
         }

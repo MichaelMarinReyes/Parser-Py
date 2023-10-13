@@ -1,6 +1,7 @@
 package backend.sintactico.ciclos;
 
 import backend.lexico.Token;
+import java.util.ArrayList;
 
 /**
  *
@@ -8,10 +9,13 @@ import backend.lexico.Token;
  */
 public class CicloWhile {
 
-    private static String[] tokens;
+    private static ArrayList<Token> tokens;
     private static int currentToken;
 
-    public CicloWhile() {
+    public CicloWhile(ArrayList<Token> tokens) {
+        CicloWhile.tokens = tokens;
+        currentToken = 0;
+        cicloWhile();
     }
 
     private void cicloWhile() {
@@ -22,7 +26,7 @@ public class CicloWhile {
     }
 
     private void bloque() {
-        while (!match("else") && !match("EOF")) {
+        while (currentToken < tokens.size() && !match("else") && !match("EOF")) {
             sentencia();
         }
     }
@@ -36,10 +40,10 @@ public class CicloWhile {
                 match(":");
                 bloque();
             }
-        } else if (match("identificador")) {
+        } else if (match("IDENTIFICADOR")) {
             match("=");
             expresion();
-        } else if (match("identificador")) {
+        } else if (match("IDENTIFICADOR")) {
             match("(");
             argumentos();
             match(")");
@@ -76,7 +80,7 @@ public class CicloWhile {
     }
 
     private boolean match(String expected) {
-        if (currentToken < tokens.length && tokens[currentToken].equals(expected)) {
+        if (currentToken < tokens.size() && tokens.get(currentToken).getToken().equals(expected)) {
             currentToken++;
             return true;
         }

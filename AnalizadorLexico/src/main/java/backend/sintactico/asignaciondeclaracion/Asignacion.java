@@ -1,6 +1,7 @@
 package backend.sintactico.asignaciondeclaracion;
 
 import backend.lexico.Token;
+import java.util.ArrayList;
 
 /**
  *
@@ -8,19 +9,21 @@ import backend.lexico.Token;
  */
 public class Asignacion {
 
-    private static String input;
+    private static ArrayList<Token> tokens;
     private static int index;
 
-    public Asignacion() {
+    public Asignacion(ArrayList<Token> tokens) {
+        Asignacion.tokens = tokens;
+        index = 0;
         asignacion();
     }
 
     private void asignacion() {
-        if (index < input.length() && Character.isLetter(input.charAt(index))) {
+        if (index < tokens.size() && tokens.get(index).getToken().equals("IDENTIFICADOR")) {
             identificador();
             operadorAsignacion();
             expresion();
-        } else if (index < input.length() && input.charAt(index) == '[') {
+        } else if (index < tokens.size() && tokens.get(index).getLexema().equals("[")) {
             listaIdentificadores();
             operadorAsignacion();
             listaExpresiones();
@@ -31,7 +34,7 @@ public class Asignacion {
 
     private void listaIdentificadores() {
         identificador();
-        while (index < input.length() && input.charAt(index) == ',') {
+        while (index < tokens.size() && tokens.get(index).getLexema().equals(",")) {
             index++;
             identificador();
         }
@@ -39,25 +42,29 @@ public class Asignacion {
 
     private void listaExpresiones() {
         expresion();
-        while (index < input.length() && input.charAt(index) == ',') {
+        while (index < tokens.size() && tokens.get(index).getLexema().equals(",")) {
             index++;
             expresion();
         }
     }
 
     private void identificador() {
-        letra();
-        while (index < input.length() && (Character.isLetterOrDigit(input.charAt(index)))) {
+        if (index < tokens.size() && tokens.get(index).getToken().equals("IDENTIFICADOR")) {
             index++;
+        } else {
+            throw new RuntimeException();
         }
     }
 
     private void operadorAsignacion() {
-        if (index < input.length() && (input.charAt(index) == '=' || input.charAt(index) == '+'
-                || input.charAt(index) == '-' || input.charAt(index) == '*'
-                || input.charAt(index) == '/' || input.charAt(index) == '%')) {
+        if (index < tokens.size() && (tokens.get(index).getLexema().equals("=")
+                || tokens.get(index).getLexema().equals("+")
+                || tokens.get(index).getLexema().equals("-")
+                || tokens.get(index).getLexema().equals("*")
+                || tokens.get(index).getLexema().equals("/")
+                || tokens.get(index).getLexema().equals("%"))) {
             index++;
-            if (index < input.length() && input.charAt(index) == '=') {
+            if (index < tokens.size() && tokens.get(index).getLexema().equals("=")) {
                 index++;
             }
         } else {
@@ -66,7 +73,7 @@ public class Asignacion {
     }
 
     private void expresion() {
-        if (index < input.length() && input.charAt(index) == '"') {
+        if (index < tokens.size() && tokens.get(index).getLexema().equals("\"")) {
             cadena();
         } else {
             numero();
@@ -74,16 +81,16 @@ public class Asignacion {
     }
 
     private void cadena() {
-        if (index < input.length() && input.charAt(index) == '"') {
+        if (index < tokens.size() && tokens.get(index).getLexema().equals("\"")) {
             index++;
-            while (index < input.length() && input.charAt(index) != '"') {
-                if (input.charAt(index) == '\\') {
+            while (index < tokens.size() && !tokens.get(index).getLexema().equals("\"")) {
+                if (tokens.get(index).getLexema().equals("\\")) {
                     index += 2; // Saltar el carácter de escape y el siguiente
                 } else {
                     index++;
                 }
             }
-            if (index < input.length() && input.charAt(index) == '"') {
+            if (index < tokens.size() && tokens.get(index).getLexema().equals("\"")) {
                 index++;
             } else {
                 throw new RuntimeException();
@@ -94,17 +101,7 @@ public class Asignacion {
     }
 
     private void numero() {
-        if (index < input.length() && Character.isDigit(input.charAt(index))) {
-            while (index < input.length() && Character.isDigit(input.charAt(index))) {
-                index++;
-            }
-        } else {
-            throw new RuntimeException();
-        }
-    }
-
-    private void letra() {
-        if (index < input.length() && (Character.isLetter(input.charAt(index)))) {
+        if (index < tokens.size() && tokens.get(index).getToken().equals("NUMERO")) {
             index++;
         } else {
             throw new RuntimeException();

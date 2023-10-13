@@ -30,7 +30,6 @@ public class ColorearEditor {
                     StyleConstants.setForeground(style, color);
                     doc.setCharacterAttributes(tokenStart, tokenEnd - tokenStart, style, false);
 
-                    // Encuentra el siguiente inicio del token en el texto
                     tokenStart = textoPane.indexOf(tokenValue, tokenEnd);
                 }
             }
@@ -51,8 +50,7 @@ public class ColorearEditor {
         } else if (esOtro(tokenAColorear.getToken())) {
             return Color.GREEN;
         } else {
-            System.out.println("Token desconocido: " + tokenAColorear);
-            return Color.GREEN; // Valor por defecto para tipos desconocidos
+            return Color.GREEN;
         }
     }
 
@@ -105,18 +103,22 @@ public class ColorearEditor {
     }
 
     private static boolean esConstante(String tipoToken) {
-        for (OtroEnum operador : OtroEnum.values()) {
-            if (operador.name().equals("ENTERO") || tipoToken.equals("DECIMAL") || tipoToken.equals("CADENA")) {
-                return true;
+        if (tipoToken.equals("ENTERO") || tipoToken.equals("DECIMAL") || tipoToken.equals("CADENA")) {
+            for (OtroEnum operador : OtroEnum.values()) {
+                if (operador.name().equals("ENTERO") || tipoToken.equals("DECIMAL") || tipoToken.equals("CADENA")) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     private static boolean esComentario(String tipoToken) {
-        for (OtroEnum operador : OtroEnum.values()) {
-            if (operador.name().equals(tipoToken)) {
-                return true;
+        if (tipoToken.endsWith("COMENTARIO")) {
+            for (OtroEnum operador : OtroEnum.values()) {
+                if (operador.name().equals(tipoToken)) {
+                    return true;
+                }
             }
         }
         return false;

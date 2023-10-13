@@ -104,6 +104,15 @@ public class AnalizadorLexico {
                         switch (letra) {
                             case '+':
                             case '-':
+                                if (!buffer.isEmpty()) {
+                                    crearToken(buffer, linea, columna);
+                                    buffer = "";
+                                }
+                                buffer += letra;
+                                crearToken(buffer, linea, columna);
+                                buffer = "";
+                                columna++;
+                                break;
                             case '*':
                                 if (entradaChar[i + 1] == '*') {
                                     listaToken.add(new Token(AritmeticosEnum.EXPONENTE.toString(), "**", linea, columna, "**"));

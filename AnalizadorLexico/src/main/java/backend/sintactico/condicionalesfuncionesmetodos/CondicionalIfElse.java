@@ -9,10 +9,12 @@ import java.util.ArrayList;
  */
 public class CondicionalIfElse {
 
-    private static String[] tokens;
+    private static ArrayList<Token> tokens;
     private static int currentToken;
 
-    public CondicionalIfElse() {
+    public CondicionalIfElse(ArrayList<Token> tokens) {
+        CondicionalIfElse.tokens = tokens;
+        currentToken = 0;
         condicional();
     }
 
@@ -37,13 +39,13 @@ public class CondicionalIfElse {
 
     private static void bloqueCodigo() {
         match("INDENT");
-        while (!match("DEDENT")) {
+        while (currentToken < tokens.size() && !match("DEDENT")) {
             sentencia();
         }
     }
 
     private static void sentencia() {
-        if (match("identificador")) {
+        if (match("IDENTIFICADOR")) {
             match("=");
             expresion();
         } else if (match("if")) {
@@ -69,7 +71,7 @@ public class CondicionalIfElse {
     }
 
     private static boolean match(String expected) {
-        if (currentToken < tokens.length && tokens[currentToken].equals(expected)) {
+        if (currentToken < tokens.size() && tokens.get(currentToken).getToken().equals(expected)) {
             currentToken++;
             return true;
         }

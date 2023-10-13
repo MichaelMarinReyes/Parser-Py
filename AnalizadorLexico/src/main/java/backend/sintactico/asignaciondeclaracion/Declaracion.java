@@ -1,22 +1,27 @@
 package backend.sintactico.asignaciondeclaracion;
 
+import backend.lexico.Token;
+import java.util.ArrayList;
+
 /**
  *
  * @author michael
  */
 public class Declaracion {
 
-    private static String input;
+    private static ArrayList<Token> tokens;
     private static int index;
 
-    public Declaracion() {
+    public Declaracion(ArrayList<Token> tokens) {
+        Declaracion.tokens = tokens;
+        index = 0;
         verificar();
     }
 
     private void verificar() {
         try {
             declaracion();
-            if (index == input.length()) {
+            if (index == tokens.size()) {
                 System.out.println("La declaración es válida.");
             } else {
                 System.out.println("Error de sintaxis.");
@@ -25,7 +30,7 @@ public class Declaracion {
             System.out.println("Error de sintaxis.");
         }
     }
-    
+
     private void declaracion() {
         identificador();
         operadorAsignacion();
@@ -33,14 +38,15 @@ public class Declaracion {
     }
 
     private void identificador() {
-        letra();
-        while (index < input.length() && (Character.isLetterOrDigit(input.charAt(index)))) {
+        if (index < tokens.size() && tokens.get(index).getToken().equals("IDENTIFICADOR")) {
             index++;
+        } else {
+            throw new RuntimeException();
         }
     }
 
     private void operadorAsignacion() {
-        if (index < input.length() && input.charAt(index) == '=') {
+        if (index < tokens.size() && tokens.get(index).getLexema().equals("=")) {
             index++;
         } else {
             throw new RuntimeException();
@@ -48,7 +54,7 @@ public class Declaracion {
     }
 
     private void expresion() {
-        if (index < input.length() && input.charAt(index) == '"') {
+        if (index < tokens.size() && tokens.get(index).getLexema().equals("\"")) {
             cadena();
         } else {
             lista();
@@ -56,13 +62,13 @@ public class Declaracion {
     }
 
     private void lista() {
-        if (index < input.length() && input.charAt(index) == '[') {
+        if (index < tokens.size() && tokens.get(index).getLexema().equals("[")) {
             index++;
-            while (index < input.length() && input.charAt(index) != ']') {
+            while (index < tokens.size() && !tokens.get(index).getLexema().equals("]")) {
                 expresion();
-                if (index < input.length() && input.charAt(index) == ',') {
+                if (index < tokens.size() && tokens.get(index).getLexema().equals(",")) {
                     index++;
-                } else if (input.charAt(index) != ']') {
+                } else if (!tokens.get(index).getLexema().equals("]")) {
                     throw new RuntimeException();
                 }
             }
@@ -73,28 +79,20 @@ public class Declaracion {
     }
 
     private void cadena() {
-        if (index < input.length() && input.charAt(index) == '"') {
+        if (index < tokens.size() && tokens.get(index).getLexema().equals("\"")) {
             index++;
-            while (index < input.length() && input.charAt(index) != '"') {
-                if (input.charAt(index) == '\\') {
+            while (index < tokens.size() && !tokens.get(index).getLexema().equals("\"")) {
+                if (tokens.get(index).getLexema().equals("\\")) {
                     index += 2;
                 } else {
                     index++;
                 }
             }
-            if (index < input.length() && input.charAt(index) == '"') {
+            if (index < tokens.size() && tokens.get(index).getLexema().equals("\"")) {
                 index++;
             } else {
                 throw new RuntimeException();
             }
-        } else {
-            throw new RuntimeException();
-        }
-    }
-
-    private void letra() {
-        if (index < input.length() && (Character.isLetter(input.charAt(index)))) {
-            index++;
         } else {
             throw new RuntimeException();
         }

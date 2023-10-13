@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import javax.swing.JButton;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -118,7 +119,7 @@ public class ReportesSintacticoPanel extends javax.swing.JPanel implements Mouse
     }
 
     public void actualizarTabla() {
-        DefaultTableModel modelo = new DefaultTableModel(new String[]{"No.", "Símbolo", "Tipo", "Valor", "Línea", "Columna", "Usos"}, EditorPanel.bloqueCodigo.size());
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{"No.", "Símbolo", "Tipo", "Línea", "Columna", "Usos", "Bloque código"}, EditorPanel.bloqueCodigo.size());
         this.tablaReportes.setDefaultRenderer(Object.class, new RenderizarTabla());
         tablaReportes.setModel(modelo);
         tablaReportes.setAutoCreateRowSorter(true);
@@ -131,12 +132,13 @@ public class ReportesSintacticoPanel extends javax.swing.JPanel implements Mouse
             for (int i = 0; i < EditorPanel.bloqueCodigo.size(); i++) {
                 BloqueCodigo bloqueCodigo = EditorPanel.bloqueCodigo.get(i);
                 modeloDatos.setValueAt(String.valueOf(i + 1), i, 0);
-                modeloDatos.setValueAt(bloqueCodigo.getSimbolo(), i, 0);
-                modeloDatos.setValueAt(bloqueCodigo.getTipo(), i, 1);
-                modeloDatos.setValueAt(bloqueCodigo.getValor(), i, 4);
-                modeloDatos.setValueAt(String.valueOf(bloqueCodigo.getLinea()), i, 5);
-                modeloDatos.setValueAt(String.valueOf(bloqueCodigo.getColumna()), i, 5);
+                modeloDatos.setValueAt(bloqueCodigo.getSimbolo(), i, 1);
+                modeloDatos.setValueAt(bloqueCodigo.getTipo(), i, 2);
+                modeloDatos.setValueAt(String.valueOf(bloqueCodigo.getLinea()), i, 3);
+                modeloDatos.setValueAt(String.valueOf(bloqueCodigo.getColumna()), i, 4);
                 modeloDatos.setValueAt(String.valueOf(bloqueCodigo.getUsos()), i, 5);
+                modeloDatos.setValueAt(new JButton("Ver Bloque"), i, 6);
+
             }
         }
     }
@@ -146,13 +148,12 @@ public class ReportesSintacticoPanel extends javax.swing.JPanel implements Mouse
         int columna = tablaReportes.columnAtPoint(me.getPoint());
 
         if (columna == 6) {
-            VisualizarGrafico ver = new VisualizarGrafico();
-            ver.obtenerLexema(EditorPanel.listaToken.get(tablaReportes.getSelectedRow()).getLexema());
-            ver.setTitle("Gráfico-" + EditorPanel.listaToken.get(tablaReportes.getSelectedRow()).getToken());
+            VisualizarBloqueCodigo ver = new VisualizarBloqueCodigo();
+            ver.obtenerLexema(EditorPanel.bloqueCodigo.get(tablaReportes.getSelectedRow()).getValor());
+            ver.setTitle("Bloque-" + EditorPanel.bloqueCodigo.get(tablaReportes.getSelectedRow()).getTipo());
             ver.setSize(999, 400);
             ver.setLocationRelativeTo(this);
             ver.setVisible(true);
-
         }
     }
 

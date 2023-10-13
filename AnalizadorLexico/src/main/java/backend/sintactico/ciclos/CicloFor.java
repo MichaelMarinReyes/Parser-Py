@@ -1,6 +1,7 @@
 package backend.sintactico.ciclos;
 
 import backend.lexico.Token;
+import java.util.ArrayList;
 
 /**
  *
@@ -8,10 +9,13 @@ import backend.lexico.Token;
  */
 public class CicloFor {
 
-    private static String[] tokens;
+    private static ArrayList<Token> tokens;
     private static int currentToken;
 
-    public CicloFor() {
+    public CicloFor(ArrayList<Token> tokens) {
+        CicloFor.tokens = tokens;
+        currentToken = 0;
+        cicloFor();
     }
 
     private static void cicloFor() {
@@ -24,7 +28,7 @@ public class CicloFor {
     }
 
     private static void bloque() {
-        while (!match("else") && !match("EOF")) {
+        while (currentToken < tokens.size() && !match("else") && !match("EOF")) {
             sentencia();
         }
     }
@@ -38,7 +42,7 @@ public class CicloFor {
                 match(":");
                 bloque();
             }
-        } else if (match("identificador")) {
+        } else if (match("IDENTIFICADOR")) {
             match("=");
             expresion();
         } else if (match("range")) {
@@ -47,7 +51,7 @@ public class CicloFor {
             match(",");
             numero();
             match(")");
-        } else if (match("identificador")) {
+        } else if (match("IDENTIFICADOR")) {
             match("(");
             argumentos();
             match(")");
@@ -68,11 +72,11 @@ public class CicloFor {
             match(",");
             numero();
             match(")");
-        } else if (match("identificador")) {
+        } else if (match("IDENTIFICADOR")) {
             match("(");
             argumentos();
             match(")");
-        } else if (match("identificador")) {
+        } else if (match("IDENTIFICADOR")) {
             match("=");
             expresion();
         }
@@ -87,11 +91,10 @@ public class CicloFor {
     }
 
     private static boolean match(String expected) {
-        if (currentToken < tokens.length && tokens[currentToken].equals(expected)) {
+        if (currentToken < tokens.size() && tokens.get(currentToken).getToken().equals(expected)) {
             currentToken++;
             return true;
         }
         return false;
     }
-
 }

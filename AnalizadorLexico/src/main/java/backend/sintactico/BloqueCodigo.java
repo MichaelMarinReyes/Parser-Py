@@ -12,11 +12,11 @@ public class BloqueCodigo {
     private int columna;
     private int usos;
 
-    public BloqueCodigo(String simbolo, String tipo, String valor, int fila, int columna, int usos) {
+    public BloqueCodigo(String simbolo, String tipo, String valor, int linea, int columna, int usos) {
         this.simbolo = simbolo;
         this.tipo = tipo;
         this.valor = valor;
-        this.linea = fila;
+        this.linea = linea;
         this.columna = columna;
         this.usos = usos;
     }
