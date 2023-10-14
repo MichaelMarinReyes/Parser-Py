@@ -4,115 +4,216 @@ package backend {
         + main()
     }
 
-    class Analizador {
-        - Map<String, TipoToken> diccionario
-        - ArrayList<Token> listaToken
-        + Analizador(ArrayList<Token> listaToken)
-        + analizar(String cadena)
-        - crearToken(String lexema, int linea, int columna)
-        - esNumero(String lexema): boolean
-        - esCadena(String lexema): boolean
-        - esID(String lexema): boolean
-        - iniciarDiccionarios()
+    package lexico {
+        class AnalizadorLexico {
+            - Map<String, TipoToken> diccionario
+            - ArrayList<Token> listaToken
+            + AnalizadorLexico(ArrayList<Token> listaToken)
+            + analizar(String cadena)
+            - crearToken(String lexema, int linea, int columna)
+            - esNumero(String lexema): boolean
+            - esCadena(String lexema): boolean
+            - esID(String lexema): boolean
+            - iniciarDiccionarios()
+        }
+        
+        class Token {
+            - String lexema
+            - int linea
+            - int columna
+            - String token
+            - String patron
+            - boolean identacion
+        }
+
+        package identificadores {
+            enum AritmeticosEnum {
+                SUMA,
+                RESTA,
+                EXPONENTE,
+                DIVISION,
+                DIVISION2,
+                MODULO,
+                MULTIPLICACION;
+            }
+
+            enum ComparacionEnum {
+                IGUAL,
+                ASIGNACION,
+                DIFERENTE,
+                MAYOR_QUE,
+                MENOR_QUE,
+                MAYOR_IGUAL_QUE,
+                MENOR_IGUAL_QUE;
+            }
+
+            enum LogicoEnum {
+                AND,
+                OR,
+                NOT;
+            }
+
+            enum OtroEnum {
+                ENTERO,
+                DECIMAL,
+                CADENA,
+                ID,
+                COMENTARIO,
+                PARENTESIS_IZ,
+                PARENTESIS_DE,
+                LLAVE_IZ,
+                LLAVE_DE,
+                CORCHETE_IZ,
+                CORCHETE_DE,
+                COMA,
+                PUNTO_COMA,
+                DOS_PUNTOS;
+            }
+
+            enum PalabraClave {
+                AS,
+                ASSERT,
+                BREAK,
+                CLASS,
+                CONTINUE,
+                DEF,
+                DEL,
+                ELIF,
+                ELSE,
+                EXCEPT,
+                FALSE,
+                FINALLY,
+                FOR,
+                FROM,
+                GLOBAL,
+                IF,
+                IMPORT,
+                IN,
+                IS,
+                LAMBDA,
+                NONE,
+                NONLOCAL,
+                PASS,
+                RAISE,
+                RETURN,
+                TRUE,
+                TRY,
+                WHILE,
+                WITH,
+                YIELD;
+            }
+
+            enum TipoToken {
+                ARITMETICO,
+                COMPARACION,
+                LOGICO,
+                ASIGNACION,
+                PALABRA_RESERVADA,
+                CONSTANTE,
+                COMENTARIO,
+                CADENA,
+                ENTERO,
+                DECIMAL,
+                ID,
+                OTROS_TOKENS,
+                ERROR_LEXICO;
+            }
+        }
+
+        AnalizadorLexico *-- Token
+    }
+    
+    package sintactico {
+        class AnalizadorSintactico {
+            - ArrayList<BloqueCodigo> listaBloques
+            - ArrayList<Token> listaTokens
+            - DetectarBloqueCodigo detectarBloque
+        }
+
+        class BloqueCodigo {
+            - String simbolo
+            - String tipo
+            - String valor
+            - int linea
+            - int columna
+            - int usos
+            + getter()
+            + setter()
+        }
+
+        class DetectarBloqueCodigo {
+            - ArrayList<Token> listaToken
+            + reconocerBloque(): Token[]
+        }
+
+        package asignaciondeclaracion {
+            class Asignacion {
+                - Token[] tokens
+                - boolean esAceptado
+                + esAceptado(): boolean
+                + asignacion()
+                - operadorIdentificador()
+                - valorAsignado()
+                - esComparacion: boolean
+            }
+
+            class Declaracion {
+                - Token[] tokens
+                - boolean esAceptado
+                + esAceptado(): boolean
+                + declaracion()
+                - operadorAsignacion()
+                - valorAsignado()
+            }
+
+            class OperadorTernario {
+                - Token[] tokens
+                - boolean esAceptado
+                + esAceptado()
+                + ternario()
+                - esAsignacion()
+                - condicionTrue()
+                - siguienteCondicional()
+                - condicionFalse()
+                - consicionElse()
+                - ultimoToken()
+            }
+        }
+
+        package ciclos {
+            class CicloFor {
+
+            }
+
+            class CicloWhile {
+
+            }
+        }
+
+        package condicionalesfuncionesmetodos {
+            class CondicionalIfElse {
+
+            }
+
+            class FuncionMetodo {
+
+            }
+        }
+
+        AnalizadorSintactico *-- BloqueCodigo
+        AnalizadorSintactico *-- DetectarBloqueCodigo
+        AnalizadorSintactico *-- Asignacion
+        AnalizadorSintactico *-- Declaracion
+        AnalizadorSintactico *-- OperadorTernario
+        AnalizadorSintactico *-- CicloFor
+        AnalizadorSintactico *-- CicloWhile
+        AnalizadorSintactico *-- CondicionalIfElse
+        AnalizadorSintactico *-- FuncionMetodo
     }
 
     class LeerArchivoTexto {
         - String path
         + abrirArchivo(String ruta): String
-    }
-
-    package identificadores {
-        enum AritmeticosEnum {
-            SUMA,
-            RESTA,
-            EXPONENTE,
-            DIVISION,
-            DIVISION2,
-            MODULO,
-            MULTIPLICACION;
-        }
-
-        enum ComparacionEnum {
-            IGUAL,
-            ASIGNACION,
-            DIFERENTE,
-            MAYOR_QUE,
-            MENOR_QUE,
-            MAYOR_IGUAL_QUE,
-            MENOR_IGUAL_QUE;
-        }
-
-        enum LogicoEnum {
-            AND,
-            OR,
-            NOT;
-        }
-
-        enum OtroEnum {
-            ENTERO,
-            DECIMAL,
-            CADENA,
-            ID,
-            COMENTARIO,
-            PARENTESIS_IZ,
-            PARENTESIS_DE,
-            LLAVE_IZ,
-            LLAVE_DE,
-            CORCHETE_IZ,
-            CORCHETE_DE,
-            COMA,
-            PUNTO_COMA,
-            DOS_PUNTOS;
-        }
-
-        enum PalabraClave {
-            AS,
-            ASSERT,
-            BREAK,
-            CLASS,
-            CONTINUE,
-            DEF,
-            DEL,
-            ELIF,
-            ELSE,
-            EXCEPT,
-            FALSE,
-            FINALLY,
-            FOR,
-            FROM,
-            GLOBAL,
-            IF,
-            IMPORT,
-            IN,
-            IS,
-            LAMBDA,
-            NONE,
-            NONLOCAL,
-            PASS,
-            RAISE,
-            RETURN,
-            TRUE,
-            TRY,
-            WHILE,
-            WITH,
-            YIELD;
-        }
-
-        enum TipoToken {
-            ARITMETICO,
-            COMPARACION,
-            LOGICO,
-            ASIGNACION,
-            PALABRA_RESERVADA,
-            CONSTANTE,
-            COMENTARIO,
-            CADENA,
-            ENTERO,
-            DECIMAL,
-            ID,
-            OTROS_TOKENS,
-            ERROR_LEXICO;
-        }
     }
 
     TipoToken *--"1" AritmeticosEnum
@@ -121,7 +222,8 @@ package backend {
     TipoToken *--"1" PalabraClave
     TipoToken *--"1" OtroEnum
 
-    Analizador *--TipoToken
+    AnalizadorLexico *--TipoToken
+    AnalizadorSintactico *-- AnalizadorLexico
 }
 
 package frontend {
@@ -138,24 +240,16 @@ package frontend {
     class JMenuBar
     interface  MouseListener
 
-    class VentanaPrincipal {
-        - EditorPanel editor
-        - JMenuItem abrirBoton
-        - JMenu acercaDeBoton
-        - JMenu ayudaBoton
-        - JPanel contenedorPanel
-        - JMenu editorTexto
-        - JMenu jMenu1
-        - JMenuBar menuOPciones
-        - JMenu reportesBoton
-        - JFilechooser chooser
-        + VentanaPrincipal()
-        - abrirBotonActionPerformed(ActionEvent evt)
-        - editorTExtoMOuseClicked(MouseEvent evt)
-        - reportesBotonMouseClicked(MouseEvent evt)
-        - ayudaBotonMouseClicked(MOuseEvent evt)
-        - acercaDeBotonMouseClicked(MouseEvent evt)
-        - pintarPanel(Component panel)
+    class ColorearEditor {
+        + colorPalabras(StyleDocument doc, String textoPane, ArrayList<Token> tablaToken): static
+        + getColorForTokenType(token tokenAColorear): Color
+        - esAritmetico(String tipoToken): boolean
+        - esComparacion(String tipoToken): boolean
+        - esLogico(String tipoToken): boolean
+        - esPalabraReservada(String tipoToken): boolean
+        - esOtro(String tipoToken): boolean
+        - esConstante(String tipoToken): boolean
+        - esComentario(String tipoToken): boolean
     }
 
     class EditorPanel {
@@ -225,28 +319,72 @@ package frontend {
         + getTableCellRendererComponent(JTable table, Object objetoRenderizable, boolean isSelected, boolean hasFocus, int row, int column): Component
     }
 
-    class ReportesPanel {
-        - JScrollPane jScrollPane
-        - JTable tablaReportes
-        + ReportesPanel()
-        + actualizarTabla()
-        + mouseClicked(MouseEvent me)
-        + mousePressed(MouseEvent me)
-        + mouseReleased(MouseEvent me)
-        + mouseEnteredmouseExited(MouseEvent me)
+    class VentanaPrincipal {
+        - EditorPanel editor
+        - JMenuItem abrirBoton
+        - JMenu acercaDeBoton
+        - JMenu ayudaBoton
+        - JPanel contenedorPanel
+        - JMenu editorTexto
+        - JMenu jMenu1
+        - JMenuBar menuOPciones
+        - JMenu reportesBoton
+        - JFilechooser chooser
+        + VentanaPrincipal()
+        - abrirBotonActionPerformed(ActionEvent evt)
+        - editorTExtoMOuseClicked(MouseEvent evt)
+        - reportesBotonMouseClicked(MouseEvent evt)
+        - ayudaBotonMouseClicked(MOuseEvent evt)
+        - acercaDeBotonMouseClicked(MouseEvent evt)
+        - pintarPanel(Component panel)
     }
 
-    class VisualizarGrafico {
-        - JPanel jPanel1
-        - JLabel labelGrafico
-        - JScrollPane scrollPane
-        + VisualizarGrafico()
-        + obtenerLexema(String lexema)
+    package graphviz {
+        class GraphvizUtil {
+            + generarGrafico()
+        }
+     
+        class VisualizarGrafico {
+            - JPanel jPanel1
+            - JLabel labelGrafico
+            - JScrollPane scrollPane
+            + VisualizarGrafico()
+            + obtenerLexema(String lexema)
+        }
     }
 
-    class GraphvizUtil {
-        + generarGrafico()
+    package reporteslexico {
+        class ReportesLexicoPanel {
+            - JScrollPane jScrollPane
+            - JTable tablaReportes
+            + ReportesLexicoPanel()
+            + actualizarTabla()
+            + mouseClicked(MouseEvent me)
+            + mousePressed(MouseEvent me)
+            + mouseReleased(MouseEvent me)
+            + mouseEnteredmouseExited(MouseEvent me)
+        }
     }
+
+    package reportessintactico {
+        class ReportesSintacticoPanel {
+            - JScrollPane jScrollPane
+            - JTable tablaReportes
+            + ReportesLexicoPanel()
+            + actualizarTabla()
+            + mouseClicked(MouseEvent me)
+            + mousePressed(MouseEvent me)
+            + mouseReleased(MouseEvent me)
+            + mouseEnteredmouseExited(MouseEvent me)
+        }
+
+        class VisualizarBloqueCodigo {
+            + obtenerLexema(String lexema)   
+        }
+    }
+
+
+    
 
     VentanaPrincipal "extends"--> JFrame
     VentanaPrincipal o-up- "1" JMenuItem
@@ -255,7 +393,8 @@ package frontend {
     VentanaPrincipal o-up- "1" JMenuBar
     VentanaPrincipal o-up- "1" JFilechooser
     VentanaPrincipal *-- "1" EditorPanel
-    VentanaPrincipal *-right- "1" ReportesPanel
+    VentanaPrincipal *-right- "1" ReportesLexicoPanel
+    VentanaPrincipal *-- ReportesSintacticoPanel
 
     EditorPanel "1" -->  JPanel
     EditorPanel "1" *-left- "1" JEditorPane
@@ -264,6 +403,7 @@ package frontend {
     EditorPanel "1" *-- "1" JLabel
     EditorPanel "1" *-- "2" JScrollPane
     EditorPanel "1" *-right- "1" NumeroLinea
+    EditorPanel "1" *-- ColorearEditor
 
     NumeroLinea -left-|> JPanel
     NumeroLinea "implements"..> CaretListener
@@ -273,13 +413,21 @@ package frontend {
 
     RenderizarTabla "extends" --> DefaultTableCellRenderer
 
-    ReportesPanel "extends" --> JPanel
-    ReportesPanel "implements" .up.> MouseListener
-    ReportesPanel *-- "1" JScrollPane
-    ReportesPanel *-up- "1" JTable
-    ReportesPanel o-- "1" RenderizarTabla
-    ReportesPanel *-right- GraphvizUtil
-    ReportesPanel *-- JButton
+    ReportesLexicoPanel "extends" --> JPanel
+    ReportesLexicoPanel "implements" .up.> MouseListener
+    ReportesLexicoPanel *-- "1" JScrollPane
+    ReportesLexicoPanel *-up- "1" JTable
+    ReportesLexicoPanel o-- "1" RenderizarTabla
+    ReportesLexicoPanel *-right- GraphvizUtil
+    ReportesLexicoPanel *-- JButton
+
+    ReportesSintacticoPanel "extends" --> JPanel
+    ReportesSintacticoPanel "implements" .up.> MouseListener
+    ReportesSintacticoPanel *-- "1" JScrollPane
+    ReportesSintacticoPanel *-up- "1" JTable
+    ReportesSintacticoPanel o-- "1" RenderizarTabla
+    ReportesSintacticoPanel *-right- VisualizarBloqueCodigo
+    ReportesSintacticoPanel *-- JButton
 
     VisualizarGrafico "extends" --> JFrame
     VisualizarGrafico *-up- "1" JPanel
@@ -289,5 +437,6 @@ package frontend {
 
 Main *--"1" VentanaPrincipal
 EditorPanel *-up- LeerArchivoTexto
-EditorPanel *-up- Analizador
+EditorPanel *-up- AnalizadorLexico
+EditorPanel *-up- AnalizadorSintactico
 @enduml
