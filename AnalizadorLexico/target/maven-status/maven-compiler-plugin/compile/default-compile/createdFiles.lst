@@ -11,7 +11,6 @@ backend/lexico/identificadores/PalabraClaveEnum.class
 backend/sintactico/BloqueCodigo.class
 backend/lexico/identificadores/LogicoEnum.class
 frontend/EditorPanel$5.class
-backend/sintactico/condicionalesfuncionesmetodos/FuncionesMetodos.class
 frontend/graphviz/VisualizarGrafico.class
 frontend/reporteslexico/ReportesLexicoPanel.class
 frontend/VentanaPrincipal$7.class
@@ -28,6 +27,7 @@ backend/LeerArchivoTexto.class
 backend/sintactico/ciclos/CicloFor.class
 backend/lexico/Token.class
 frontend/reportessintactico/ReportesSintacticoPanel.class
+backend/sintactico/condicionalesfuncionesmetodos/FuncionMetodo.class
 frontend/reportessintactico/ReportesSintacticoPanel$3.class
 frontend/EditorPanel$2.class
 frontend/NumeroLinea.class

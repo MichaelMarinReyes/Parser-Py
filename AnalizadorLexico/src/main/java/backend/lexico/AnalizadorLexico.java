@@ -103,19 +103,34 @@ public class AnalizadorLexico {
                     default:
                         switch (letra) {
                             case '+':
-                            case '-':
-                                if (!buffer.isEmpty()) {
-                                    crearToken(buffer, linea, columna);
+                                if (entradaChar[i + 1] == '=') {
+                                    listaToken.add(new Token(ComparacionEnum.SUMA_ASIGNA.toString(), "+=", linea, columna, "+="));
                                     buffer = "";
+                                    columna++;
+                                } else if (entradaChar[i] == '+' && entradaChar[i + 1] != '=') {
+                                    listaToken.add(new Token(AritmeticosEnum.SUMA.toString(), "+", linea, columna, "+"));
+                                    buffer = "";
+                                    columna++;
                                 }
-                                buffer += letra;
-                                crearToken(buffer, linea, columna);
-                                buffer = "";
-                                columna++;
+                                break;
+                            case '-':
+                                if (entradaChar[i + 1] == '=') {
+                                    listaToken.add(new Token(ComparacionEnum.RESTA_ASIGNA.toString(), "-=", linea, columna, "-="));
+                                    buffer = "";
+                                    columna++;
+                                } else if (entradaChar[i] == '-' && entradaChar[i + 1] != '=') {
+                                    listaToken.add(new Token(AritmeticosEnum.RESTA.toString(), "-", linea, columna, "-"));
+                                    buffer = "";
+                                    columna++;
+                                }
                                 break;
                             case '*':
                                 if (entradaChar[i + 1] == '*') {
                                     listaToken.add(new Token(AritmeticosEnum.EXPONENTE.toString(), "**", linea, columna, "**"));
+                                    buffer = "";
+                                    columna++;
+                                } else if (entradaChar[i] == '*' && entradaChar[i + 1] == '=') {
+                                    listaToken.add(new Token(ComparacionEnum.MULTIPLICA_ASIGNA.toString(), "*=", linea, columna, "*="));
                                     buffer = "";
                                     columna++;
                                 } else if (entradaChar[i + 1] == ' ' && entradaChar[i + 2] == '*') {
@@ -127,12 +142,15 @@ public class AnalizadorLexico {
                                     buffer = "";
                                     columna++;
                                 }
-
                                 break;
                             case '/':
                                 if (entradaChar[i] == '/' && !(entradaChar[i - 1] == '/')) {
                                     if (entradaChar[i + 1] == '/') {
                                         listaToken.add(new Token(AritmeticosEnum.DIVISION2.toString(), "//", linea, columna, "//"));
+                                        buffer = "";
+                                        columna++;
+                                    } else if (entradaChar[i + 1] == '=') {
+                                        listaToken.add(new Token(ComparacionEnum.DIVIDE_ASIGNA.toString(), "/=", linea, columna, "/="));
                                         buffer = "";
                                         columna++;
                                     } else if (entradaChar[i] == '/' && (entradaChar[i - 1] != '/')) {
@@ -151,7 +169,7 @@ public class AnalizadorLexico {
                                 columna++;
                                 break;
                             case '=':
-                                if (entradaChar[i] == '=' && !(entradaChar[i - 1] == '<' || entradaChar[i - 1] == '>' || entradaChar[i - 1] == '!')) {
+                                if (entradaChar[i] == '=' && !(entradaChar[i - 1] == '<' || entradaChar[i - 1] == '>' || entradaChar[i - 1] == '!' || entradaChar[i - 1] == '*' || entradaChar[i - 1] == '/' || entradaChar[i - 1] == '+' || entradaChar[i - 1] == '-')) {
                                     if (entradaChar[i + 1] == '=') {
                                         listaToken.add(new Token(ComparacionEnum.IGUAL.toString(), "==", linea, columna, "=="));
                                         buffer = "";

@@ -2,12 +2,12 @@ package backend.sintactico;
 
 import backend.lexico.Token;
 import static backend.lexico.identificadores.TipoToken.ASIGNACION;
-import backend.sintactico.asignaciondeclaracion.Asignacion;
-import backend.sintactico.asignaciondeclaracion.Declaracion;
+import backend.sintactico.asignaciondeclaracion.*;
 import backend.sintactico.ciclos.CicloFor;
 import backend.sintactico.ciclos.CicloWhile;
 import backend.sintactico.condicionalesfuncionesmetodos.CondicionalIfElse;
-import backend.sintactico.condicionalesfuncionesmetodos.FuncionesMetodos;
+import backend.sintactico.condicionalesfuncionesmetodos.FuncionMetodo;
+import frontend.EditorPanel;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +20,6 @@ public class AnalizadorSintactico {
     private String bloqueDeCodigoIdentificado = "";
     private ArrayList<Token> listaTokens;
     private DetectarBloqueCodigo detectarBloque;
-    private int index;
 
     public AnalizadorSintactico(ArrayList<Token> listaTokens, ArrayList<BloqueCodigo> bloqueCodigo) {
         this.listaTokens = listaTokens;
@@ -31,98 +30,30 @@ public class AnalizadorSintactico {
     public String getBloqueDeCodigoIdentificado() {
         return bloqueDeCodigoIdentificado;
     }
-/*
+
     public void analizar() {
-        try {
-            while (index < listaTokens.size()) {
-                DetectarBloqueCodigo bloque = detectarSiguienteBloque();
-                if (bloque != null) {
-                    // Continúa con el análisis
-                    switch (bloque.getTipo()) {
-                        case ASIGNACION:
-                            analizarAsignacion(bloque);
-                            listaBloques.add(new BloqueCodigo("Asignación", "Asignación", bloque.toString(), listaTokens.get(index).getLinea(), listaTokens.get(index).getColumna(), 0)); // Agrega el bloque a la lista de bloques
-                            break;
-                        case DECLARACION:
-                            analizarDeclaracion(bloque);
-                            listaBloques.add(new BloqueCodigo("Declaración", "Declaración", bloque.toString(), listaTokens.get(index).getLinea(), listaTokens.get(index).getColumna(), 0)); // Agrega el bloque a la lista de bloques
-                            break;
-                        case CICLO_FOR:
-                            analizarCicloFor(bloque);
-                            listaBloques.add(new BloqueCodigo("Ciclo For", "Ciclo For", bloque.toString(), listaTokens.get(index).getLinea(), listaTokens.get(index).getColumna(), 0)); // Agrega el bloque a la lista de bloques
-                            break;
-                        case CICLO_WHILE:
-                            analizarCicloWhile(bloque);
-                            listaBloques.add(new BloqueCodigo("Ciclo While", "Ciclo While", bloque.toString(), listaTokens.get(index).getLinea(), listaTokens.get(index).getColumna(), 0)); // Agrega el bloque a la lista de bloques
-                            break;
-                        case CONDICIONAL_IF_ELSE:
-                            analizarCondicionalIfElse(bloque);
-                            listaBloques.add(new BloqueCodigo("If-else", "If-else", bloque.toString(), listaTokens.get(index).getLinea(), listaTokens.get(index).getColumna(), 0)); // Agrega el bloque a la lista de bloques
-                            break;
-                        case FUNCION_METODO:
-                            analizarFuncionMetodo(bloque);
-                            listaBloques.add(new BloqueCodigo("Función/Método", "Función/Método", bloque.toString(), listaTokens.get(index).getLinea(), listaTokens.get(index).getColumna(), 0)); // Agrega el bloque a la lista de bloques
-                            break;
-                    }
+        for (int i = 0; i < listaTokens.size(); i++) {
+            if (listaTokens.get(i).getToken().equals("COMENTARIO")) {
+                listaBloques.add(new BloqueCodigo("Comentario", "Comentario", listaTokens.get(i).getLexema(), listaTokens.get(i).getLinea(), listaTokens.get(i).getColumna(), 1));
+            } else if (listaTokens.get(i).getToken().equals("ID") && listaTokens.get(i + 1).getToken().equals("ASIGNACION") && (listaTokens.get(i + 2).getToken().equals("ENTERO") || listaTokens.get(i + 2).getToken().equals("DECIMAL") || listaTokens.get(i + 2).getToken().equals("CADENA"))) {
+                String valor = listaTokens.get(i).getLexema() + " " + listaTokens.get(i + 1).getLexema() + " " + listaTokens.get(i + 2).getLexema();
+                Token[] tokens = {listaTokens.get(i), listaTokens.get(i + 1), listaTokens.get(i + 2)};
+                Declaracion asignacion = new Declaracion(tokens);
+                asignacion.asignacion();
+                if (asignacion.isEsAceptado()) {
+                    System.out.println(valor);
+                    listaBloques.add(new BloqueCodigo("Declaración", "Declaración", valor, listaTokens.get(i).getLinea(), listaTokens.get(i).getColumna(), 1));
                 }
+                i += 2;
+            } else if (listaTokens.get(i).getToken().equals("ID")) {
+                String valor = listaTokens.get(i).getToken() + " " + listaTokens.get(i + 1).getToken() + " " + listaTokens.get(i + 2).getToken() + " " + listaTokens.get(i + 3).getToken();
+                Token[] tokens = {listaTokens.get(i), listaTokens.get(i + 1), listaTokens.get(i + 2), listaTokens.get(i + 3)};
+                listaBloques.add(new BloqueCodigo("Asignación", "Asignación", valor, listaTokens.get(i).getLinea(), listaTokens.get(i).getColumna(), 1));
+                i += 2;
+            } else {
+                listaBloques.add(new BloqueCodigo("Error sintáctico", "Error sintáctico", listaTokens.get(i).getLexema(), listaTokens.get(i).getLinea(), listaTokens.get(i).getColumna(), 1));
             }
-            System.out.println("Análisis completado.");
-        } catch (Exception e) {
-            System.out.println("Error de sintaxis: " + e.getMessage());
+
         }
-    }/*
-
-    private void analizarAsignacion(BloqueCodigo bloque) {
-        String input = bloque.getValor();
-        Asignacion analizador = new Asignacion(input);
-        analizador.analizar();
     }
-
-    private void analizarDeclaracion(BloqueCodigo bloque) {
-        String input = bloque.getValor();
-        Declaracion analizador = new Declaracion(input);
-        analizador.analizar();
-    }
-
-    private void analizarCicloFor(BloqueCodigo bloque) {
-        String input = bloque.getValor();
-        CicloFor analizador = new CicloFor(input);
-        analizador.analizar();
-    }
-
-    private void analizarCicloWhile(BloqueCodigo bloque) {
-        String input = bloque.getValor();
-        CicloWhile analizador = new CicloWhile(input);
-        analizador.analizar();
-    }
-
-    private void analizarCondicionalIfElse(BloqueCodigo bloque) {
-        String input = bloque.getValor();
-        CondicionalIfElse analizador = new CondicionalIfElse(input);
-        analizador.analizar();
-    }
-
-    private void analizarFuncionMetodo(BloqueCodigo bloque) {
-        String input = bloque.getValor();
-        FuncionesMetodos analizador = new FuncionesMetodos(input);
-        analizador.analizar();
-    }
-
-    private DetectarBloqueCodigo detectarSiguienteBloque() {
-        int inicioBloque = index;
-        int nivelIndentacion = listaTokens.get(inicioBloque).getIndentacion();
-
-        while (index < listaTokens.size() && listaTokens.get(index).getIndentacion() >= nivelIndentacion) {
-            index++;
-        }
-
-        if (index > inicioBloque) {
-            ArrayList<Token> tokensBloque = new ArrayList<>(listaTokens.subList(inicioBloque, index));
-            // Aquí construyes el objeto BloqueCodigo con la información correcta
-            // Puedes utilizar los tokens dentro de tokensBloque para obtener la información necesaria
-            return new BloqueCodigo(/* Parámetros con la información correcta );
-        }
-
-        return null;
-    }*/
 }

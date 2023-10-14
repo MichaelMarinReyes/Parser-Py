@@ -7,13 +7,13 @@ import java.util.ArrayList;
  *
  * @author michael
  */
-public class FuncionesMetodos {
+public class FuncionMetodo {
 
     private static ArrayList<Token> tokens;
     private static int currentToken;
 
-    public FuncionesMetodos(ArrayList<Token> tokens) {
-        FuncionesMetodos.tokens = tokens;
+    public FuncionMetodo(ArrayList<Token> tokens) {
+        FuncionMetodo.tokens = tokens;
         currentToken = 0;
         declaracion();
     }

@@ -158,7 +158,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
     private void ejecutarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarBotonActionPerformed
         ejecutarAnalisisLexico();
-        //ejecutarAnalisisSintactico();
+        ejecutarAnalisisSintactico();
     }//GEN-LAST:event_ejecutarBotonActionPerformed
 
     private void limpiarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarBotonActionPerformed
@@ -209,7 +209,7 @@ public class EditorPanel extends javax.swing.JPanel {
             bloqueCodigo.clear();
         }
         sintactico = new AnalizadorSintactico(listaToken, bloqueCodigo);
-        //sintactico.analizar();
+        sintactico.analizar();
         areaConsola.setText(areaConsola.getText() + "\n" + sintactico.getBloqueDeCodigoIdentificado());
         areaConsola.setText(areaConsola.getText() + "\nANALISIS SINTÁCTICO COMPLETADO\n---------------------------------------------------------------------------------------------------------------------------------");
 

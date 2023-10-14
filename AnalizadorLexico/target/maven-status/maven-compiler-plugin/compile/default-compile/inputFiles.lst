@@ -15,7 +15,6 @@
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/lexico/identificadores/PalabraClaveEnum.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/LeerArchivoTexto.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/lexico/identificadores/TipoToken.java
-/home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/sintactico/condicionalesfuncionesmetodos/FuncionesMetodos.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/sintactico/asignaciondeclaracion/Asignacion.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/RenderizarTabla.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/reporteslexico/ReportesLexicoPanel.java
@@ -25,5 +24,6 @@
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/sintactico/AnalizadorSintactico.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/EditorPanel.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/lexico/Token.java
+/home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/sintactico/condicionalesfuncionesmetodos/FuncionMetodo.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/backend/sintactico/ciclos/CicloFor.java
 /home/michael/Documentos/2023/Segundo Semestre/Lenguajes formales y de programación/Laboratorio/Práctica 1/AnalizadorLexico/src/main/java/frontend/graphviz/GraphvizUtil.java
