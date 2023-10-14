@@ -5,8 +5,7 @@ import static backend.lexico.identificadores.TipoToken.ASIGNACION;
 import backend.sintactico.asignaciondeclaracion.*;
 import backend.sintactico.ciclos.CicloFor;
 import backend.sintactico.ciclos.CicloWhile;
-import backend.sintactico.condicionalesfuncionesmetodos.CondicionalIfElse;
-import backend.sintactico.condicionalesfuncionesmetodos.FuncionMetodo;
+import backend.sintactico.condicionalesfuncionesmetodos.*;
 import frontend.EditorPanel;
 import java.util.ArrayList;
 
@@ -85,15 +84,15 @@ public class AnalizadorSintactico {
                     }
 
                 } else if (listaTokens.get(i).getToken().equals("IF")) {
-                    /* String valor = " ";
-                DetectarBloqueCodigo detectarBloque = new DetectarBloqueCodigo(listaTokens);
-                CondicionalIfElse condicionalIf = new CondicionalIfElse(detectarBloque.reconocerBloque(i));
-                while (i < (detectarBloque.reconocerBloque(i).length)) {
-                    valor.concat(" " + listaTokens.get(i).getLexema());
-                }
-                if (condicionalIf.isAceptado()) {
-                    listaBloques.add(new BloqueCodigo("IF, IF-ELSE, IF-ELIF-ELSE", "Condicional", valor, listaTokens.get(i).getLinea(), listaTokens.get(i).getLinea(), 1));
-                }*/
+                    String valor = " ";
+                    DetectarBloqueCodigo detectarBloque = new DetectarBloqueCodigo(listaTokens);
+                    CondicionalIfElse condicionalIf = new CondicionalIfElse(detectarBloque.reconocerBloque(i));
+                    while (i < (detectarBloque.reconocerBloque(i).length)) {
+                        valor.concat(" " + listaTokens.get(i).getLexema());
+                    }
+                    if (condicionalIf.isAceptado()) {
+                        listaBloques.add(new BloqueCodigo("IF, IF-ELSE, IF-ELIF-ELSE", "Condicional", valor, listaTokens.get(i).getLinea(), listaTokens.get(i).getLinea(), 1));
+                    }
 
                 } else {
                     listaBloques.add(new BloqueCodigo("Error sintáctico", "Error sintáctico", listaTokens.get(i).getLexema(), listaTokens.get(i).getLinea(), listaTokens.get(i).getColumna(), 1));
