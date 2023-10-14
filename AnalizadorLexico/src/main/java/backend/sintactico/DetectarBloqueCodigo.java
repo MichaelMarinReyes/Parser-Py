@@ -16,31 +16,23 @@ public class DetectarBloqueCodigo {
         this.listaTokens = listaTokens;
         this.index = 0;
     }
-/*
-    public ArrayList<BloqueCodigo> detectarBloques() {
-        ArrayList<BloqueCodigo> bloques = new ArrayList<>();
-        while (index < listaTokens.size()) {
-            BloqueCodigo bloque = detectarSiguienteBloque();
-            if (bloque != null) {
-                bloques.add(bloque);
+
+    public Token[] reconocerBloque(int cantidadTokens) {
+        int contador = 0;
+        int tamañoLista = cantidadTokens;
+
+        for (int i = cantidadTokens; i < listaTokens.size(); i++) {
+            if (listaTokens.get(i).isIdentacion() == false) {
+                break;
             }
+            contador++;
         }
-        return bloques;
+        
+        Token[] arregloToken = new Token[contador];
+        for (int i = 0; i < arregloToken.length; i++) {
+            System.out.println(arregloToken[i].getToken());
+            
+        }
+        return arregloToken;
     }
-/*
-    private BloqueCodigo detectarSiguienteBloque() {
-        int inicioBloque = index;
-        int nivelIndentacion = listaTokens.get(inicioBloque).getIndentacion();
-
-        while (index < listaTokens.size() && listaTokens.get(index).getIndentacion() >= nivelIndentacion) {
-            index++;
-        }
-
-        if (index > inicioBloque) {
-            ArrayList<Token> tokensBloque = new ArrayList<>(listaTokens.subList(inicioBloque, index));
-            return new BloqueCodigo(tokensBloque);
-        }
-
-        return null;
-    }*/
 }

@@ -199,9 +199,9 @@ public class EditorPanel extends javax.swing.JPanel {
             for (int i = 0; i < listaToken.size(); i++) {
                 areaConsola.setText(areaConsola.getText() + "\n" + listaToken.get(i).toString());
             }
-            areaConsola.setText(areaConsola.getText() + "\n\nANÁLISIS LÉXICO COMPLETADO\n---------------------------------------------------------------------------------------------------------------------------------");
+            areaConsola.setText(areaConsola.getText() + "\n\nANÁLISIS LÉXICO COMPLETADO\n---------------------------------------------------------------------------------------------------------------------------------\n\n");
+            ColorearEditor.colorPalabras(areaEditor.getStyledDocument(), areaEditor.getText(), listaToken);
         }
-        ColorearEditor.colorPalabras(areaEditor.getStyledDocument(), areaEditor.getText(), listaToken);
     }
 
     private void ejecutarAnalisisSintactico() {
@@ -210,7 +210,9 @@ public class EditorPanel extends javax.swing.JPanel {
         }
         sintactico = new AnalizadorSintactico(listaToken, bloqueCodigo);
         sintactico.analizar();
-        areaConsola.setText(areaConsola.getText() + "\n" + sintactico.getBloqueDeCodigoIdentificado());
+        for (int i = 0; i < bloqueCodigo.size(); i++) {
+            areaConsola.setText(areaConsola.getText() + bloqueCodigo.get(i).toString());
+        }
         areaConsola.setText(areaConsola.getText() + "\nANALISIS SINTÁCTICO COMPLETADO\n---------------------------------------------------------------------------------------------------------------------------------");
 
     }

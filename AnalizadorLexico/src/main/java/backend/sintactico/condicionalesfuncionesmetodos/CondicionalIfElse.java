@@ -1,6 +1,7 @@
 package backend.sintactico.condicionalesfuncionesmetodos;
 
 import backend.lexico.Token;
+import backend.lexico.identificadores.OtroEnum;
 import java.util.ArrayList;
 
 /**
@@ -9,72 +10,47 @@ import java.util.ArrayList;
  */
 public class CondicionalIfElse {
 
-    private static ArrayList<Token> tokens;
-    private static int currentToken;
+    private Token[] tokens;
+    private int currentToken;
+    private boolean aceptado = false;
 
-    public CondicionalIfElse(ArrayList<Token> tokens) {
-        CondicionalIfElse.tokens = tokens;
+    public CondicionalIfElse(Token[] tokens) {
+        System.out.println(tokens.length);
+        this.tokens = tokens;
         currentToken = 0;
         condicional();
     }
 
-    private static void condicional() {
-        if (match("if")) {
+    public boolean isAceptado() {
+        return aceptado;
+    }
+
+    private void condicional() {
+        if (tokens[0].getToken().equals("IF")) {
             expresion();
-            match(":");
-            bloqueCodigo();
-            while (match("elif")) {
-                expresion();
-                match(":");
-                bloqueCodigo();
-            }
-            if (match("else")) {
-                match(":");
-                bloqueCodigo();
-            }
+        }
+    }
+    
+    private void expresion() {
+        if (esExpresion()) {
+            dosPuntos();
         } else {
-            throw new RuntimeException();
+            aceptado = false;
         }
     }
-
-    private static void bloqueCodigo() {
-        match("INDENT");
-        while (currentToken < tokens.size() && !match("DEDENT")) {
-            sentencia();
-        }
-    }
-
-    private static void sentencia() {
-        if (match("IDENTIFICADOR")) {
-            match("=");
-            expresion();
-        } else if (match("if")) {
-            expresion();
-            match(":");
-            bloqueCodigo();
-            while (match("elif")) {
-                expresion();
-                match(":");
-                bloqueCodigo();
+    
+    private boolean esExpresion() {
+        for (int i = 0; i < tokens.length; i++) {
+            if (tokens[1].getToken().equals("TRUE") || tokens[1].getToken().equals("FALSE")) {
+                return true;
             }
-            if (match("else")) {
-                match(":");
-                bloqueCodigo();
-            }
-        } else {
-            throw new RuntimeException();
-        }
-    }
-
-    private static void expresion() {
-        // Implementar lógica para expresiones
-    }
-
-    private static boolean match(String expected) {
-        if (currentToken < tokens.size() && tokens.get(currentToken).getToken().equals(expected)) {
-            currentToken++;
-            return true;
         }
         return false;
+    }
+    
+    private void dosPuntos() {
+        if (tokens[2].getToken().equals(OtroEnum.DOS_PUNTOS)) {
+            aceptado = true;
+        }
     }
 }

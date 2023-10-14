@@ -1,8 +1,7 @@
 package backend.sintactico.asignaciondeclaracion;
 
 import backend.lexico.Token;
-import backend.lexico.identificadores.ComparacionEnum;
-import backend.lexico.identificadores.OtroEnum;
+import backend.lexico.identificadores.*;
 
 /**
  *
@@ -10,7 +9,7 @@ import backend.lexico.identificadores.OtroEnum;
  */
 public class Asignacion {
 
-    private Token[] tokens = new Token[4];
+    private Token[] tokens = new Token[3];
     private boolean esAceptado = false;
 
     public Asignacion(Token[] tokens) {
@@ -30,8 +29,8 @@ public class Asignacion {
 
     private void operadorIdentificador() {
         if (esComparacion(tokens[1].getToken())) {
-            if (tokens[3] != null) {
-                if (tokens[2].getToken().equals(ComparacionEnum.ASIGNACION.name())) {
+            if (tokens[2] != null) {
+                if (!tokens[1].getToken().equals(ComparacionEnum.ASIGNACION.name())) {
                     valorAsignado();
                 }
             } else {
@@ -42,7 +41,9 @@ public class Asignacion {
     }
 
     private void valorAsignado() {
-        if (tokens[3].getToken().equals(OtroEnum.CADENA.toString()) || tokens[3].getToken().equals(OtroEnum.DECIMAL.toString()) || tokens[3].getToken().equals(OtroEnum.ENTERO.toString())) {
+        if (tokens[2].getToken().equals(OtroEnum.CADENA.toString()) || tokens[2].getToken().equals(OtroEnum.DECIMAL.toString()) || tokens[2].getToken().equals(OtroEnum.ENTERO.toString())) {
+            esAceptado = true;
+        } else if (tokens[2].getToken().equals(PalabraClaveEnum.FALSE.toString()) || tokens[2].getToken().equals(PalabraClaveEnum.TRUE.toString())) {
             esAceptado = true;
         } else {
             esAceptado = false;
@@ -51,9 +52,8 @@ public class Asignacion {
 
     private boolean esComparacion(String token) {
         for (int i = 0; i < ComparacionEnum.values().length; i++) {
-            if (!ComparacionEnum.values()[i].name().equals("ASIGANCION")) {
+            if (!ComparacionEnum.values()[i].name().equals("ASIGNACION")) {
                 if (token.equals(ComparacionEnum.values()[i].name())) {
-                    System.out.println("Token " + token + " enum " + ComparacionEnum.values()[i].name());
                     return true;
                 }
             }

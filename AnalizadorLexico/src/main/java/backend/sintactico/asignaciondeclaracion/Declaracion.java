@@ -1,8 +1,7 @@
 package backend.sintactico.asignaciondeclaracion;
 
 import backend.lexico.Token;
-import backend.lexico.identificadores.ComparacionEnum;
-import backend.lexico.identificadores.OtroEnum;
+import backend.lexico.identificadores.*;
 
 /**
  *
@@ -16,14 +15,14 @@ public class Declaracion {
 
     public Declaracion(Token[] tokens) {
         this.tokens = tokens;
-        asignacion();
+        declaracion();
     }
 
     public boolean isEsAceptado() {
         return esAceptado;
     }
 
-    public void asignacion() {
+    public void declaracion() {
         if (tokens[0].getToken().equals("ID")) {
             operadorAsignacion();
         }
@@ -37,6 +36,8 @@ public class Declaracion {
     
     private void valorAsignado() {
         if (tokens[2].getToken().equals(OtroEnum.CADENA.toString()) || tokens[2].getToken().equals(OtroEnum.DECIMAL.toString()) || tokens[2].getToken().equals(OtroEnum.ENTERO.toString())) {
+            esAceptado = true;
+        } else if (tokens[2].getToken().equals(PalabraClaveEnum.FALSE.toString()) || tokens[2].getToken().equals(PalabraClaveEnum.TRUE.toString())) {
             esAceptado = true;
         } else {
             esAceptado = false;

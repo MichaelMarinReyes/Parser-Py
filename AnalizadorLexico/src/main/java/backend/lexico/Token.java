@@ -11,16 +11,18 @@ public class Token {
     private int columna;
     private String token;
     private String patron = "no implementado";
+    private boolean identacion = false;
 
     public Token() {
     }
 
-    public Token(String token, String lexema, int linea, int columna, String patron) {
+    public Token(String token, String lexema, int linea, int columna, String patron, boolean identacion) {
         this.token = token;
         this.lexema = lexema;
         this.patron = patron;
         this.linea = linea;
         this.columna = columna;
+        this.identacion = identacion;
     }
 
     public String getToken() {
@@ -61,6 +63,14 @@ public class Token {
 
     public void setColumna(int columna) {
         this.columna = columna;
+    }
+
+    public boolean isIdentacion() {
+        return identacion;
+    }
+
+    public void setIdentacion(boolean identacion) {
+        this.identacion = identacion;
     }
 
     @Override

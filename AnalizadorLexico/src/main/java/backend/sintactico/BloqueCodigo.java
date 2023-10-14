@@ -5,6 +5,7 @@ package backend.sintactico;
  * @author michael
  */
 public class BloqueCodigo {
+
     private String simbolo;
     private String tipo;
     private String valor;
@@ -71,6 +72,6 @@ public class BloqueCodigo {
 
     @Override
     public String toString() {
-        return "Bloque de Codigo: " + "simbolo: " + simbolo + ", tipo: " + tipo + ", valor: " + valor + ", fila: " + linea + ", columna; " + columna + ", usos: " + usos;
-    }    
+        return "Bloque de Codigo: " + tipo + "\n\t" + valor + "\nFila: " + linea + ", columna; " + columna + ", usos: " + usos + "\n\n";
+    }
 }

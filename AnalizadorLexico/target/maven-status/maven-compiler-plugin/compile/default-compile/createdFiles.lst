@@ -47,4 +47,5 @@ backend/lexico/identificadores/OtroEnum.class
 frontend/ColorearEditor.class
 frontend/VentanaPrincipal$6.class
 backend/lexico/AnalizadorLexico.class
+backend/sintactico/asignaciondeclaracion/OperadorTernario.class
 backend/lexico/identificadores/ComparacionEnum.class

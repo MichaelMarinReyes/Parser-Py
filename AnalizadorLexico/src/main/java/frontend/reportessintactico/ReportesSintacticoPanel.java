@@ -1,7 +1,6 @@
 package frontend.reportessintactico;
 
 import frontend.*;
-import frontend.graphviz.VisualizarGrafico;
 import backend.sintactico.BloqueCodigo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
