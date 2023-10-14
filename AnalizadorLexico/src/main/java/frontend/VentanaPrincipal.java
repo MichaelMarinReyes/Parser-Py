@@ -174,7 +174,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_ayudaBotonMouseClicked
 
     private void acerdaDeBotonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acerdaDeBotonMouseClicked
-        String ayuda = "\n   \t   Parser-py\n   \t   Versión 2.0\n\n   Lenguajes Formales y de Programación\n\n   Carné: 201831260\n   Nombre: Michael Kristopher Marín Reyes";
+        /*String ayuda /*= "\n   \t   Parser-py\n   \t   Versión 2.0\n\n   Lenguajes Formales y de Programación\n\n   Carné: 201831260\n   Nombre: Michael Kristopher Marín Reyes";
 
         JTextArea textoAcercaDe = new JTextArea(ayuda);
         textoAcercaDe.setBackground(Color.LIGHT_GRAY);
@@ -188,7 +188,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         dialogoAyuda.setTitle("Acerca de");
         dialogoAyuda.setSize(320, 200);
         dialogoAyuda.setLocationRelativeTo(this);
-        dialogoAyuda.setVisible(true);
+        dialogoAyuda.setVisible(true);*/
     }//GEN-LAST:event_acerdaDeBotonMouseClicked
 
     private void reportesLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesLexicoActionPerformed
